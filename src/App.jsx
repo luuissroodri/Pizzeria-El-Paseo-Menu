@@ -47,72 +47,86 @@ const categories = [
   { id: 'sugerencias', name: 'Sugerencias', icon: Sparkles }
 ];
 
-const Header = () => {
+const AppHeader = React.forwardRef((props, ref) => {
   return (
-    <>
-      <header className="flex flex-col items-center w-full mb-2 md:hidden text-center pt-8">
-        <img
-          src="https://i.imgur.com/Yd7Uqrc.png"
-          alt="Logo Pizzeria El Paseo"
-          className="w-24 h-auto object-contain bg-transparent py-2"
-        />
-        <h1 className="text-gray-900 font-black text-2xl leading-none">
-          Menú
-        </h1>
-      </header>
-
-      <header className="hidden md:flex justify-between items-center w-full mb-6 pt-4">
-        <div className="flex flex-col text-left">
-          <h1 className="text-gray-900 font-black text-3xl lg:text-4xl leading-tight">
-            Menú Pizzeria El Paseo
-          </h1>
-        </div>
-        <div className="shrink-0 ml-6">
-          <img
-            src="https://i.imgur.com/oJKAwiU.png"
-            alt="Logo Pizzeria El Paseo"
-            className="w-32 h-24 lg:w-40 lg:h-28 object-contain bg-transparent"
+    <div className="w-full bg-white rounded-b-[3rem] pt-6 pb-6 px-4 shadow-sm mb-4 flex flex-col items-center border-b border-gray-50 md:hidden">
+      <img
+        src="https://i.imgur.com/Yd7Uqrc.png"
+        alt="Logo"
+        className="w-24 h-auto mb-4 object-contain"
+      />
+      <div className="w-full relative group">
+        <div className="flex items-center bg-gray-50 border-2 border-transparent focus-within:border-[#c01013] focus-within:bg-white rounded-2xl p-3 transition-all shadow-inner">
+          <Search size={20} className="text-gray-400 mr-2 group-focus-within:text-[#c01013] transition-colors" />
+          <input
+            ref={ref}
+            type="text"
+            placeholder="Buscar en el menú..."
+            className="bg-transparent border-none outline-none w-full text-gray-800 placeholder-gray-400 font-semibold text-base"
           />
         </div>
-      </header>
-    </>
-  );
-};
-
-const SearchBar = React.forwardRef((props, ref) => {
-  return (
-    <div className="w-full mb-4 md:mb-6">
-      <div className="flex items-center bg-white border-2 border-[#c01013] shadow-md rounded-2xl p-3 md:p-4 w-full transition-all focus-within:ring-2 focus-within:ring-red-50 focus-within:border-[#c01013]">
-        <Search className="text-[#c01013] mr-3 shrink-0" size={22} />
-        <input
-          ref={ref}
-          type="text"
-          placeholder="Buscar pizza..."
-          className="bg-transparent border-none outline-none w-full text-gray-800 placeholder-map-400 text-base md:text-lg"
-        />
       </div>
     </div>
   );
 });
-SearchBar.displayName = 'SearchBar';
+AppHeader.displayName = 'AppHeader';
 
-const OfferBanner = () => {
-  return (
-    <div className="bg-[#c01013] rounded-3xl p-4 md:p-6 text-white flex items-center justify-between shadow-lg w-full overflow-hidden">
-      <div className="flex items-center text-left w-full">
-        <div className="bg-white/20 rounded-xl p-2 md:p-3 mr-4 flex items-center justify-center shrink-0">
-          <Percent size={24} className="text-white md:w-8 md:h-8" />
+const DesktopHeader = React.forwardRef((props, ref) => (
+  <header className="hidden md:flex justify-between items-center w-full mb-10 pt-6 px-12 max-w-7xl mx-auto">
+    <div className="flex flex-col text-left">
+      <h1 className="text-gray-900 font-black text-4xl lg:text-5xl leading-tight">
+        Menú Paseo
+      </h1>
+      <p className="text-gray-400 font-bold uppercase tracking-[0.2em] text-sm mt-2">Pizzeria El Paseo</p>
+    </div>
+    <div className="flex items-center gap-8">
+      <div className="w-96 relative">
+        <div className="flex items-center bg-white border-2 border-gray-100 focus-within:border-[#c01013] rounded-2xl p-4 transition-all shadow-sm">
+          <Search size={22} className="text-gray-400 mr-3" />
+          <input
+            ref={ref}
+            type="text"
+            placeholder="¿Qué te apetece hoy?..."
+            className="bg-transparent border-none outline-none w-full text-gray-800 placeholder-gray-400 font-medium text-lg"
+          />
         </div>
-        <div className="flex flex-col justify-center">
-          <h2 className="font-black text-lg md:text-2xl mb-0 tracking-tight text-white">¡Oferta Especial!</h2>
-          <p className="text-white/95 text-xs md:text-base font-medium leading-tight mt-0.5">
-            20% de descuento en tu primer pedido
+      </div>
+      <img
+        src="https://i.imgur.com/oJKAwiU.png"
+        alt="Logo"
+        className="w-32 h-auto object-contain"
+      />
+    </div>
+  </header>
+));
+DesktopHeader.displayName = 'DesktopHeader';
+
+const MenuBanner = () => (
+  <div className="w-full px-6 mb-8 md:hidden">
+    <div className="py-3 bg-white rounded-[2.5rem] border border-gray-100 flex items-center justify-center shadow-sm">
+      <span className="text-gray-400 font-black text-[10px] uppercase tracking-[0.5em] ml-[0.5em]">MENÚ</span>
+    </div>
+  </div>
+);
+
+const OfferBanner = () => (
+  <div className="px-6 mb-8 w-full max-w-7xl mx-auto">
+    <div className="bg-[#c01013] rounded-[2.5rem] p-6 text-white flex items-center justify-between shadow-xl overflow-hidden relative group transition-transform hover:scale-[1.01]">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110" />
+      <div className="flex items-center text-left w-full relative z-10">
+        <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 mr-5 flex items-center justify-center shrink-0 shadow-lg">
+          <Percent size={28} className="text-white" strokeWidth={3} />
+        </div>
+        <div>
+          <h2 className="font-black text-xl md:text-3xl tracking-tight text-white leading-none">¡Oferta Imperial!</h2>
+          <p className="text-white/90 text-sm md:text-lg font-bold mt-2 uppercase tracking-wide">
+            20% OFF PRIMER PEDIDO
           </p>
         </div>
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 const PizzaCard = ({ pizza }) => {
   const [selectedSize, setSelectedSize] = useState('M');
@@ -167,163 +181,135 @@ const PizzaCard = ({ pizza }) => {
     </div>
   );
 };
-
-const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick }) => {
-  const navItems = [
-    { id: 'pizzas', name: 'Pizzas', icon: Pizza },
-    { id: 'pastas', name: 'Pastas', icon: Soup },
-    { id: 'null', name: '', icon: null },
-    { id: 'mar', name: 'Mar', icon: Fish },
-    { id: 'bebidas', name: 'Bebidas', icon: GlassWater },
-  ];
-
+const CategoriesModal = ({ isOpen, onClose, activeCategory, setActiveCategory }) => {
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-[#c01013] border-t border-white/10 flex justify-around items-center py-2 px-4 md:hidden z-[100] shadow-[0_-4px_25px_rgba(0,0,0,0.2)] rounded-t-[2.5rem] antialiased transform-gpu">
-      {navItems.map((item, index) => {
-        if (index === 2) {
-          return (
-            <button
-              key="search-btn"
-              onClick={onSearchClick}
-              className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-2xl -mt-10 border-4 border-[#c01013] ring-4 ring-white/10 active:scale-95 transition-all z-[110]"
-            >
-              <span className="inline-flex items-center justify-center w-[20px] h-[20px]">
-                <Search
-                  size={22}
-                  stroke="currentColor"
-                  strokeWidth={3}
-                  shapeRendering="geometricPrecision"
-                  style={{ vectorEffect: 'non-scaling-stroke' }}
-                  className="text-[#c01013]"
-                />
-              </span>
-            </button>
-          );
-        }
-        const Icon = item.icon;
-        const isActive = activeCategory === item.id;
-        return (
-          <button
-            key={item.id}
-            onClick={() => setActiveCategory(item.id)}
-            className={`w-12 flex flex-col items-center gap-1.5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-white/50'}`}
-          >
-            <span className="inline-flex items-center justify-center w-[20px] h-[20px]">
-              <Icon
-                size={20}
-                stroke="currentColor"
-                strokeWidth={isActive ? 2.5 : 2}
-                shapeRendering="geometricPrecision"
-                style={{ vectorEffect: 'non-scaling-stroke' }}
-              />
-            </span>
-            <span className="text-[9px] font-extrabold uppercase tracking-widest leading-none">{item.name}</span>
-          </button>
-        );
-      })}
-    </nav>
+    <>
+      <div
+        className={`fixed inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300 z-[250] ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+        onClick={onClose}
+      />
+      <div
+        className={`fixed bottom-0 left-0 right-0 bg-white rounded-t-[3rem] z-[300] transition-transform duration-500 transform shadow-[0_-20px_50px_rgba(0,0,0,0.1)] ${isOpen ? 'translate-y-0' : 'translate-y-full'
+          }`}
+      >
+        <div className="w-12 h-1.5 bg-gray-200 rounded-full mx-auto mt-4 mb-6" />
+        <div className="px-8 pb-12">
+          <h2 className="text-gray-900 font-black text-2xl mb-8 text-center uppercase tracking-tight">Selecciona Categoría</h2>
+          <div className="grid grid-cols-3 gap-4">
+            {categories.map((cat) => {
+              const Icon = cat.icon;
+              const isActive = activeCategory === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => {
+                    setActiveCategory(cat.id);
+                    onClose();
+                  }}
+                  className={`flex flex-col items-center justify-center p-5 rounded-3xl transition-all duration-300 ${isActive ? 'bg-[#c01013] text-white shadow-lg' : 'bg-gray-50 text-gray-500 hover:bg-gray-100'
+                    }`}
+                >
+                  <Icon size={28} strokeWidth={isActive ? 2.5 : 2} className="mb-2" />
+                  <span className={`text-[10px] font-black uppercase tracking-tight text-center ${isActive ? 'text-white' : 'text-gray-600'}`}>
+                    {cat.name}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </>
   );
 };
 
-const StickyCart = () => (
-  <button className="fixed top-4 left-4 z-[110] bg-[#c01013] text-white p-3 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all border-2 border-white/20">
-    <ShoppingCart size={24} />
-  </button>
-);
+const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick, isMenuOpen, setIsMenuOpen }) => {
+  return (
+    <>
+      <CategoriesModal
+        isOpen={isMenuOpen}
+        onClose={() => setIsMenuOpen(false)}
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+      />
+
+      <div className="fixed bottom-0 left-0 right-0 z-[200] md:hidden h-20 bg-[#c01013] rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.3)]">
+        <div className="relative h-full flex items-center px-10">
+          <div
+            onClick={() => setIsMenuOpen(true)}
+            className="absolute left-1/2 -top-7 -translate-x-1/2 z-[210] flex flex-col items-center pointer-events-auto cursor-pointer"
+          >
+            <div className={`w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-2xl border-[6px] border-gray-50 transition-all duration-300 ${isMenuOpen ? 'scale-110' : ''}`}>
+              <CookingPot size={32} strokeWidth={2.5} className="text-[#c01013]" />
+            </div>
+            <span className="text-white font-black uppercase text-[10px] mt-1 tracking-widest drop-shadow-md">MENÚ</span>
+          </div>
+
+          <div className="flex-1 flex justify-start">
+            <button
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                onSearchClick();
+              }}
+              className="flex flex-col items-center justify-center text-white/90 hover:text-white transition-colors"
+            >
+              <Search size={26} strokeWidth={2.5} />
+              <span className="text-[10px] font-black uppercase mt-1">Buscar</span>
+            </button>
+          </div>
+
+          <div className="flex-1 flex justify-end">
+            <button className="flex flex-col items-center justify-center text-white/90 hover:text-white transition-colors">
+              <ShoppingCart size={26} strokeWidth={2.5} />
+              <span className="text-[10px] font-black uppercase mt-1">Carrito</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 function App() {
   const [activeCategory, setActiveCategory] = useState('pizzas');
-  const scrollRef = useRef(null);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const searchInputRef = useRef(null);
 
   const handleSearchFocus = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
     if (searchInputRef.current) {
       searchInputRef.current.focus();
     }
   };
 
-  const scroll = (direction) => {
-    if (scrollRef.current) {
-      const scrollAmount = 240;
-      scrollRef.current.scrollBy({
-        left: direction === 'left' ? -scrollAmount : scrollAmount,
-        behavior: 'smooth'
-      });
-    }
-  };
-
   return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 pb-24 md:pb-10">
-      <StickyCart />
-      <main className="w-full px-6 md:px-12 py-6 md:py-10 flex flex-col items-center md:items-start max-w-full">
-        <Header />
-        <SearchBar ref={searchInputRef} />
-        <section className="w-full mt-2 mb-8">
-          <div className="flex justify-center md:mx-auto mb-6">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50/50 border border-red-100 rounded-full shadow-sm hover:bg-red-50 transition-colors">
-              <CookingPot size={14} className="text-[#c01013]" />
-              <span className="text-[#c01013] font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">Categorías</span>
-            </div>
-          </div>
+    <div className="min-h-screen bg-gray-50 font-sans text-gray-900 pb-32 md:pb-10">
 
-          <div className="relative group max-w-6xl mx-auto w-full">
-            <button
-              onClick={() => scroll('left')}
-              className="absolute left-[-15px] md:left-[-25px] top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-2 border border-gray-100 text-[#c01013] hover:scale-110 transition-all flex md:opacity-0 md:group-hover:opacity-100 lg:hidden"
-            >
-              <ChevronLeft size={20} className="md:w-6 md:h-6" />
-            </button>
+      <AppHeader ref={searchInputRef} />
 
-            <div
-              ref={scrollRef}
-              className="flex items-center lg:flex-wrap lg:justify-center gap-4 overflow-x-auto lg:overflow-visible pb-6 no-scrollbar scroll-smooth px-4"
-              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-            >
-              <style>{`
-                .no-scrollbar::-webkit-scrollbar {
-                  display: none;
-                }
-              `}</style>
-              {categories.map((cat) => {
-                const Icon = cat.icon;
-                const isActive = activeCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setActiveCategory(cat.id)}
-                    className={`flex flex-col items-center justify-center min-w-[80px] w-[80px] h-[90px] rounded-[2rem] p-2 transition-all duration-300 border-2 shrink-0 ${isActive
-                      ? 'bg-[#c01013] text-white border-[#c01013] shadow-xl'
-                      : 'bg-white text-gray-400 border-gray-100 hover:border-red-100 hover:bg-red-50/20 shadow-sm'
-                      }`}
-                  >
-                    <div className={`w-9 h-9 flex items-center justify-center rounded-xl mb-1.5 transition-colors ${isActive ? 'bg-white/20 text-white' : 'bg-red-50 text-[#c01013]'}`}>
-                      <Icon size={18} />
-                    </div>
-                    <span className={`font-black text-[9px] md:text-[10px] uppercase tracking-tight transition-colors ${isActive ? 'text-white' : 'text-gray-600'}`}>{cat.name}</span>
-                  </button>
-                );
-              })}
-            </div>
+      <DesktopHeader ref={searchInputRef} />
 
-            <button
-              onClick={() => scroll('right')}
-              className="absolute right-[-15px] md:right-[-25px] top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-2 border border-gray-100 text-[#c01013] hover:scale-110 transition-all flex md:opacity-0 md:group-hover:opacity-100 lg:hidden"
-            >
-              <ChevronRight size={20} className="md:w-6 md:h-6" />
-            </button>
-          </div>
-        </section>
+      <main className="w-full max-w-7xl mx-auto flex flex-col items-center md:items-start overflow-hidden">
+        <OfferBanner />
 
-        <section className="w-full mb-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-8 px-2 md:px-0">
+        <MenuBanner />
+
+        <section className="w-full px-4 md:px-12 mb-12">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {pizzas.map((pizza) => (
               <PizzaCard key={pizza.id} pizza={pizza} />
             ))}
           </div>
         </section>
       </main>
-      <BottomNav activeCategory={activeCategory} setActiveCategory={setActiveCategory} onSearchClick={handleSearchFocus} />
+
+      <BottomNav
+        activeCategory={activeCategory}
+        setActiveCategory={setActiveCategory}
+        onSearchClick={handleSearchFocus}
+        isMenuOpen={isMenuOpen}
+        setIsMenuOpen={setIsMenuOpen}
+      />
     </div>
   );
 }
