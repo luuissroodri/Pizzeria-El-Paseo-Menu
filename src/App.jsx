@@ -178,7 +178,7 @@ const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick }) => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-[#c01013] border-t border-white/10 flex justify-around items-center py-2 px-4 md:hidden z-[100] shadow-[0_-4px_25px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] antialiased">
+    <nav className="fixed bottom-0 left-0 right-0 bg-[#c01013] border-t border-white/10 flex justify-around items-center py-2 px-4 md:hidden z-[100] shadow-[0_-4px_25px_rgba(0,0,0,0.2)] rounded-t-[2.5rem] antialiased transform-gpu">
       {navItems.map((item, index) => {
         if (index === 2) {
           return (
@@ -187,7 +187,16 @@ const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick }) => {
               onClick={onSearchClick}
               className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-2xl -mt-10 border-4 border-[#c01013] ring-4 ring-white/10 active:scale-95 transition-all z-[110]"
             >
-              <Search size={22} strokeWidth={3} className="text-[#c01013]" />
+              <span className="inline-flex items-center justify-center w-[20px] h-[20px]">
+                <Search
+                  size={22}
+                  stroke="currentColor"
+                  strokeWidth={3}
+                  shapeRendering="geometricPrecision"
+                  style={{ vectorEffect: 'non-scaling-stroke' }}
+                  className="text-[#c01013]"
+                />
+              </span>
             </button>
           );
         }
@@ -197,10 +206,18 @@ const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick }) => {
           <button
             key={item.id}
             onClick={() => setActiveCategory(item.id)}
-            className={`w-12 flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'text-white' : 'text-white/50'}`}
+            className={`w-12 flex flex-col items-center gap-1.5 transition-colors duration-300 ${isActive ? 'text-white' : 'text-white/50'}`}
           >
-            <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className="transition-all duration-300" />
-            <span className="text-[9px] font-extrabold uppercase tracking-widest">{item.name}</span>
+            <span className="inline-flex items-center justify-center w-[20px] h-[20px]">
+              <Icon
+                size={20}
+                stroke="currentColor"
+                strokeWidth={isActive ? 2.5 : 2}
+                shapeRendering="geometricPrecision"
+                style={{ vectorEffect: 'non-scaling-stroke' }}
+              />
+            </span>
+            <span className="text-[9px] font-extrabold uppercase tracking-widest leading-none">{item.name}</span>
           </button>
         );
       })}
