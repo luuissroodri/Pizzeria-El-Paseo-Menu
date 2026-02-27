@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Search, Percent, Pizza, GlassWater, Salad, CakeSlice, Star, Soup, Fish, Drumstick, Utensils, Sparkles, ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react';
+import { Search, Percent, Pizza, GlassWater, Salad, CakeSlice, Star, Soup, Fish, Drumstick, Utensils, Sparkles, ChevronLeft, ChevronRight, LayoutGrid, ShoppingCart } from 'lucide-react';
 
 const pizzas = [
   {
@@ -50,7 +50,7 @@ const categories = [
 const Header = () => {
   return (
     <>
-      <header className="flex flex-col items-center w-full mb-2 md:hidden text-center">
+      <header className="flex flex-col items-center w-full mb-2 md:hidden text-center pt-8">
         <img
           src="https://i.imgur.com/Yd7Uqrc.png"
           alt="Logo Pizzeria El Paseo"
@@ -61,7 +61,7 @@ const Header = () => {
         </h1>
       </header>
 
-      <header className="hidden md:flex justify-between items-center w-full mb-6">
+      <header className="hidden md:flex justify-between items-center w-full mb-6 pt-4">
         <div className="flex flex-col text-left">
           <h1 className="text-gray-900 font-black text-3xl lg:text-4xl leading-tight">
             Menú Pizzeria El Paseo
@@ -79,20 +79,22 @@ const Header = () => {
   );
 };
 
-const SearchBar = () => {
+const SearchBar = React.forwardRef((props, ref) => {
   return (
     <div className="w-full mb-4 md:mb-6">
-      <div className="flex items-center bg-white border-2 border-[#1B9028] shadow-md rounded-2xl p-3 md:p-4 w-full transition-all focus-within:ring-2 focus-within:ring-green-50 focus-within:border-[#1B9028]">
-        <Search className="text-[#1B9028] mr-3 shrink-0" size={22} />
+      <div className="flex items-center bg-white border-2 border-[#c01013] shadow-md rounded-2xl p-3 md:p-4 w-full transition-all focus-within:ring-2 focus-within:ring-red-50 focus-within:border-[#c01013]">
+        <Search className="text-[#c01013] mr-3 shrink-0" size={22} />
         <input
+          ref={ref}
           type="text"
           placeholder="Buscar pizza..."
-          className="bg-transparent border-none outline-none w-full text-gray-800 placeholder-gray-400 text-base md:text-lg"
+          className="bg-transparent border-none outline-none w-full text-gray-800 placeholder-map-400 text-base md:text-lg"
         />
       </div>
     </div>
   );
-};
+});
+SearchBar.displayName = 'SearchBar';
 
 const OfferBanner = () => {
   return (
@@ -138,13 +140,13 @@ const PizzaCard = ({ pizza }) => {
           {pizza.description}
         </p>
 
-        <div className="flex gap-2 mb-6">
+        <div className="flex gap-1.5 mb-4">
           {['S', 'M', 'L'].map((size) => (
             <button
               key={size}
               onClick={() => setSelectedSize(size)}
-              className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-xs md:text-sm transition-all duration-300 ${selectedSize === size
-                ? 'bg-[#FF7A01] text-white shadow-md'
+              className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-[10px] md:text-sm transition-all duration-300 ${selectedSize === size
+                ? 'bg-[#c01013] text-white shadow-md'
                 : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                 }`}
             >
@@ -154,10 +156,10 @@ const PizzaCard = ({ pizza }) => {
         </div>
 
         <div className="flex items-center justify-between mt-auto">
-          <span className="text-[#FF7A01] font-black text-xl md:text-2xl">
+          <span className="text-[#c01013] font-black text-base md:text-2xl">
             ${pizza.price.toFixed(2)}
           </span>
-          <button className="border-2 border-[#FF7A01] text-[#FF7A01] px-5 md:px-7 py-2 md:py-2 rounded-full font-bold text-xs md:text-sm hover:bg-[#FF7A01] hover:text-white active:scale-95 transition-all shadow-sm">
+          <button className="border-2 border-[#c01013] text-[#c01013] px-3 md:px-7 py-1.5 md:py-2 rounded-full font-bold text-[10px] md:text-sm hover:bg-[#c01013] hover:text-white active:scale-95 transition-all shadow-sm">
             Elegir
           </button>
         </div>
@@ -166,27 +168,39 @@ const PizzaCard = ({ pizza }) => {
   );
 };
 
-const BottomNav = ({ activeCategory, setActiveCategory }) => {
+const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick }) => {
   const navItems = [
     { id: 'pizzas', name: 'Pizzas', icon: Pizza },
     { id: 'pastas', name: 'Pastas', icon: Soup },
+    { id: 'null', name: '', icon: null }, // Placeholder for search button
     { id: 'mar', name: 'Mar', icon: Fish },
     { id: 'bebidas', name: 'Bebidas', icon: GlassWater },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-100 flex justify-around items-center py-3 px-4 md:hidden z-[100] shadow-[0_-4px_25px_rgba(0,0,0,0.08)] rounded-t-[2rem]">
-      {navItems.map((item) => {
+    <nav className="fixed bottom-0 left-0 right-0 bg-[#c01013]/95 backdrop-blur-md border-t border-white/10 flex justify-around items-center py-2 px-4 md:hidden z-[100] shadow-[0_-4px_25px_rgba(0,0,0,0.15)] rounded-t-[2.5rem]">
+      {navItems.map((item, index) => {
+        if (index === 2) {
+          return (
+            <button
+              key="search-btn"
+              onClick={onSearchClick}
+              className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-2xl -mt-10 border-4 border-[#c01013] active:scale-90 transition-transform"
+            >
+              <Search size={24} className="text-[#c01013]" />
+            </button>
+          );
+        }
         const Icon = item.icon;
         const isActive = activeCategory === item.id;
         return (
           <button
             key={item.id}
             onClick={() => setActiveCategory(item.id)}
-            className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'text-[#1B9028]' : 'text-gray-400'}`}
+            className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'text-white' : 'text-white/50'}`}
           >
-            <Icon size={22} className={`transition-all duration-300 ${isActive ? 'fill-[#1B9028]/10' : ''}`} />
-            <span className="text-[10px] font-extrabold uppercase tracking-widest">{item.name}</span>
+            <Icon size={20} className={`transition-all duration-300 ${isActive ? 'fill-white/20' : ''}`} />
+            <span className="text-[9px] font-extrabold uppercase tracking-widest">{item.name}</span>
           </button>
         );
       })}
@@ -194,9 +208,23 @@ const BottomNav = ({ activeCategory, setActiveCategory }) => {
   );
 };
 
+const StickyCart = () => (
+  <button className="fixed top-4 left-4 z-[110] bg-[#c01013] text-white p-3 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all border-2 border-white/20">
+    <ShoppingCart size={24} />
+  </button>
+);
+
 function App() {
   const [activeCategory, setActiveCategory] = useState('pizzas');
   const scrollRef = useRef(null);
+  const searchInputRef = useRef(null);
+
+  const handleSearchFocus = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (searchInputRef.current) {
+      searchInputRef.current.focus();
+    }
+  };
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -209,15 +237,16 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 pb-20 md:pb-10">
+    <div className="min-h-screen bg-white font-sans text-gray-900 pb-24 md:pb-10">
+      <StickyCart />
       <main className="w-full px-6 md:px-12 py-6 md:py-10 flex flex-col items-center md:items-start max-w-full">
         <Header />
-        <SearchBar />
+        <SearchBar ref={searchInputRef} />
         <section className="w-full mt-2 mb-8">
           <div className="flex justify-center md:mx-auto mb-6">
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gray-50/50 border border-gray-100 rounded-full shadow-sm hover:bg-gray-100 transition-colors">
-              <Soup size={14} className="text-[#1B9028]" />
-              <span className="text-gray-600 font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">Categorías</span>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50/50 border border-red-100 rounded-full shadow-sm hover:bg-red-50 transition-colors">
+              <Soup size={14} className="text-[#c01013]" />
+              <span className="text-[#c01013] font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">Categorías</span>
             </div>
           </div>
 
@@ -246,15 +275,15 @@ function App() {
                   <button
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
-                    className={`flex flex-col items-center justify-center min-w-[110px] w-[110px] h-[120px] rounded-[2.5rem] p-4 transition-all duration-300 border-2 shrink-0 ${isActive
-                      ? 'bg-[#1B9028] text-white border-[#1B9028] shadow-xl'
-                      : 'bg-white text-gray-400 border-gray-100 hover:border-green-100 hover:bg-green-50/20 shadow-sm'
+                    className={`flex flex-col items-center justify-center min-w-[90px] w-[90px] h-[100px] rounded-[2rem] p-3 transition-all duration-300 border-2 shrink-0 ${isActive
+                      ? 'bg-[#c01013] text-white border-[#c01013] shadow-xl'
+                      : 'bg-white text-gray-400 border-gray-100 hover:border-red-100 hover:bg-red-50/20 shadow-sm'
                       }`}
                   >
-                    <div className={`w-12 h-12 flex items-center justify-center rounded-2xl mb-2 transition-colors ${isActive ? 'bg-white/20 text-white' : 'bg-green-50 text-[#1B9028]'}`}>
-                      <Icon size={24} />
+                    <div className={`w-10 h-10 flex items-center justify-center rounded-xl mb-2 transition-colors ${isActive ? 'bg-white/20 text-white' : 'bg-red-50 text-[#c01013]'}`}>
+                      <Icon size={20} />
                     </div>
-                    <span className={`font-extrabold text-[10px] md:text-xs uppercase tracking-widest transition-colors ${isActive ? 'text-white' : 'text-gray-600'}`}>{cat.name}</span>
+                    <span className={`font-extrabold text-[9px] md:text-xs uppercase tracking-tight transition-colors ${isActive ? 'text-white' : 'text-gray-600'}`}>{cat.name}</span>
                   </button>
                 );
               })}
@@ -270,14 +299,14 @@ function App() {
         </section>
 
         <section className="w-full mb-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 px-2 md:px-0">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-8 px-2 md:px-0">
             {pizzas.map((pizza) => (
               <PizzaCard key={pizza.id} pizza={pizza} />
             ))}
           </div>
         </section>
       </main>
-      <BottomNav activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
+      <BottomNav activeCategory={activeCategory} setActiveCategory={setActiveCategory} onSearchClick={handleSearchFocus} />
     </div>
   );
 }
