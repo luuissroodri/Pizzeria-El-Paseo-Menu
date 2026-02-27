@@ -47,24 +47,36 @@ const categories = [
   { id: 'sugerencias', name: 'Sugerencias', icon: Sparkles }
 ];
 
+const MenuLabel = () => (
+  <div className="absolute -top-7 left-1/2 -translate-x-1/2 z-10 px-6 py-2 bg-[#1e4d2b] rounded-t-2xl shadow-lg border-b border-[#1e4d2b]">
+    <span className="text-white font-black text-[11px] uppercase tracking-[0.3em] whitespace-nowrap">NUESTRO MENÚ</span>
+  </div>
+);
+
 const AppHeader = React.forwardRef((props, ref) => {
   return (
-    <div className="w-full bg-white pt-6 pb-2 px-6 mb-2 flex flex-col items-center md:hidden">
-      <img
-        src="https://i.imgur.com/Yd7Uqrc.png"
-        alt="Logo"
-        className="w-20 h-auto mb-6 object-contain"
-      />
-      <div className="w-full relative group h-20 bg-[#c01013] rounded-[2.5rem] p-1 shadow-xl overflow-hidden active:scale-[0.98] transition-all">
-        <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 pointer-events-none" />
-        <div className="flex items-center h-full px-6 relative z-10">
-          <Search size={24} className="text-white mr-3 opacity-90" strokeWidth={3} />
-          <input
-            ref={ref}
-            type="text"
-            placeholder="Buscar en el menú..."
-            className="bg-transparent border-none outline-none w-full text-white placeholder-white/70 font-black text-lg"
-          />
+    <div className="w-full bg-white px-6 flex flex-col items-center md:hidden">
+      <div className="w-full flex justify-center pt-8 mb-8">
+        <img
+          src="https://i.imgur.com/Yd7Uqrc.png"
+          alt="Logo"
+          className="w-20 h-auto object-contain"
+        />
+      </div>
+
+      <div className="w-full relative flex flex-col items-center">
+        <MenuLabel />
+        <div className="w-full relative z-20 group h-16 bg-[#c01013] rounded-[2.5rem] p-1 shadow-2xl overflow-hidden active:scale-[0.98] transition-all border border-[#c01013]">
+          <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 pointer-events-none" />
+          <div className="flex items-center h-full px-6 relative z-10">
+            <Search size={22} className="text-white mr-3 opacity-90" strokeWidth={3} />
+            <input
+              ref={ref}
+              type="text"
+              placeholder="Buscar en el menú..."
+              className="bg-transparent border-none outline-none w-full text-white placeholder-white/70 font-black text-base"
+            />
+          </div>
         </div>
       </div>
     </div>
@@ -101,14 +113,6 @@ const DesktopHeader = React.forwardRef((props, ref) => (
   </header>
 ));
 DesktopHeader.displayName = 'DesktopHeader';
-
-const MenuBanner = () => (
-  <div className="w-full px-6 mb-8 md:hidden">
-    <div className="py-3 bg-white rounded-[2.5rem] border border-gray-100 flex items-center justify-center shadow-sm">
-      <span className="text-gray-400 font-black text-[10px] uppercase tracking-[0.5em] ml-[0.5em]">MENÚ</span>
-    </div>
-  </div>
-);
 
 
 const PizzaCard = ({ pizza }) => {
@@ -225,8 +229,8 @@ const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick, isMenuOpe
           >
             {!isScrolled && !isMenuOpen && (
               <div className="absolute -top-14 animate-bounce flex flex-col items-center transition-opacity duration-500">
-                <div className="bg-white text-[#c01013] text-[10px] font-black px-4 py-1.5 rounded-full shadow-2xl border-2 border-gray-50 whitespace-nowrap mb-1 uppercase tracking-tighter">PULSA PARA VER CATEGORÍAS</div>
-                <div className="w-3 h-3 bg-white rotate-45 -mt-2.5 border-r-2 border-b-2 border-gray-50" />
+                <div className="bg-white text-[#c01013] text-[11px] font-black px-5 py-2 rounded-full shadow-2xl border-2 border-[#c01013] whitespace-nowrap mb-1 uppercase tracking-tighter shadow-[#c01013]/20">PULSA PARA VER CATEGORÍAS</div>
+                <div className="w-3 h-3 bg-white rotate-45 -mt-2.5 border-r-2 border-b-2 border-[#c01013]" />
               </div>
             )}
 
@@ -291,9 +295,7 @@ function App() {
       <DesktopHeader ref={searchInputRef} />
 
       <main className="w-full max-w-7xl mx-auto flex flex-col items-center md:items-start overflow-hidden">
-        <MenuBanner />
-
-        <section className="w-full px-4 md:px-12 mb-12">
+        <section className="w-full px-4 md:px-12 mb-8 mt-2">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
             {pizzas.map((pizza) => (
               <PizzaCard key={pizza.id} pizza={pizza} />
