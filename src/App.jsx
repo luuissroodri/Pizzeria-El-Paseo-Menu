@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Search, Percent, Pizza, GlassWater, Salad, CakeSlice, Star } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Search, Percent, Pizza, GlassWater, Salad, CakeSlice, Star, Soup, Fish, Drumstick, Utensils, Sparkles, ChevronLeft, ChevronRight, LayoutGrid } from 'lucide-react';
 
 const pizzas = [
   {
@@ -38,26 +38,30 @@ const pizzas = [
 
 const categories = [
   { id: 'pizzas', name: 'Pizzas', icon: Pizza },
-  { id: 'bebidas', name: 'Bebidas', icon: GlassWater },
+  { id: 'pastas', name: 'Pastas', icon: Soup },
+  { id: 'mar', name: 'Mar', icon: Fish },
+  { id: 'aves', name: 'Aves', icon: Drumstick },
   { id: 'ensaladas', name: 'Ensaladas', icon: Salad },
-  { id: 'postres', name: 'Postres', icon: CakeSlice }
+  { id: 'hamburguesas', name: 'Hamburguesas', icon: Utensils },
+  { id: 'bebidas', name: 'Bebidas', icon: GlassWater },
+  { id: 'sugerencias', name: 'Sugerencias', icon: Sparkles }
 ];
 
 const Header = () => {
   return (
     <>
-      <header className="flex flex-col items-center w-full mb-4 md:hidden text-center">
+      <header className="flex flex-col items-center w-full mb-2 md:hidden text-center">
         <img
           src="https://i.imgur.com/Yd7Uqrc.png"
           alt="Logo Pizzeria El Paseo"
-          className="w-32 h-auto object-contain bg-transparent py-4 mb-0"
+          className="w-24 h-auto object-contain bg-transparent py-2"
         />
-        <h1 className="text-gray-900 font-black text-3xl leading-none">
+        <h1 className="text-gray-900 font-black text-2xl leading-none">
           Menú
         </h1>
       </header>
 
-      <header className="hidden md:flex justify-between items-center w-full mb-8">
+      <header className="hidden md:flex justify-between items-center w-full mb-6">
         <div className="flex flex-col text-left">
           <h1 className="text-gray-900 font-black text-3xl lg:text-4xl leading-tight">
             Menú Pizzeria El Paseo
@@ -77,7 +81,7 @@ const Header = () => {
 
 const SearchBar = () => {
   return (
-    <div className="w-full mb-6">
+    <div className="w-full mb-4 md:mb-6">
       <div className="flex items-center bg-white border-2 border-[#1B9028] shadow-md rounded-2xl p-3 md:p-4 w-full transition-all focus-within:ring-2 focus-within:ring-green-50 focus-within:border-[#1B9028]">
         <Search className="text-[#1B9028] mr-3 shrink-0" size={22} />
         <input
@@ -140,8 +144,8 @@ const PizzaCard = ({ pizza }) => {
               key={size}
               onClick={() => setSelectedSize(size)}
               className={`w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-xs md:text-sm transition-all duration-300 ${selectedSize === size
-                  ? 'bg-[#FF7A01] text-white shadow-md'
-                  : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                ? 'bg-[#FF7A01] text-white shadow-md'
+                : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
                 }`}
             >
               {size}
@@ -153,7 +157,7 @@ const PizzaCard = ({ pizza }) => {
           <span className="text-[#FF7A01] font-black text-xl md:text-2xl">
             ${pizza.price.toFixed(2)}
           </span>
-          <button className="bg-[#FF7A01] text-white px-5 md:px-7 py-2 md:py-2.5 rounded-full font-bold text-xs md:text-sm hover:scale-105 active:scale-95 transition-all shadow-md">
+          <button className="border-2 border-[#FF7A01] text-[#FF7A01] px-5 md:px-7 py-2 md:py-2 rounded-full font-bold text-xs md:text-sm hover:bg-[#FF7A01] hover:text-white active:scale-95 transition-all shadow-sm">
             Elegir
           </button>
         </div>
@@ -162,46 +166,118 @@ const PizzaCard = ({ pizza }) => {
   );
 };
 
-function App() {
-  const [activeCategory, setActiveCategory] = useState('pizzas');
+const BottomNav = ({ activeCategory, setActiveCategory }) => {
+  const navItems = [
+    { id: 'pizzas', name: 'Pizzas', icon: Pizza },
+    { id: 'pastas', name: 'Pastas', icon: Soup },
+    { id: 'mar', name: 'Mar', icon: Fish },
+    { id: 'bebidas', name: 'Bebidas', icon: GlassWater },
+  ];
 
   return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-[#FF7A01] selection:text-white">
+    <nav className="fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t border-gray-100 flex justify-around items-center py-3 px-4 md:hidden z-[100] shadow-[0_-4px_25px_rgba(0,0,0,0.08)] rounded-t-[2rem]">
+      {navItems.map((item) => {
+        const Icon = item.icon;
+        const isActive = activeCategory === item.id;
+        return (
+          <button
+            key={item.id}
+            onClick={() => setActiveCategory(item.id)}
+            className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'text-[#1B9028]' : 'text-gray-400'}`}
+          >
+            <Icon size={22} className={`transition-all duration-300 ${isActive ? 'fill-[#1B9028]/10' : ''}`} />
+            <span className="text-[10px] font-extrabold uppercase tracking-widest">{item.name}</span>
+          </button>
+        );
+      })}
+    </nav>
+  );
+};
+
+function App() {
+  const [activeCategory, setActiveCategory] = useState('pizzas');
+  const scrollRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = 240;
+      scrollRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-white font-sans text-gray-900 pb-20 md:pb-10">
       <main className="w-full px-6 md:px-12 py-6 md:py-10 flex flex-col items-center md:items-start max-w-full">
         <Header />
         <SearchBar />
-        <OfferBanner />
+        <section className="w-full mt-2 mb-8">
+          <div className="flex justify-center md:mx-auto mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-gray-50/50 border border-gray-100 rounded-full shadow-sm hover:bg-gray-100 transition-colors">
+              <Soup size={14} className="text-[#1B9028]" />
+              <span className="text-gray-600 font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">Categorías</span>
+            </div>
+          </div>
 
-        <section className="w-full mt-8 mb-8">
-          <div className="flex items-center gap-3 overflow-x-auto pb-2 no-scrollbar scrollbar-hide">
-            {categories.map((cat) => {
-              const Icon = cat.icon;
-              const isActive = activeCategory === cat.id;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`flex items-center gap-2 px-6 py-3 rounded-full whitespace-nowrap transition-all duration-300 ${isActive
-                      ? 'bg-[#1B9028] text-white shadow-lg'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                >
-                  <Icon size={20} />
-                  <span className="font-bold">{cat.name}</span>
-                </button>
-              );
-            })}
+          <div className="relative group max-w-6xl mx-auto w-full">
+            <button
+              onClick={() => scroll('left')}
+              className="absolute left-[-15px] md:left-[-25px] top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-2 border border-gray-100 text-gray-400 hover:text-[#1B9028] hover:scale-110 transition-all flex md:opacity-0 md:group-hover:opacity-100 lg:hidden"
+            >
+              <ChevronLeft size={20} className="md:w-6 md:h-6" />
+            </button>
+
+            <div
+              ref={scrollRef}
+              className="flex items-center lg:flex-wrap lg:justify-center gap-4 overflow-x-auto lg:overflow-visible pb-6 no-scrollbar scroll-smooth px-4"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              <style>{`
+                .no-scrollbar::-webkit-scrollbar {
+                  display: none;
+                }
+              `}</style>
+              {categories.map((cat) => {
+                const Icon = cat.icon;
+                const isActive = activeCategory === cat.id;
+                return (
+                  <button
+                    key={cat.id}
+                    onClick={() => setActiveCategory(cat.id)}
+                    className={`flex flex-col items-center justify-center min-w-[110px] w-[110px] h-[120px] rounded-[2.5rem] p-4 transition-all duration-300 border-2 shrink-0 ${isActive
+                      ? 'bg-[#1B9028] text-white border-[#1B9028] shadow-xl'
+                      : 'bg-white text-gray-400 border-gray-100 hover:border-green-100 hover:bg-green-50/20 shadow-sm'
+                      }`}
+                  >
+                    <div className={`w-12 h-12 flex items-center justify-center rounded-2xl mb-2 transition-colors ${isActive ? 'bg-white/20 text-white' : 'bg-green-50 text-[#1B9028]'}`}>
+                      <Icon size={24} />
+                    </div>
+                    <span className={`font-extrabold text-[10px] md:text-xs uppercase tracking-widest transition-colors ${isActive ? 'text-white' : 'text-gray-600'}`}>{cat.name}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              onClick={() => scroll('right')}
+              className="absolute right-[-15px] md:right-[-25px] top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-2 border border-gray-100 text-gray-400 hover:text-[#1B9028] hover:scale-110 transition-all flex md:opacity-0 md:group-hover:opacity-100 lg:hidden"
+            >
+              <ChevronRight size={20} className="md:w-6 md:h-6" />
+            </button>
           </div>
         </section>
 
         <section className="w-full mb-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 px-2 md:px-0">
             {pizzas.map((pizza) => (
               <PizzaCard key={pizza.id} pizza={pizza} />
             ))}
           </div>
         </section>
       </main>
+      <BottomNav activeCategory={activeCategory} setActiveCategory={setActiveCategory} />
     </div>
   );
 }
