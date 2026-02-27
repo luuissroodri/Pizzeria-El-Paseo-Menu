@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { Search, Percent, Pizza, GlassWater, Salad, CakeSlice, Star, Soup, Fish, Drumstick, Utensils, Sparkles, ChevronLeft, ChevronRight, LayoutGrid, ShoppingCart } from 'lucide-react';
+import { Search, Percent, Pizza, GlassWater, Salad, CakeSlice, Star, Soup, Fish, Drumstick, Utensils, Sparkles, ChevronLeft, ChevronRight, LayoutGrid, ShoppingCart, CookingPot } from 'lucide-react';
 
 const pizzas = [
   {
@@ -172,22 +172,22 @@ const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick }) => {
   const navItems = [
     { id: 'pizzas', name: 'Pizzas', icon: Pizza },
     { id: 'pastas', name: 'Pastas', icon: Soup },
-    { id: 'null', name: '', icon: null }, // Placeholder for search button
+    { id: 'null', name: '', icon: null },
     { id: 'mar', name: 'Mar', icon: Fish },
     { id: 'bebidas', name: 'Bebidas', icon: GlassWater },
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-[#c01013]/95 backdrop-blur-md border-t border-white/10 flex justify-around items-center py-2 px-4 md:hidden z-[100] shadow-[0_-4px_25px_rgba(0,0,0,0.15)] rounded-t-[2.5rem]">
+    <nav className="fixed bottom-0 left-0 right-0 bg-[#c01013] border-t border-white/10 flex justify-around items-center py-2 px-4 md:hidden z-[100] shadow-[0_-4px_25px_rgba(0,0,0,0.15)] rounded-t-[2.5rem] antialiased">
       {navItems.map((item, index) => {
         if (index === 2) {
           return (
             <button
               key="search-btn"
               onClick={onSearchClick}
-              className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-2xl -mt-10 border-4 border-[#c01013] active:scale-90 transition-transform"
+              className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-2xl -mt-10 border-4 border-[#c01013] ring-4 ring-white/10 active:scale-95 transition-all z-[110]"
             >
-              <Search size={24} className="text-[#c01013]" />
+              <Search size={22} strokeWidth={3} className="text-[#c01013]" />
             </button>
           );
         }
@@ -197,9 +197,9 @@ const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick }) => {
           <button
             key={item.id}
             onClick={() => setActiveCategory(item.id)}
-            className={`flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'text-white' : 'text-white/50'}`}
+            className={`w-12 flex flex-col items-center gap-1 transition-all duration-300 ${isActive ? 'text-white' : 'text-white/50'}`}
           >
-            <Icon size={20} className={`transition-all duration-300 ${isActive ? 'fill-white/20' : ''}`} />
+            <Icon size={20} strokeWidth={isActive ? 2.5 : 2} className="transition-all duration-300" />
             <span className="text-[9px] font-extrabold uppercase tracking-widest">{item.name}</span>
           </button>
         );
@@ -245,7 +245,7 @@ function App() {
         <section className="w-full mt-2 mb-8">
           <div className="flex justify-center md:mx-auto mb-6">
             <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-red-50/50 border border-red-100 rounded-full shadow-sm hover:bg-red-50 transition-colors">
-              <Soup size={14} className="text-[#c01013]" />
+              <CookingPot size={14} className="text-[#c01013]" />
               <span className="text-[#c01013] font-bold text-[10px] md:text-xs uppercase tracking-[0.2em]">Categorías</span>
             </div>
           </div>
@@ -253,7 +253,7 @@ function App() {
           <div className="relative group max-w-6xl mx-auto w-full">
             <button
               onClick={() => scroll('left')}
-              className="absolute left-[-15px] md:left-[-25px] top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-2 border border-gray-100 text-gray-400 hover:text-[#1B9028] hover:scale-110 transition-all flex md:opacity-0 md:group-hover:opacity-100 lg:hidden"
+              className="absolute left-[-15px] md:left-[-25px] top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-2 border border-gray-100 text-[#c01013] hover:scale-110 transition-all flex md:opacity-0 md:group-hover:opacity-100 lg:hidden"
             >
               <ChevronLeft size={20} className="md:w-6 md:h-6" />
             </button>
@@ -275,15 +275,15 @@ function App() {
                   <button
                     key={cat.id}
                     onClick={() => setActiveCategory(cat.id)}
-                    className={`flex flex-col items-center justify-center min-w-[90px] w-[90px] h-[100px] rounded-[2rem] p-3 transition-all duration-300 border-2 shrink-0 ${isActive
+                    className={`flex flex-col items-center justify-center min-w-[80px] w-[80px] h-[90px] rounded-[2rem] p-2 transition-all duration-300 border-2 shrink-0 ${isActive
                       ? 'bg-[#c01013] text-white border-[#c01013] shadow-xl'
                       : 'bg-white text-gray-400 border-gray-100 hover:border-red-100 hover:bg-red-50/20 shadow-sm'
                       }`}
                   >
-                    <div className={`w-10 h-10 flex items-center justify-center rounded-xl mb-2 transition-colors ${isActive ? 'bg-white/20 text-white' : 'bg-red-50 text-[#c01013]'}`}>
-                      <Icon size={20} />
+                    <div className={`w-9 h-9 flex items-center justify-center rounded-xl mb-1.5 transition-colors ${isActive ? 'bg-white/20 text-white' : 'bg-red-50 text-[#c01013]'}`}>
+                      <Icon size={18} />
                     </div>
-                    <span className={`font-extrabold text-[9px] md:text-xs uppercase tracking-tight transition-colors ${isActive ? 'text-white' : 'text-gray-600'}`}>{cat.name}</span>
+                    <span className={`font-black text-[9px] md:text-[10px] uppercase tracking-tight transition-colors ${isActive ? 'text-white' : 'text-gray-600'}`}>{cat.name}</span>
                   </button>
                 );
               })}
@@ -291,7 +291,7 @@ function App() {
 
             <button
               onClick={() => scroll('right')}
-              className="absolute right-[-15px] md:right-[-25px] top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-2 border border-gray-100 text-gray-400 hover:text-[#1B9028] hover:scale-110 transition-all flex md:opacity-0 md:group-hover:opacity-100 lg:hidden"
+              className="absolute right-[-15px] md:right-[-25px] top-1/2 -translate-y-1/2 z-20 bg-white shadow-xl rounded-full p-2 border border-gray-100 text-[#c01013] hover:scale-110 transition-all flex md:opacity-0 md:group-hover:opacity-100 lg:hidden"
             >
               <ChevronRight size={20} className="md:w-6 md:h-6" />
             </button>
