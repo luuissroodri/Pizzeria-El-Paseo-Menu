@@ -49,20 +49,21 @@ const categories = [
 
 const AppHeader = React.forwardRef((props, ref) => {
   return (
-    <div className="w-full bg-white rounded-b-[3rem] pt-6 pb-6 px-4 shadow-sm mb-4 flex flex-col items-center border-b border-gray-50 md:hidden">
+    <div className="w-full bg-white pt-6 pb-2 px-6 mb-2 flex flex-col items-center md:hidden">
       <img
         src="https://i.imgur.com/Yd7Uqrc.png"
         alt="Logo"
-        className="w-24 h-auto mb-4 object-contain"
+        className="w-20 h-auto mb-6 object-contain"
       />
-      <div className="w-full relative group">
-        <div className="flex items-center bg-gray-50 border-2 border-transparent focus-within:border-[#c01013] focus-within:bg-white rounded-2xl p-3 transition-all shadow-inner">
-          <Search size={20} className="text-gray-400 mr-2 group-focus-within:text-[#c01013] transition-colors" />
+      <div className="w-full relative group h-20 bg-[#c01013] rounded-[2.5rem] p-1 shadow-xl overflow-hidden active:scale-[0.98] transition-all">
+        <div className="absolute top-0 right-0 w-24 h-24 bg-white/10 rounded-full -mr-12 -mt-12 pointer-events-none" />
+        <div className="flex items-center h-full px-6 relative z-10">
+          <Search size={24} className="text-white mr-3 opacity-90" strokeWidth={3} />
           <input
             ref={ref}
             type="text"
             placeholder="Buscar en el menú..."
-            className="bg-transparent border-none outline-none w-full text-gray-800 placeholder-gray-400 font-semibold text-base"
+            className="bg-transparent border-none outline-none w-full text-white placeholder-white/70 font-black text-lg"
           />
         </div>
       </div>
@@ -109,24 +110,6 @@ const MenuBanner = () => (
   </div>
 );
 
-const OfferBanner = () => (
-  <div className="px-6 mb-8 w-full max-w-7xl mx-auto">
-    <div className="bg-[#c01013] rounded-[2.5rem] p-6 text-white flex items-center justify-between shadow-xl overflow-hidden relative group transition-transform hover:scale-[1.01]">
-      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 transition-transform group-hover:scale-110" />
-      <div className="flex items-center text-left w-full relative z-10">
-        <div className="bg-white/20 backdrop-blur-md rounded-2xl p-4 mr-5 flex items-center justify-center shrink-0 shadow-lg">
-          <Percent size={28} className="text-white" strokeWidth={3} />
-        </div>
-        <div>
-          <h2 className="font-black text-xl md:text-3xl tracking-tight text-white leading-none">¡Oferta Imperial!</h2>
-          <p className="text-white/90 text-sm md:text-lg font-bold mt-2 uppercase tracking-wide">
-            20% OFF PRIMER PEDIDO
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-);
 
 const PizzaCard = ({ pizza }) => {
   const [selectedSize, setSelectedSize] = useState('M');
@@ -224,7 +207,7 @@ const CategoriesModal = ({ isOpen, onClose, activeCategory, setActiveCategory })
   );
 };
 
-const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick, isMenuOpen, setIsMenuOpen }) => {
+const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick, isMenuOpen, setIsMenuOpen, isScrolled }) => {
   return (
     <>
       <CategoriesModal
@@ -238,12 +221,21 @@ const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick, isMenuOpe
         <div className="relative h-full flex items-center px-10">
           <div
             onClick={() => setIsMenuOpen(true)}
-            className="absolute left-1/2 -top-7 -translate-x-1/2 z-[210] flex flex-col items-center pointer-events-auto cursor-pointer"
+            className="absolute left-1/2 -top-10 -translate-x-1/2 z-[210] flex flex-col items-center pointer-events-auto cursor-pointer"
           >
-            <div className={`w-16 h-16 rounded-full bg-white flex items-center justify-center shadow-2xl border-[6px] border-gray-50 transition-all duration-300 ${isMenuOpen ? 'scale-110' : ''}`}>
-              <CookingPot size={32} strokeWidth={2.5} className="text-[#c01013]" />
+            {!isScrolled && !isMenuOpen && (
+              <div className="absolute -top-14 animate-bounce flex flex-col items-center transition-opacity duration-500">
+                <div className="bg-white text-[#c01013] text-[10px] font-black px-4 py-1.5 rounded-full shadow-2xl border-2 border-gray-50 whitespace-nowrap mb-1 uppercase tracking-tighter">PULSA PARA VER CATEGORÍAS</div>
+                <div className="w-3 h-3 bg-white rotate-45 -mt-2.5 border-r-2 border-b-2 border-gray-50" />
+              </div>
+            )}
+
+            <div className={`w-20 h-20 rounded-full bg-white flex items-center justify-center shadow-2xl border-[6px] border-gray-100 transition-all duration-300 ${isMenuOpen ? 'scale-110' : ''} ${!isScrolled ? 'animate-pulse' : ''}`}>
+              <CookingPot size={36} strokeWidth={2.5} className="text-[#c01013]" />
             </div>
-            <span className="text-white font-black uppercase text-[10px] mt-1 tracking-widest drop-shadow-md">MENÚ</span>
+            <div className="mt-2 bg-white px-3 py-1 rounded-full shadow-md border border-gray-50 flex items-center justify-center">
+              <span className="text-[#c01013] font-black uppercase text-[10px] tracking-widest">CATEGORÍAS</span>
+            </div>
           </div>
 
           <div className="flex-1 flex justify-start">
@@ -274,7 +266,16 @@ const BottomNav = ({ activeCategory, setActiveCategory, onSearchClick, isMenuOpe
 function App() {
   const [activeCategory, setActiveCategory] = useState('pizzas');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const searchInputRef = useRef(null);
+
+  React.useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const handleSearchFocus = () => {
     if (searchInputRef.current) {
@@ -290,8 +291,6 @@ function App() {
       <DesktopHeader ref={searchInputRef} />
 
       <main className="w-full max-w-7xl mx-auto flex flex-col items-center md:items-start overflow-hidden">
-        <OfferBanner />
-
         <MenuBanner />
 
         <section className="w-full px-4 md:px-12 mb-12">
@@ -309,6 +308,7 @@ function App() {
         onSearchClick={handleSearchFocus}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        isScrolled={isScrolled}
       />
     </div>
   );
