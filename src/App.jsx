@@ -20,9 +20,9 @@ import {
 
 const App = () => {
   return (
-    <div className="bg-gray-200 min-h-screen flex justify-center p-0 md:p-8 font-sans">
-      {/* Mobile Frame Container (1080x2340 aspect ratio simulated) */}
-      <div className="bg-white w-full max-w-[430px] shadow-2xl overflow-hidden relative flex flex-col min-h-screen md:min-h-[850px] md:max-h-[932px] md:rounded-[3rem] md:border-[8px] md:border-black">
+    <div className="bg-white min-h-screen font-sans">
+      {/* Main Container - Now Full Screen for Mobile Deployment */}
+      <div className="flex flex-col min-h-screen">
 
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto hide-scrollbar">
