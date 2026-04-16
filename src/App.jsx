@@ -31,18 +31,12 @@ const App = () => {
         <div className="flex-1 overflow-y-auto hide-scrollbar">
 
           {/* Section 2: Banner & Brand Image */}
-          <div className="relative h-64 w-full">
+          <div className="relative h-56 w-full">
             <img
               src="https://i.imgur.com/2QKfhtQ.jpeg"
               alt="Pizzeria El Paseo Banner"
               className="w-full h-full object-cover"
             />
-            {/* Overlay Navigation Icons */}
-            <div className="absolute top-4 right-4">
-              <button className="bg-white/20 backdrop-blur-md p-2.5 rounded-full text-white shadow-lg border border-white/30 hover:bg-white/30 transition-all">
-                <Search size={22} strokeWidth={3} />
-              </button>
-            </div>
             {/* Pizzeria El Paseo Circular Logo Overlay */}
             <div className="absolute -bottom-6 left-6 w-24 h-24 bg-white rounded-full p-1.5 shadow-2xl border-4 border-white overflow-hidden z-20">
               <img
