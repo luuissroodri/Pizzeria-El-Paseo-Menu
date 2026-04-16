@@ -95,23 +95,18 @@ const App = () => {
             </div>
 
             {/* Delivery Info */}
-            <div className="bg-slate-50 rounded-xl p-4 flex items-center justify-between text-slate-500">
-              <div className="flex flex-col gap-1">
-                <div className="flex items-center gap-2 text-[11px] font-bold">
-                  <span>Miercoles a Lunes</span>
-                  <div className="w-[1px] h-3 bg-slate-300"></div>
-                  <span>5:00 pm - 12:00 am</span>
-                </div>
-                <p className="text-[10px] text-slate-400 font-medium tracking-tight">Final Av. Santiago Mariño. Paseo Guaraguao</p>
+            <div className="bg-slate-50 rounded-xl p-4 flex items-center justify-between gap-4 text-slate-500">
+              <div className="flex flex-col gap-1 text-[13px] font-bold">
+                <span className="whitespace-nowrap text-slate-900 tracking-tight">Miércoles a Lunes</span>
+                <span className="whitespace-nowrap text-slate-400 font-medium tracking-tight">5:00 pm - 12:00 am</span>
               </div>
               <a 
                 href="https://maps.app.goo.gl/NuUgWKdsan2eZets5" 
                 target="_blank" 
                 rel="noopener noreferrer"
-                className="text-slate-900 font-black text-xs flex flex-col items-end hover:opacity-75 transition-opacity"
+                className="text-slate-900 font-black text-sm whitespace-nowrap underline decoration-1 underline-offset-4 hover:opacity-75 transition-opacity shrink-0"
               >
-                <span className="underline decoration-1 underline-offset-2">Ver ubicación</span>
-                <span className="text-[9px] font-bold opacity-40 uppercase tracking-tighter">Google Maps</span>
+                Ver ubicación
               </a>
             </div>
           </div>
