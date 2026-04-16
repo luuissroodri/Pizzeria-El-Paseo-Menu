@@ -7,6 +7,7 @@ import {
   MapPin,
   Plus,
   Rocket,
+  Pizza,
   Sparkles,
   Search as SearchIcon,
   Wifi,
@@ -53,10 +54,10 @@ const App = () => {
               <h1 className="text-2xl font-black text-slate-900 tracking-tight">Pizzeria El Paseo</h1>
               <div className="flex gap-4">
                 {/* Instagram */}
-                <a 
-                  href="https://www.instagram.com/pizzeriaelpaseomgta" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://www.instagram.com/pizzeriaelpaseomgta"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-[#C4121A] hover:opacity-80 transition-opacity"
                 >
                   <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -64,10 +65,10 @@ const App = () => {
                   </svg>
                 </a>
                 {/* WhatsApp */}
-                <a 
-                  href="https://api.whatsapp.com/send/?phone=584248925818&text&type=phone_number&app_absent=0" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://api.whatsapp.com/send/?phone=584248925818&text&type=phone_number&app_absent=0"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-[#C4121A] hover:opacity-80 transition-opacity"
                 >
                   <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -75,10 +76,10 @@ const App = () => {
                   </svg>
                 </a>
                 {/* TikTok */}
-                <a 
-                  href="https://www.tiktok.com/@pizzeriaelpaseomgta?is_from_webapp=1&sender_device=pc" 
-                  target="_blank" 
-                  rel="noopener noreferrer" 
+                <a
+                  href="https://www.tiktok.com/@pizzeriaelpaseomgta?is_from_webapp=1&sender_device=pc"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-[#C4121A] hover:opacity-80 transition-opacity"
                 >
                   <svg role="img" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -94,9 +95,9 @@ const App = () => {
                 <span className="whitespace-nowrap text-slate-900 tracking-tight">Miércoles a Lunes</span>
                 <span className="whitespace-nowrap text-slate-400 font-medium tracking-tight">5:00 pm - 12:00 am</span>
               </div>
-              <a 
-                href="https://maps.app.goo.gl/NuUgWKdsan2eZets5" 
-                target="_blank" 
+              <a
+                href="https://maps.app.goo.gl/NuUgWKdsan2eZets5"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="text-slate-900 font-black text-sm whitespace-nowrap underline decoration-1 underline-offset-4 hover:opacity-75 transition-opacity shrink-0"
               >
@@ -122,15 +123,215 @@ const App = () => {
             </div>
           </div>
 
-          {/* Section 5: Menu Category - Galáctico */}
+          {/* Section 5: Menu Category - Pizzas */}
           <div className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Pizzas</h2>
-              <Rocket size={20} className="text-slate-900" />
+              <Pizza size={20} className="text-slate-900" />
             </div>
 
-            {/* Pizza Hawaiiana Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+            {/* Margarita Card */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
+              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+                <img
+                  src="https://i.imgur.com/fZiHLMB.jpeg"
+                  alt="Margarita"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col flex-1 justify-between pt-1">
+                <div>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Margarita</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-slate-900 font-black text-lg">$4.50</span>
+                  </div>
+                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+                    <Plus size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Napoli Card */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
+              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+                <img
+                  src="https://i.imgur.com/TyTv0mz.jpeg"
+                  alt="Napoli"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col flex-1 justify-between pt-1">
+                <div>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Napoli</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Anchoas</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-slate-900 font-black text-lg">$6.00</span>
+                  </div>
+                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+                    <Plus size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Al Filetto Card */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
+              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+                <img
+                  src="https://i.imgur.com/TEcE7QA.jpeg"
+                  alt="Al Filetto"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col flex-1 justify-between pt-1">
+                <div>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Al Filetto</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Queso + Tomate Pelado + Orégano + Albahaca</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-slate-900 font-black text-lg">$5.50</span>
+                  </div>
+                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+                    <Plus size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Tropical Card */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
+              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+                <img
+                  src="https://i.imgur.com/HSDYnr2.jpeg"
+                  alt="Tropical"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col flex-1 justify-between pt-1">
+                <div>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Tropical</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Jamón + Maíz</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-slate-900 font-black text-lg">$8.00</span>
+                  </div>
+                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+                    <Plus size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Prosciutto-Funghi Card */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
+              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+                <img
+                  src="https://i.imgur.com/SC0ONRE.jpeg"
+                  alt="Prosciutto-Funghi"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col flex-1 justify-between pt-1">
+                <div>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Prosciutto-Funghi</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Jamón + Champiñón</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-slate-900 font-black text-lg">$8.50</span>
+                  </div>
+                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+                    <Plus size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Todo Quesos Card */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
+              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+                <img
+                  src="https://i.imgur.com/zMVxIvc.jpeg"
+                  alt="Todo Quesos"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col flex-1 justify-between pt-1">
+                <div>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Todo Quesos</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso Azul + Edam + Parmesano + Mozzarella</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-slate-900 font-black text-lg">$10.50</span>
+                  </div>
+                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+                    <Plus size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Vegetariana Card */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
+              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+                <img
+                  src="https://i.imgur.com/EsRo18S.jpeg"
+                  alt="Vegetariana"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col flex-1 justify-between pt-1">
+                <div>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Vegetariana</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Cebolla + Pimentón + Champiñón + Maíz</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-slate-900 font-black text-lg">$9.50</span>
+                  </div>
+                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+                    <Plus size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Caprichosa Card */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
+              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+                <img
+                  src="https://i.imgur.com/cJh4ymd.jpeg"
+                  alt="Caprichosa"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="flex flex-col flex-1 justify-between pt-1">
+                <div>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Caprichosa</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Jamón + Salchichón + Tocineta</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-slate-900 font-black text-lg">$14.50</span>
+                  </div>
+                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+                    <Plus size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Hawaiiana Card */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
               <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
                 <img
                   src="https://i.imgur.com/PwTzGKW.jpeg"
@@ -153,17 +354,6 @@ const App = () => {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Section 6: Menu Category - Especialidades */}
-          <div className="px-6 mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-xl font-black text-slate-900 tracking-tight">Especialidades</h2>
-              <div className="flex text-slate-900">
-                <SearchIcon size={18} strokeWidth={3} />
-                <Sparkles size={16} strokeWidth={3} className="-ml-1" />
-              </div>
-            </div>
 
             {/* Al Filetto Especial Card */}
             <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
@@ -176,12 +366,49 @@ const App = () => {
               </div>
               <div className="flex flex-col flex-1 justify-between pt-1">
                 <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Al Filetto</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Queso + Tomate Pelado + Orégano + Albahaca</p>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Al Filetto Especial</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Filetto de Pomodoro + Aceite de Oliva + Jamón Serrano + Albahaca + Queso Parmesano + Borde de Queso</p>
                 </div>
                 <div className="flex items-center justify-between mt-auto">
                   <div className="flex items-baseline gap-2">
                     <span className="text-slate-900 font-black text-lg">$24.00</span>
+                  </div>
+                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+                    <Plus size={24} strokeWidth={3} />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 6: Menu Category - Especialidades */}
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Especialidades</h2>
+              <div className="flex text-slate-900">
+                <SearchIcon size={18} strokeWidth={3} />
+                <Sparkles size={16} strokeWidth={3} className="-ml-1" />
+              </div>
+            </div>
+
+            {/* Torre de Calamares Card (New) */}
+            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
+              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+                <img
+                  src="https://i.imgur.com/R4E8LUL.jpeg"
+                  alt="Torre de Calamares"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: 'center 80%' }}
+                />
+              </div>
+              <div className="flex flex-col flex-1 justify-between pt-1">
+                <div>
+                  <h4 className="text-slate-900 font-bold text-base mb-1">Torre de Calamares</h4>
+                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Crujientes aros de calamar servidos con salsa tártara y limón.</p>
+                </div>
+                <div className="flex items-center justify-between mt-auto">
+                  <div className="flex items-baseline gap-2">
+                    <span className="text-slate-900 font-black text-lg">$20.00</span>
                   </div>
                   <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
                     <Plus size={24} strokeWidth={3} />
