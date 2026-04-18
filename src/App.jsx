@@ -6,6 +6,9 @@ import {
   Clock,
   MapPin,
   Plus,
+  Minus,
+  X,
+  ShoppingCart,
   Rocket,
   Pizza,
   Sparkles,
@@ -85,13 +88,16 @@ const PIZZAS = [
   }
 ];
 
-const PizzaCard = ({ name, ingredients, image, prices }) => {
+const PizzaCard = ({ name, ingredients, image, prices, onSelect }) => {
   const availableSizes = ['P', 'M', 'G'].filter(s => prices[s] !== undefined);
   const [size, setSize] = useState(availableSizes[0] || 'P');
   
   return (
-    <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4 last:mb-0">
-      <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+    <div 
+      onClick={() => onSelect({ name, ingredients, image, prices, defaultSize: size })}
+      className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md active:scale-[0.98] transition-all cursor-pointer relative overflow-hidden mb-4 last:mb-0"
+    >
+      <div className="w-28 h-28 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
         <img
           src={image}
           alt={name}
@@ -100,13 +106,13 @@ const PizzaCard = ({ name, ingredients, image, prices }) => {
       </div>
       <div className="flex flex-col flex-1 justify-between pt-1">
         <div>
-          <h4 className="text-slate-900 font-bold text-base mb-1">{name}</h4>
-          <p className="text-slate-400 text-[11px] leading-tight font-medium line-clamp-2">{ingredients}</p>
+          <h4 className="text-slate-900 font-bold text-base mb-0.5">{name}</h4>
+          <p className="text-slate-400 text-[10px] leading-tight font-medium line-clamp-2">{ingredients}</p>
         </div>
         
         <div className="flex flex-col gap-2 mt-auto">
-          {/* Selector de Tamaño - Dinámico según disponibilidad */}
-          <div className="flex bg-slate-100 p-1 rounded-lg w-fit mt-1">
+          {/* Selector de Tamaño - Previsualización */}
+          <div className="flex bg-slate-100 p-1 rounded-lg w-fit mt-1" onClick={(e) => e.stopPropagation()}>
             {availableSizes.map((s) => (
               <button 
                 key={s}
@@ -124,13 +130,13 @@ const PizzaCard = ({ name, ingredients, image, prices }) => {
           
           <div className="flex items-center justify-between">
             <div className="flex items-baseline gap-1">
-              <span className="text-slate-900 font-black text-lg transition-all duration-300">
+              <span className="text-slate-900 font-black text-lg">
                 ${prices[size].toFixed(2)}
               </span>
             </div>
-            <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-              <Plus size={24} strokeWidth={3} />
-            </button>
+            <div className="bg-[#C4121A] w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg shadow-red-200">
+              <Plus size={20} strokeWidth={3} />
+            </div>
           </div>
         </div>
       </div>
@@ -139,7 +145,152 @@ const PizzaCard = ({ name, ingredients, image, prices }) => {
 };
 
 
+
+/* --- Componentes del Carrito --- */
+
+const ProductModal = ({ item, onClose, onAddToCart }) => {
+  if (!item) return null;
+  const availableSizes = ['P', 'M', 'G'].filter(s => item.prices[s] !== undefined);
+  const [size, setSize] = useState(item.defaultSize || availableSizes[0]);
+  const [quantity, setQuantity] = useState(1);
+
+  const price = item.prices[size] * quantity;
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
+      {/* Backdrop */}
+      <div 
+        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
+        onClick={onClose}
+      />
+      
+      {/* Modal Content */}
+      <div className="relative bg-white w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[3rem] shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-300">
+        {/* Close Button */}
+        <button 
+          onClick={onClose}
+          className="absolute top-6 right-6 z-10 bg-white/80 backdrop-blur-md p-2 rounded-full shadow-lg text-slate-900 hover:scale-110 active:scale-90 transition-all border border-slate-100"
+        >
+          <X size={20} strokeWidth={3} />
+        </button>
+
+        {/* Image */}
+        <div className="h-64 w-full bg-slate-100">
+          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+        </div>
+
+        <div className="p-8">
+          <div className="mb-6">
+            <h2 className="text-2xl font-black text-slate-900 mb-2">{item.name}</h2>
+            <p className="text-slate-500 font-medium leading-relaxed text-sm">{item.ingredients}</p>
+          </div>
+
+          {/* Size Selector */}
+          <div className="mb-8">
+            <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3 block">Seleccionar Tamaño</span>
+            <div className="flex bg-slate-100 p-1.5 rounded-2xl w-fit">
+              {availableSizes.map((s) => (
+                <button 
+                  key={s}
+                  onClick={() => setSize(s)}
+                  className={`px-6 py-2.5 text-sm rounded-xl transition-all duration-300 ${
+                    size === s 
+                      ? 'bg-[#C4121A] shadow-lg text-white font-black scale-[1.02]' 
+                      : 'text-slate-500 font-bold hover:text-slate-700'
+                  }`}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Quantity and Add Button */}
+          <div className="flex items-center gap-4">
+            <div className="flex items-center bg-slate-100 rounded-2xl p-1 gap-1">
+              <button 
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="w-10 h-10 flex items-center justify-center text-slate-900 font-bold hover:bg-white rounded-xl transition-all"
+              >
+                <Minus size={18} strokeWidth={3} />
+              </button>
+              <span className="w-10 text-center font-black text-slate-900">{quantity}</span>
+              <button 
+                onClick={() => setQuantity(quantity + 1)}
+                className="w-10 h-10 flex items-center justify-center text-slate-900 font-bold hover:bg-white rounded-xl transition-all"
+              >
+                <Plus size={18} strokeWidth={3} />
+              </button>
+            </div>
+            
+            <button 
+              onClick={() => onAddToCart({ ...item, size, quantity, unitPrice: item.prices[size] })}
+              className="flex-1 bg-[#C4121A] h-14 rounded-2xl flex items-center justify-center gap-3 text-white font-black shadow-xl shadow-red-200 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            >
+              <span>Agregar</span>
+              <span className="bg-white/20 px-3 py-1 rounded-lg text-sm">${price.toFixed(2)}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CartSummary = ({ cart, onCheckout }) => {
+  if (cart.length === 0) return null;
+  
+  const total = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+  const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+
+  return (
+    <div className="fixed bottom-8 left-0 right-0 z-[90] px-6 animate-in fade-in slide-in-from-bottom duration-500">
+      <button 
+        onClick={onCheckout}
+        className="max-w-md mx-auto w-full bg-slate-900 text-white h-16 rounded-[2rem] px-8 flex items-center justify-between shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all border border-white/10"
+      >
+        <div className="flex items-center gap-4">
+          <div className="bg-[#C4121A] w-10 h-10 rounded-full flex items-center justify-center shadow-lg">
+            <ShoppingCart size={18} className="text-white" strokeWidth={3} />
+          </div>
+          <div className="flex flex-col items-start">
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Ver pedido</span>
+            <span className="text-[13px] font-black leading-none">{totalItems} {totalItems === 1 ? 'artículo' : 'artículos'}</span>
+          </div>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="w-px h-8 bg-white/10" />
+          <span className="text-lg font-black">${total.toFixed(2)}</span>
+        </div>
+      </button>
+    </div>
+  );
+};
+
 const App = () => {
+  const [cart, setCart] = useState([]);
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const handleAddToCart = (product) => {
+    setCart([...cart, product]);
+    setSelectedItem(null);
+  };
+
+  const sendOrder = () => {
+    const total = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+    let message = "🍕 *Nuevo Pedido - Pizzeria El Paseo* 🍕\n\n";
+    
+    cart.forEach((item) => {
+      message += `• ${item.quantity}x ${item.name} (${item.size}) - $${(item.unitPrice * item.quantity).toFixed(2)}\n`;
+    });
+    
+    message += `\n------------------------------\n`;
+    message += `*Total General: $${total.toFixed(2)}*`;
+    
+    const encodedMessage = encodeURIComponent(message);
+    window.open(`https://wa.me/584248812988?text=${encodedMessage}`, '_blank');
+  };
+
   return (
     <div className="bg-white min-h-screen font-sans">
       {/* Main Container - Now Full Screen for Mobile Deployment */}
@@ -248,7 +399,7 @@ const App = () => {
             </div>
 
             {PIZZAS.map((pizza) => (
-              <PizzaCard key={pizza.name} {...pizza} />
+              <PizzaCard key={pizza.name} {...pizza} onSelect={setSelectedItem} />
             ))}
           </div>
 
@@ -263,30 +414,13 @@ const App = () => {
             </div>
 
             {/* Torre de Calamares Card (New) */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/R4E8LUL.jpeg"
-                  alt="Torre de Calamares"
-                  className="w-full h-full object-cover"
-                  style={{ objectPosition: 'center 80%' }}
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Torre de Calamares</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Crujientes aros de calamar servidos con salsa tártara y limón.</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$20.00</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
+            <PizzaCard 
+              name="Torre de Calamares"
+              ingredients="Crujientes aros de calamar servidos con salsa tártara y limón."
+              image="https://i.imgur.com/R4E8LUL.jpeg"
+              prices={{ P: 20.00 }}
+              onSelect={setSelectedItem}
+            />
           </div>
 
           {/* Section 7: Menu Category - Icónicos */}
@@ -300,6 +434,16 @@ const App = () => {
 
       </div>
 
+      <ProductModal 
+        item={selectedItem} 
+        onClose={() => setSelectedItem(null)} 
+        onAddToCart={handleAddToCart}
+      />
+      <CartSummary 
+        cart={cart} 
+        onCheckout={sendOrder}
+      />
+      
       <style>{`
         .hide-scrollbar::-webkit-scrollbar {
           display: none;
@@ -307,6 +451,26 @@ const App = () => {
         .hide-scrollbar {
           -ms-overflow-style: none;
           scrollbar-width: none;
+        }
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+        @keyframes slideUp {
+          from { transform: translateY(100%); }
+          to { transform: translateY(0); }
+        }
+        .animate-in.fade-in {
+          animation: fadeIn 0.2s ease-out forwards;
+        }
+        .animate-in.slide-in-from-bottom {
+          animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
       `}</style>
     </div>
