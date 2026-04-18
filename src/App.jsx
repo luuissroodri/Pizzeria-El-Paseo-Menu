@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   ArrowLeft,
   Search,
@@ -20,6 +20,123 @@ import {
   MessageCircle,
   Music2
 } from 'lucide-react';
+
+
+const PIZZAS = [
+  {
+    name: "Margarita",
+    ingredients: "Salsa + Queso",
+    image: "https://i.imgur.com/fZiHLMB.jpeg",
+    prices: { P: 4.50, M: 7.00, G: 10.00 }
+  },
+  {
+    name: "Napoli",
+    ingredients: "Salsa + Queso + Anchoas",
+    image: "https://i.imgur.com/TyTv0mz.jpeg",
+    prices: { P: 6.00, M: 9.50, G: 13.50 }
+  },
+  {
+    name: "Al Filetto",
+    ingredients: "Queso + Tomate Pelado + Orégano + Albahaca",
+    image: "https://i.imgur.com/TEcE7QA.jpeg",
+    prices: { P: 5.50, M: 8.00, G: 11.50 }
+  },
+  {
+    name: "Tropical",
+    ingredients: "Salsa + Queso + Jamón + Maíz",
+    image: "https://i.imgur.com/HSDYnr2.jpeg",
+    prices: { P: 8.00, M: 12.00, G: 16.50 }
+  },
+  {
+    name: "Prosciutto-Funghi",
+    ingredients: "Salsa + Queso + Jamón + Champiñón",
+    image: "https://i.imgur.com/SC0ONRE.jpeg",
+    prices: { P: 8.50, M: 13.00, G: 17.50 }
+  },
+  {
+    name: "Todo Quesos",
+    ingredients: "Salsa + Queso Azul + Edam + Parmesano + Mozzarella",
+    image: "https://i.imgur.com/zMVxIvc.jpeg",
+    prices: { P: 10.50, M: 15.00, G: 18.50 }
+  },
+  {
+    name: "Vegetariana",
+    ingredients: "Salsa + Queso + Cebolla + Pimentón + Champiñón + Maíz",
+    image: "https://i.imgur.com/EsRo18S.jpeg",
+    prices: { P: 9.50, M: 12.50, G: 17.50 }
+  },
+  {
+    name: "Caprichosa",
+    ingredients: "Salsa + Queso + Jamón + Salchichón + Tocineta",
+    image: "https://i.imgur.com/cJh4ymd.jpeg",
+    prices: { P: 14.50, M: 20.00, G: 26.00 }
+  },
+  {
+    name: "Hawaiiana",
+    ingredients: "Salsa + Queso + Jamón + Piña",
+    image: "https://i.imgur.com/PwTzGKW.jpeg",
+    prices: { P: 8.00, M: 11.50, G: 15.50 }
+  },
+  {
+    name: "Al Filetto Especial",
+    ingredients: "Filetto de Pomodoro + Aceite de Oliva + Jamón Serrano + Albahaca + Queso Parmesano + Borde de Queso",
+    image: "https://i.imgur.com/DrTo9EF.jpeg",
+    prices: { M: 24.00, G: 31.00 } // P no aplica
+  }
+];
+
+const PizzaCard = ({ name, ingredients, image, prices }) => {
+  const availableSizes = ['P', 'M', 'G'].filter(s => prices[s] !== undefined);
+  const [size, setSize] = useState(availableSizes[0] || 'P');
+  
+  return (
+    <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4 last:mb-0">
+      <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
+        <img
+          src={image}
+          alt={name}
+          className="w-full h-full object-cover"
+        />
+      </div>
+      <div className="flex flex-col flex-1 justify-between pt-1">
+        <div>
+          <h4 className="text-slate-900 font-bold text-base mb-1">{name}</h4>
+          <p className="text-slate-400 text-[11px] leading-tight font-medium line-clamp-2">{ingredients}</p>
+        </div>
+        
+        <div className="flex flex-col gap-2 mt-auto">
+          {/* Selector de Tamaño - Dinámico según disponibilidad */}
+          <div className="flex bg-slate-100 p-1 rounded-lg w-fit mt-1">
+            {availableSizes.map((s) => (
+              <button 
+                key={s}
+                onClick={() => setSize(s)}
+                className={`px-3 py-1 text-[10px] rounded-md transition-all duration-200 ${
+                  size === s 
+                    ? 'bg-[#C4121A] shadow-sm text-white font-black' 
+                    : 'text-slate-400 font-bold hover:text-slate-600'
+                }`}
+              >
+                {s}
+              </button>
+            ))}
+          </div>
+          
+          <div className="flex items-center justify-between">
+            <div className="flex items-baseline gap-1">
+              <span className="text-slate-900 font-black text-lg transition-all duration-300">
+                ${prices[size].toFixed(2)}
+              </span>
+            </div>
+            <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
+              <Plus size={24} strokeWidth={3} />
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 
 const App = () => {
@@ -130,255 +247,9 @@ const App = () => {
               <Pizza size={20} className="text-slate-900" />
             </div>
 
-            {/* Margarita Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/fZiHLMB.jpeg"
-                  alt="Margarita"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Margarita</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$4.50</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Napoli Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/TyTv0mz.jpeg"
-                  alt="Napoli"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Napoli</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Anchoas</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$6.00</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Al Filetto Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/TEcE7QA.jpeg"
-                  alt="Al Filetto"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Al Filetto</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Queso + Tomate Pelado + Orégano + Albahaca</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$5.50</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Tropical Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/HSDYnr2.jpeg"
-                  alt="Tropical"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Tropical</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Jamón + Maíz</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$8.00</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Prosciutto-Funghi Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/SC0ONRE.jpeg"
-                  alt="Prosciutto-Funghi"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Prosciutto-Funghi</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Jamón + Champiñón</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$8.50</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Todo Quesos Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/zMVxIvc.jpeg"
-                  alt="Todo Quesos"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Todo Quesos</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso Azul + Edam + Parmesano + Mozzarella</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$10.50</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Vegetariana Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/EsRo18S.jpeg"
-                  alt="Vegetariana"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Vegetariana</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Cebolla + Pimentón + Champiñón + Maíz</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$9.50</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Caprichosa Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/cJh4ymd.jpeg"
-                  alt="Caprichosa"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Caprichosa</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Jamón + Salchichón + Tocineta</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$14.50</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Hawaiiana Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden mb-4">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/PwTzGKW.jpeg"
-                  alt="Hawaiiana"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Hawaiiana</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Salsa + Queso + Jamón + Piña</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$8.00</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Al Filetto Especial Card */}
-            <div className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md transition-shadow relative overflow-hidden">
-              <div className="w-32 h-32 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
-                <img
-                  src="https://i.imgur.com/DrTo9EF.jpeg"
-                  alt="Al Filetto Especial"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col flex-1 justify-between pt-1">
-                <div>
-                  <h4 className="text-slate-900 font-bold text-base mb-1">Al Filetto Especial</h4>
-                  <p className="text-slate-400 text-[11px] leading-tight font-medium">Filetto de Pomodoro + Aceite de Oliva + Jamón Serrano + Albahaca + Queso Parmesano + Borde de Queso</p>
-                </div>
-                <div className="flex items-center justify-between mt-auto">
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-slate-900 font-black text-lg">$24.00</span>
-                  </div>
-                  <button className="bg-white border border-slate-100 shadow-sm w-10 h-10 rounded-xl flex items-center justify-center text-teal-400 hover:bg-slate-50 active:scale-95 transition-all">
-                    <Plus size={24} strokeWidth={3} />
-                  </button>
-                </div>
-              </div>
-            </div>
+            {PIZZAS.map((pizza) => (
+              <PizzaCard key={pizza.name} {...pizza} />
+            ))}
           </div>
 
           {/* Section 6: Menu Category - Especialidades */}
