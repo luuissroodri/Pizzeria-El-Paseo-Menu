@@ -132,9 +132,54 @@ const EXTRAS_CONFIG = {
   "Queso Parmesano (10 grs.)": { G: 3.00 }
 };
 
-const PizzaCard = ({ name, ingredients, image, prices, onSelect }) => {
-  const availableSizes = ['P', 'M', 'G'].filter(s => prices[s] !== undefined);
-  const [size, setSize] = useState(availableSizes[0] || 'P');
+const POSTRES = [
+  {
+    name: "Banana Split",
+    ingredients: "Delicioso postre con tres sabores de helado, banana, sirope y topping.",
+    image: "https://i.imgur.com/jHSNUmO.jpeg",
+    prices: { UNICO: 8.50 },
+    noExtras: true
+  },
+  {
+    name: "Sunday",
+    ingredients: "Cremosa copa de helado con topping de chocolate o caramelo.",
+    image: "https://i.imgur.com/6PgWNsW.jpeg",
+    prices: { UNICO: 7.50 },
+    noExtras: true
+  },
+  {
+    name: "Tinita",
+    ingredients: "Copa de helado individual, ideal para un antojo rápido.",
+    image: "https://i.imgur.com/hdPwiQX.jpeg",
+    prices: { UNICO: 4.50 },
+    noExtras: true
+  },
+  {
+    name: "Porción de Torta",
+    ingredients: "Variedad de tortas caseras servidas en ricas porciones.",
+    image: "https://i.imgur.com/Lt90BhJ.jpeg",
+    prices: { UNICO: 5.50 },
+    noExtras: true
+  },
+  {
+    name: "Quesillo",
+    ingredients: "El clásico postre casero venezolano con textura cremosa y caramelo.",
+    image: "https://i.imgur.com/bjft7Em.jpeg",
+    prices: { UNICO: 4.50 },
+    noExtras: true
+  },
+  {
+    name: "Tiramisú",
+    ingredients: "Exquisito postre italiano con capas de bizcocho café y crema mascarpone.",
+    image: "https://i.imgur.com/b9MF1mD.jpeg",
+    prices: { UNICO: 7.00 },
+    noExtras: true
+  }
+];
+
+const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras }) => {
+  const availableSizes = ['P', 'M', 'G', 'UNICO'].filter(s => prices[s] !== undefined);
+  const [size, setSize] = useState(availableSizes[0] || 'UNICO');
 
   return (
     <div
@@ -155,26 +200,30 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect }) => {
         </div>
 
         <div className="flex flex-col gap-2 mt-auto">
-          {/* Selector de Tamaño - Previsualización */}
-          <div className="flex bg-slate-100 p-1 rounded-lg w-fit mt-1" onClick={(e) => e.stopPropagation()}>
-            {availableSizes.map((s) => (
-              <button
-                key={s}
-                onClick={() => setSize(s)}
-                className={`px-3 py-1 text-[10px] rounded-md transition-all duration-200 ${size === s
-                    ? 'bg-[#C4121A] shadow-sm text-white font-black'
-                    : 'text-slate-400 font-bold hover:text-slate-600'
-                  }`}
-              >
-                {s}
-              </button>
-            ))}
-          </div>
+          {/* Selector de Tamaño - Solo si hay más de una opción real */}
+          {availableSizes.filter(s => s !== 'UNICO').length > 1 ? (
+            <div className="flex bg-slate-100 p-1 rounded-lg w-fit mt-1" onClick={(e) => e.stopPropagation()}>
+              {availableSizes.filter(s => s !== 'UNICO').map((s) => (
+                <button
+                  key={s}
+                  onClick={() => setSize(s)}
+                  className={`px-3 py-1 text-[10px] rounded-md transition-all duration-200 ${size === s
+                      ? 'bg-[#C4121A] shadow-sm text-white font-black'
+                      : 'text-slate-400 font-bold hover:text-slate-600'
+                    }`}
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="h-4" />
+          )}
 
           <div className="flex items-center justify-between">
             <div className="flex items-baseline gap-1">
               <span className="text-slate-900 font-black text-lg">
-                ${prices[size].toFixed(2)}
+                ${(prices[size] || prices['UNICO']).toFixed(2)}
               </span>
             </div>
             <div className="bg-[#C4121A] w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg">
@@ -359,66 +408,70 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
             <p className="text-slate-500 font-medium leading-relaxed text-lg">{item.ingredients}</p>
           </div>
 
-          {/* Selector de Tamaño - Estilo Pill Revertido */}
-          <div className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Seleccionar tamaño</h3>
-              <span className="text-xs font-black text-[#C4121A] bg-red-50 px-2 py-1 rounded-lg">Obligatorio</span>
-            </div>
-            <div className="flex bg-slate-100 p-1.5 rounded-2xl w-fit">
-              {availableSizes.map((s) => (
-                <button
-                  key={s}
-                  onClick={() => setSize(s)}
-                  className={`px-8 py-3 text-sm rounded-xl transition-all duration-300 ${size === s
-                      ? 'bg-[#C4121A] shadow-lg text-white font-black scale-[1.02]'
-                      : 'text-slate-500 font-bold hover:text-slate-700'
-                    }`}
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Adicionales */}
-          <div className="mb-10">
-            <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-6">Añadir Adicionales</h3>
-            <div className="space-y-3">
-              {Object.entries(EXTRAS_CONFIG).map(([name, prices]) => {
-                const extraPrice = prices[size];
-                if (extraPrice === undefined) return null;
-
-                const isSelected = selectedExtras.includes(name);
-
-                return (
+          {/* Selector de Tamaño - Solo si hay disponibles (P, M, G) */}
+          {availableSizes.length > 0 && !item.noExtras && (
+            <div className="mb-10">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Seleccionar tamaño</h3>
+                <span className="text-xs font-black text-[#C4121A] bg-red-50 px-2 py-1 rounded-lg">Obligatorio</span>
+              </div>
+              <div className="flex bg-slate-100 p-1.5 rounded-2xl w-fit">
+                {availableSizes.map((s) => (
                   <button
-                    key={name}
-                    onClick={() => toggleExtra(name)}
-                    className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
-                      isSelected 
-                        ? 'border-[#C4121A] bg-red-50/30' 
-                        : 'border-slate-100 bg-white hover:border-slate-200'
-                    }`}
+                    key={s}
+                    onClick={() => setSize(s)}
+                    className={`px-8 py-3 text-sm rounded-xl transition-all duration-300 ${size === s
+                        ? 'bg-[#C4121A] shadow-lg text-white font-black scale-[1.02]'
+                        : 'text-slate-500 font-bold hover:text-slate-700'
+                      }`}
                   >
-                    <div className="flex items-center gap-3">
-                      <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
-                        isSelected ? 'bg-[#C4121A] border-[#C4121A]' : 'border-slate-200'
-                      }`}>
-                        {isSelected && <Plus size={14} className="text-white" strokeWidth={4} />}
-                      </div>
-                      <span className={`font-bold text-sm ${isSelected ? 'text-slate-900' : 'text-slate-600'}`}>
-                        {name}
-                      </span>
-                    </div>
-                    <span className={`text-sm font-black ${isSelected ? 'text-[#C4121A]' : 'text-slate-400'}`}>
-                      +${extraPrice.toFixed(2)}
-                    </span>
+                    {s}
                   </button>
-                );
-              })}
+                ))}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* Adicionales - Solo si el item permite extras */}
+          {!item.noExtras && (
+            <div className="mb-10">
+              <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-6">Añadir Adicionales</h3>
+              <div className="space-y-3">
+                {Object.entries(EXTRAS_CONFIG).map(([name, prices]) => {
+                  const extraPrice = prices[size];
+                  if (extraPrice === undefined) return null;
+
+                  const isSelected = selectedExtras.includes(name);
+
+                  return (
+                    <button
+                      key={name}
+                      onClick={() => toggleExtra(name)}
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
+                        isSelected 
+                          ? 'border-[#C4121A] bg-red-50/30' 
+                          : 'border-slate-100 bg-white hover:border-slate-200'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
+                          isSelected ? 'bg-[#C4121A] border-[#C4121A]' : 'border-slate-200'
+                        }`}>
+                          {isSelected && <Plus size={14} className="text-white" strokeWidth={4} />}
+                        </div>
+                        <span className={`font-bold text-sm ${isSelected ? 'text-slate-900' : 'text-slate-600'}`}>
+                          {name}
+                        </span>
+                      </div>
+                      <span className={`text-sm font-black ${isSelected ? 'text-[#C4121A]' : 'text-slate-400'}`}>
+                        +${extraPrice.toFixed(2)}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          )}
           {/* Botones de Acción al Final del Scroll */}
           <div className="mt-8 pt-8 border-t border-slate-200 flex items-center gap-4">
             {/* Cantidad */}
@@ -503,7 +556,9 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex justify-between items-start mb-1">
-                    <h4 className="font-bold text-slate-900 truncate pr-2">{item.name} ({item.size})</h4>
+                    <h4 className="font-bold text-slate-900 truncate pr-2">
+                      {item.name} {item.size !== 'UNICO' ? `(${item.size})` : ''}
+                    </h4>
                     <span className="font-black text-slate-900 text-sm whitespace-nowrap">${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}</span>
                   </div>
                   <div className="flex items-center justify-between">
@@ -700,8 +755,8 @@ const App = () => {
     
     message += `\n*Productos:*\n`;
     cart.forEach((item) => {
-      const sizeFull = item.size === 'P' ? 'Pequeña' : item.size === 'M' ? 'Mediana' : 'Grande';
-      message += `• ${item.quantity}x ${item.name} (${sizeFull}) - $${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}\n`;
+      let itemLine = `• ${item.quantity}x ${item.name}${item.size !== 'UNICO' ? ` (${item.size})` : ''} - $${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}`;
+      message += itemLine + '\n';
       
       if (item.selectedExtras && item.selectedExtras.length > 0) {
         item.selectedExtras.forEach(extra => {
@@ -845,27 +900,36 @@ const App = () => {
             ))}
           </div>
 
-          {/* Section 6: Menu Category - Especialidades */}
-          <div className="px-6 mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-xl font-black text-slate-900 tracking-tight">Especialidades</h2>
-              <div className="flex text-slate-900">
-                <SearchIcon size={18} strokeWidth={3} />
-                <Sparkles size={16} strokeWidth={3} className="-ml-1" />
+            {/* Section 6: Menu Category - Especialidades */}
+            <div className="px-6 mb-8">
+              <div className="flex items-center gap-2 mb-4">
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">Especialidades</h2>
+                <Sparkles size={20} className="text-slate-900" />
               </div>
+
+              {/* Torre de Calamares Card */}
+              <PizzaCard
+                name="Torre de Calamares"
+                ingredients="Crujientes aros de calamar servidos con salsa tártara y limón."
+                image="https://i.imgur.com/R4E8LUL.jpeg"
+                prices={{ P: 20.00 }}
+                onSelect={setSelectedItem}
+              />
             </div>
 
-            {/* Torre de Calamares Card (New) */}
-            <PizzaCard
-              name="Torre de Calamares"
-              ingredients="Crujientes aros de calamar servidos con salsa tártara y limón."
-              image="https://i.imgur.com/R4E8LUL.jpeg"
-              prices={{ P: 20.00 }}
-              onSelect={setSelectedItem}
-            />
-          </div>
+            {/* Section: Menu Category - Postres (New) */}
+            <div className="px-6 mb-8">
+              <div className="flex items-center gap-2 mb-4">
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">Postres</h2>
+                <CupSoda size={20} className="text-slate-900" />
+              </div>
 
-          {/* Section 7: Menu Category - Icónicos */}
+              {POSTRES.map((postre) => (
+                <PizzaCard key={postre.name} {...postre} onSelect={setSelectedItem} />
+              ))}
+            </div>
+
+            {/* Section 7: Menu Category - Icónicos */}
           <div className="px-6 pb-4 opacity-50">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Icónicos</h2>
