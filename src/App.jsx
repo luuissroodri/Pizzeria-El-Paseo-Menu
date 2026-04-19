@@ -327,7 +327,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
       </button>
 
       {/* Área de Scroll Unificada */}
-      <div className="flex-1 overflow-y-auto hide-scrollbar pb-32">
+      <div className="flex-1 overflow-y-auto hide-scrollbar pb-12">
         {/* Imagen Hero - Ahora parte del scroll */}
         <div className="h-[45vh] w-full relative">
           <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
@@ -402,7 +402,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
             </div>
           </div>
           {/* Botones de Acción al Final del Scroll */}
-          <div className="mt-12 mb-10 flex items-center gap-4">
+          <div className="mt-8 pt-8 border-t border-slate-200 flex items-center gap-4">
             {/* Cantidad */}
             <div className="flex items-center bg-slate-100 rounded-2xl p-1 gap-1">
               <button
