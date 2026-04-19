@@ -109,6 +109,19 @@ const PIZZAS = [
     ingredients: "Queso + Chucho + Plátano",
     image: "https://i.imgur.com/SwPOweb.png",
     prices: { P: 8.50, M: 13.50, G: 18.50 }
+  },
+  {
+    name: "Gluten Free",
+    ingredients: "Opción saludable con masa sin gluten, salsa artesanal y queso premium.",
+    image: "https://i.imgur.com/fZiHLMB.jpeg",
+    prices: { M: 12.50 }
+  },
+  {
+    name: "Calzone",
+    ingredients: "Salsa + Queso + Jamón + Champiñón (Masa de pizza doblada)",
+    image: "https://i.imgur.com/o6MlbfA.jpeg",
+    prices: { UNICO: 8.50 },
+    noExtras: true
   }
 ];
 
@@ -158,6 +171,13 @@ const HAMBURGUESAS_PRODUCTS = [
     image: "https://i.imgur.com/neUiVLo.jpeg",
     prices: { UNICO: 9.00 },
     noExtras: true
+  },
+  {
+    name: "Club House",
+    ingredients: "Jamón, queso, tocineta, huevo, ensalada, pollo y papas.",
+    image: "https://i.imgur.com/DsAKgfb.jpeg",
+    prices: { UNICO: 9.00 },
+    noExtras: true
   }
 ];
 
@@ -182,6 +202,27 @@ const SUGERENCIAS_PRODUCTS = [
     ingredients: "Pescado fresco marinado en jugo de limón con cebolla morada, cilantro y nuestro toque secreto.",
     image: "https://i.imgur.com/sExDJSN.jpeg",
     prices: { UNICO: 14.00 },
+    noExtras: true
+  },
+  {
+    name: "Burrata",
+    ingredients: "Queso burrata artesanal servido sobre una cama de rúcula fresca y tomates confitados.",
+    image: "https://i.imgur.com/GaF16fx.jpeg",
+    prices: { UNICO: 15.00 },
+    noExtras: true
+  },
+  {
+    name: "Envoltini de berenjena",
+    ingredients: "Rollitos de berenjena rellenos de mezcla de quesos y bañados en nuestra salsa especial.",
+    image: "https://i.imgur.com/9e9ibE8.jpeg",
+    prices: { UNICO: 10.00 },
+    noExtras: true
+  },
+  {
+    name: "Degustación marina",
+    ingredients: "Variedad premium de productos del mar preparados con el toque especial de nuestra cocina.",
+    image: "https://i.imgur.com/MZXYDec.jpeg",
+    prices: { UNICO: 33.00 },
     noExtras: true
   }
 ];
@@ -216,6 +257,13 @@ const MAR_PRODUCTS = [
     ingredients: "Exquisita combinación de productos del mar sobre una cama de vegetales frescos.",
     image: "https://i.imgur.com/u3AU6CB.jpeg",
     prices: { UNICO: 12.00 },
+    noExtras: true
+  },
+  {
+    name: "Parrilla de mariscos y pescado",
+    ingredients: "Surtido premium de mariscos y pescado fresco a la brasa, servido con acompañantes.",
+    image: "https://i.imgur.com/k5N23E3.jpeg",
+    prices: { UNICO: 46.00 },
     noExtras: true
   }
 ];
@@ -326,7 +374,7 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, image
 };
 
 const CategoryCarousel = ({ activeCategory, onCategoryChange, onOpenMenu }) => {
-  const categories = ['Pizzas', 'Pasta', 'Ensaladas', 'Mar', 'Aves', 'Hamburguesas', 'Sugerencias', 'Bebidas'];
+  const categories = ['Pizzas', 'Pasta', 'Mar', 'Sugerencias', 'Ensaladas', 'Hamburguesas', 'Postres', 'Bebidas'];
 
   return (
     <div className="flex items-center px-6 mb-8 gap-4 overflow-hidden">
@@ -369,12 +417,12 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
   const categories = [
     { name: 'Pizzas', icon: Pizza },
     { name: 'Pasta', icon: Utensils },
-    { name: 'Ensaladas', icon: Leaf },
     { name: 'Mar', icon: Fish },
-    { name: 'Aves', icon: Drumstick },
-    { name: 'Hamburguesas', icon: Beef },
     { name: 'Sugerencias', icon: Sparkles },
-    { name: 'Bebidas', icon: CupSoda },
+    { name: 'Ensaladas', icon: Leaf },
+    { name: 'Hamburguesas', icon: Beef },
+    { name: 'Postres', icon: CupSoda },
+    { name: 'Bebidas', icon: Rocket },
   ];
 
   useEffect(() => {
@@ -996,77 +1044,71 @@ const App = () => {
             ))}
           </div>
 
-          {/* Section: Menu Category - Pastas (New) */}
+          {/* Section: Menu Category - Pastas */}
           <div className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Pastas</h2>
               <Utensils size={20} className="text-slate-900" />
             </div>
-
             {PASTAS_PRODUCTS.map((prod) => (
               <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
             ))}
           </div>
 
-          {/* Section: Menu Category - Ensaladas (New) */}
-          <div className="px-6 mb-8">
-            <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-xl font-black text-slate-900 tracking-tight">Ensaladas</h2>
-              <Leaf size={20} className="text-slate-900" />
-            </div>
-
-            {ENSALADAS_PRODUCTS.map((prod) => (
-              <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
-            ))}
-          </div>
-
-          {/* Section: Menu Category - Mar (New) */}
+          {/* Section: Menu Category - Mar */}
           <div className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Mar</h2>
               <Fish size={20} className="text-slate-900" />
             </div>
-
             {MAR_PRODUCTS.map((prod) => (
               <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
             ))}
           </div>
 
-          {/* Section: Menu Category - Hamburguesas (New) */}
+          {/* Section 6: Menu Category - Sugerencias */}
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Sugerencias</h2>
+              <Sparkles size={20} className="text-slate-900" />
+            </div>
+            {SUGERENCIAS_PRODUCTS.map((prod) => (
+              <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
+            ))}
+          </div>
+
+          {/* Section: Menu Category - Ensaladas */}
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Ensaladas</h2>
+              <Leaf size={20} className="text-slate-900" />
+            </div>
+            {ENSALADAS_PRODUCTS.map((prod) => (
+              <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
+            ))}
+          </div>
+
+          {/* Section: Menu Category - Hamburguesas */}
           <div className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Hamburguesas</h2>
               <Beef size={20} className="text-slate-900" />
             </div>
-
             {HAMBURGUESAS_PRODUCTS.map((prod) => (
               <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
             ))}
           </div>
 
-            {/* Section 6: Menu Category - Sugerencias */}
-            <div className="px-6 mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <h2 className="text-xl font-black text-slate-900 tracking-tight">Sugerencias</h2>
-                <Sparkles size={20} className="text-slate-900" />
-              </div>
-
-              {SUGERENCIAS_PRODUCTS.map((prod) => (
-                <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
-              ))}
+          {/* Section: Menu Category - Postres */}
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Postres</h2>
+              <CupSoda size={20} className="text-slate-900" />
             </div>
-
-            {/* Section: Menu Category - Postres (New) */}
-            <div className="px-6 mb-8">
-              <div className="flex items-center gap-2 mb-4">
-                <h2 className="text-xl font-black text-slate-900 tracking-tight">Postres</h2>
-                <CupSoda size={20} className="text-slate-900" />
-              </div>
-
-              {POSTRES.map((postre) => (
-                <PizzaCard key={postre.name} {...postre} onSelect={setSelectedItem} />
-              ))}
-            </div>
+            {POSTRES.map((postre) => (
+              <PizzaCard key={postre.name} {...postre} onSelect={setSelectedItem} />
+            ))}
+          </div>
 
         </div>
 
