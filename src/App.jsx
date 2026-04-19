@@ -238,6 +238,12 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
     { name: 'Bebidas', icon: CupSoda },
   ];
 
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = originalStyle; };
+  }, []);
+
   return (
     <div className="fixed inset-0 z-[250] animate-in fade-in duration-200">
       <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
@@ -287,7 +293,12 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
   const [quantity, setQuantity] = useState(1);
   const [selectedExtras, setSelectedExtras] = useState([]);
 
-  // Reseteamos extras al cambiar de producto o tamaño si algún extra no está disponible
+  useEffect(() => {
+    const originalStyle = window.getComputedStyle(document.body).overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = originalStyle; };
+  }, []);
+
   useEffect(() => {
     setSelectedExtras(prev => prev.filter(extra => EXTRAS_CONFIG[extra][size] !== undefined));
   }, [size, item.name]);
@@ -306,42 +317,39 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
   const totalPrice = unitPrice * quantity;
 
   return (
-    <div className="fixed inset-0 z-[300] bg-white flex flex-col animate-in fade-in duration-200 overflow-hidden">
-      {/* Header / Image Area */}
-      <div className="relative h-72 w-full flex-shrink-0">
-        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
-        
-        <button
-          onClick={onClose}
-          className="absolute top-6 left-6 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-all z-10"
-        >
-          <ArrowLeft size={20} className="text-slate-900" strokeWidth={3} />
-        </button>
+    <div className="fixed inset-0 z-[300] bg-white flex flex-col animate-in fade-in duration-200">
+      {/* Botón de Regreso Fijo */}
+      <button
+        onClick={onClose}
+        className="fixed top-6 left-6 w-11 h-11 bg-white/90 backdrop-blur-md rounded-full flex items-center justify-center shadow-xl active:scale-90 transition-all z-[310] border border-slate-100"
+      >
+        <ArrowLeft size={22} className="text-slate-900" strokeWidth={3} />
+      </button>
 
-        <div className="absolute bottom-0 left-0 right-0 h-12 bg-white rounded-t-[2.5rem]" />
-      </div>
+      {/* Área de Scroll Unificada */}
+      <div className="flex-1 overflow-y-auto hide-scrollbar pb-32">
+        {/* Imagen Hero - Ahora parte del scroll */}
+        <div className="h-[45vh] w-full relative">
+          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
+        </div>
 
-      {/* Content Area */}
-      <div className="flex-1 overflow-y-auto px-6 pb-24 -mt-6">
-        <div className="relative z-10">
-          <div className="mb-6">
-            <h2 className="text-3xl font-black text-slate-900 mb-2">{item.name}</h2>
-            <p className="text-slate-500 font-medium leading-relaxed">{item.ingredients}</p>
+        {/* Contenido */}
+        <div className="px-6 pt-8">
+          <div className="mb-8">
+            <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">{item.name}</h2>
+            <p className="text-slate-500 font-medium leading-relaxed text-lg">{item.ingredients}</p>
           </div>
 
-          {/* Size Selector */}
+          {/* Selector de Tamaño - Estilo Pill Revertido */}
           <div className="mb-10">
-            <div className="flex items-center justify-between mb-4">
-              <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Seleccionar tamaño</h3>
-              <span className="text-xs font-black text-[#C4121A] bg-red-50 px-2 py-1 rounded-lg">Obligatorio</span>
-            </div>
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-4">Seleccionar tamaño</h3>
             <div className="flex bg-slate-100 p-1.5 rounded-2xl w-fit">
               {availableSizes.map((s) => (
                 <button
                   key={s}
                   onClick={() => setSize(s)}
-                  className={`px-6 py-2.5 text-sm rounded-xl transition-all duration-300 ${size === s
+                  className={`px-8 py-3 text-sm rounded-xl transition-all duration-300 ${size === s
                       ? 'bg-[#C4121A] shadow-lg text-white font-black scale-[1.02]'
                       : 'text-slate-500 font-bold hover:text-slate-700'
                     }`}
@@ -352,13 +360,13 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
             </div>
           </div>
 
-          {/* Extras List */}
+          {/* Adicionales */}
           <div className="mb-10">
             <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-6">Añadir Adicionales</h3>
             <div className="space-y-3">
               {Object.entries(EXTRAS_CONFIG).map(([name, prices]) => {
                 const extraPrice = prices[size];
-                if (extraPrice === undefined) return null; // Ocultar si no está disponible para ese tamaño
+                if (extraPrice === undefined) return null;
 
                 const isSelected = selectedExtras.includes(name);
 
@@ -366,17 +374,17 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
                   <button
                     key={name}
                     onClick={() => toggleExtra(name)}
-                    className={`w-full flex items-center justify-between p-4 rounded-2xl border-2 transition-all ${
+                    className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
                       isSelected 
                         ? 'border-[#C4121A] bg-red-50/30' 
                         : 'border-slate-100 bg-white hover:border-slate-200'
                     }`}
                   >
                     <div className="flex items-center gap-3">
-                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                      <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
                         isSelected ? 'bg-[#C4121A] border-[#C4121A]' : 'border-slate-200'
                       }`}>
-                        {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
+                        {isSelected && <Plus size={14} className="text-white" strokeWidth={4} />}
                       </div>
                       <span className={`font-bold text-sm ${isSelected ? 'text-slate-900' : 'text-slate-600'}`}>
                         {name}
@@ -390,13 +398,11 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
               })}
             </div>
           </div>
-
         </div>
       </div>
 
-      {/* Fixed Bottom Action Area */}
-      <div className="p-6 border-t border-slate-100 bg-white/90 backdrop-blur-xl flex items-center gap-4">
-        {/* Cantidad Flotante a la Izquierda */}
+      {/* Footer Fijo */}
+      <div className="fixed bottom-0 left-0 right-0 p-6 border-t border-slate-100 bg-white/90 backdrop-blur-xl flex items-center gap-4 z-[305]">
         <div className="flex items-center bg-slate-100 rounded-2xl p-1 gap-1">
           <button
             onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -422,7 +428,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
             selectedExtras,
             extrasTotalPerUnit: extrasTotal
           })}
-          className="flex-1 bg-[#C4121A] h-14 rounded-2xl flex items-center justify-between px-6 text-white shadow-xl active:scale-95 transition-all"
+          className="flex-1 bg-[#C4121A] h-14 rounded-xl flex items-center justify-between px-6 text-white shadow-xl active:scale-95 transition-all"
         >
           <span className="text-sm font-black uppercase tracking-wider">Agregar</span>
           <div className="flex items-center gap-2">
@@ -436,6 +442,14 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
 };
 
 const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, setDeliveryMode, note, setNote, onConfirm }) => {
+  useEffect(() => {
+    if (isOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = originalStyle; };
+    }
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const BOX_PRICES = { 'P': 0.25, 'M': 0.80, 'G': 1.00 };
