@@ -134,7 +134,7 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect }) => {
                 ${prices[size].toFixed(2)}
               </span>
             </div>
-            <div className="bg-[#C4121A] w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg shadow-red-200">
+            <div className="bg-[#C4121A] w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg">
               <Plus size={20} strokeWidth={3} />
             </div>
           </div>
@@ -212,7 +212,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
             </div>
             <button
               onClick={() => onAddToCart({ ...item, size, quantity, unitPrice: item.prices[size] })}
-              className="flex-1 bg-[#C4121A] h-14 rounded-2xl flex items-center justify-center gap-3 text-white font-black shadow-xl shadow-red-200 hover:scale-[1.02] active:scale-[0.98] transition-all"
+              className="flex-1 bg-[#C4121A] h-14 rounded-2xl flex items-center justify-center gap-3 text-white font-black shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
             >
               <span>Agregar</span>
               <span className="bg-white/20 px-3 py-1 rounded-lg text-sm">${price.toFixed(2)}</span>
@@ -244,7 +244,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
       <div className="flex-1 overflow-y-auto px-6 py-6 pb-40 hide-scrollbar">
         {/* Cart Items */}
         <div className="space-y-6 mb-10">
-          <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400">Mis Productos</h3>
+          <h3 className="text-[11px] font-medium uppercase tracking-widest text-slate-900">Mis Productos</h3>
           {cart.map((item, index) => (
             <div key={`${item.name}-${item.size}`} className="flex gap-4 items-center animate-in fade-in duration-300">
               <div className="w-16 h-16 bg-slate-100 rounded-2xl overflow-hidden flex-shrink-0">
@@ -280,7 +280,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
 
         {/* Delivery Mode */}
         <div className="mb-10">
-          <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4">Modo de Entrega</h3>
+          <h3 className="text-[11px] font-medium uppercase tracking-widest text-slate-900 mb-4">Modo de Entrega</h3>
           <div className="flex bg-slate-100 p-1.5 rounded-[1.5rem] gap-1">
             {['Delivery', 'Pick Up'].map((mode) => (
               <button
@@ -299,7 +299,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
 
         {/* Note */}
         <div className="mb-6">
-          <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4">Nota para el comercio</h3>
+          <h3 className="text-[11px] font-medium uppercase tracking-widest text-slate-900 mb-4">Nota para el comercio</h3>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
@@ -318,7 +318,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
           </div>
           <button
             onClick={onConfirm}
-            className="w-full bg-[#C4121A] text-white h-14 rounded-2xl flex items-center justify-center gap-3 font-black shadow-xl shadow-red-200 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            className="w-full bg-[#C4121A] text-white h-14 rounded-2xl flex items-center justify-center gap-3 font-black shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
             <Rocket size={18} strokeWidth={3} />
             <span className="text-sm">Confirmar Pedido</span>
