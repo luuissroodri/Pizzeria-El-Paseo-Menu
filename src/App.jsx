@@ -8,6 +8,7 @@ import {
   Plus,
   Minus,
   X,
+  Trash2,
   ShoppingCart,
   Rocket,
   Pizza,
@@ -157,34 +158,25 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-      {/* Backdrop */}
       <div
         className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
         onClick={onClose}
       />
-
-      {/* Modal Content */}
       <div className="relative bg-white w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[3rem] shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-300">
-        {/* Close Button */}
         <button
           onClick={onClose}
           className="absolute top-6 right-6 z-10 bg-white/80 backdrop-blur-md p-2 rounded-full shadow-lg text-slate-900 hover:scale-110 active:scale-90 transition-all border border-slate-100"
         >
           <X size={20} strokeWidth={3} />
         </button>
-
-        {/* Image */}
         <div className="h-64 w-full bg-slate-100">
           <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
         </div>
-
         <div className="p-8">
           <div className="mb-6">
             <h2 className="text-2xl font-black text-slate-900 mb-2">{item.name}</h2>
             <p className="text-slate-500 font-medium leading-relaxed text-sm">{item.ingredients}</p>
           </div>
-
-          {/* Size Selector */}
           <div className="mb-8">
             <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3 block">Seleccionar Tamaño</span>
             <div className="flex bg-slate-100 p-1.5 rounded-2xl w-fit">
@@ -202,8 +194,6 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
               ))}
             </div>
           </div>
-
-          {/* Quantity and Add Button */}
           <div className="flex items-center gap-4">
             <div className="flex items-center bg-slate-100 rounded-2xl p-1 gap-1">
               <button
@@ -220,7 +210,6 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
                 <Plus size={18} strokeWidth={3} />
               </button>
             </div>
-
             <button
               onClick={() => onAddToCart({ ...item, size, quantity, unitPrice: item.prices[size] })}
               className="flex-1 bg-[#C4121A] h-14 rounded-2xl flex items-center justify-center gap-3 text-white font-black shadow-xl shadow-red-200 hover:scale-[1.02] active:scale-[0.98] transition-all"
@@ -229,6 +218,111 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
               <span className="bg-white/20 px-3 py-1 rounded-lg text-sm">${price.toFixed(2)}</span>
             </button>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, setDeliveryMode, note, setNote, onConfirm }) => {
+  if (!isOpen) return null;
+
+  const subtotal = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+
+  return (
+    <div className="fixed inset-0 z-[150] bg-white flex flex-col animate-in fade-in duration-200">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
+        <button onClick={onClose} className="p-2 -ml-2 text-slate-900 hover:bg-slate-50 rounded-full transition-colors">
+          <ChevronLeft size={28} strokeWidth={3} />
+        </button>
+        <h2 className="text-lg font-black text-slate-900 tracking-tight uppercase">Checkout</h2>
+        <div className="w-10" /> {/* Spacer */}
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 overflow-y-auto px-6 py-6 pb-40 hide-scrollbar">
+        {/* Cart Items */}
+        <div className="space-y-6 mb-10">
+          <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400">Mis Productos</h3>
+          {cart.map((item, index) => (
+            <div key={`${item.name}-${item.size}`} className="flex gap-4 items-center animate-in fade-in duration-300">
+              <div className="w-16 h-16 bg-slate-100 rounded-2xl overflow-hidden flex-shrink-0">
+                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-start mb-1">
+                  <h4 className="font-bold text-slate-900 truncate pr-2">{item.name} ({item.size})</h4>
+                  <span className="font-black text-slate-900 text-sm whitespace-nowrap">${(item.unitPrice * item.quantity).toFixed(2)}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-slate-400 font-bold">${item.unitPrice.toFixed(2)} c/u</span>
+                  <div className="flex items-center bg-slate-100 rounded-xl p-0.5 gap-2">
+                    <button
+                      onClick={() => updateQuantity(index, -1)}
+                      className="w-7 h-7 flex items-center justify-center text-slate-900 transition-all hover:bg-white rounded-lg"
+                    >
+                      {item.quantity === 1 ? <Trash2 size={14} className="text-red-500" strokeWidth={3} /> : <Minus size={14} strokeWidth={3} />}
+                    </button>
+                    <span className="w-4 text-center font-black text-xs text-slate-900">{item.quantity}</span>
+                    <button
+                      onClick={() => updateQuantity(index, 1)}
+                      className="w-7 h-7 flex items-center justify-center text-slate-900 transition-all hover:bg-white rounded-lg"
+                    >
+                      <Plus size={14} strokeWidth={3} />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Delivery Mode */}
+        <div className="mb-10">
+          <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4">Modo de Entrega</h3>
+          <div className="flex bg-slate-100 p-1.5 rounded-[1.5rem] gap-1">
+            {['Delivery', 'Pick Up'].map((mode) => (
+              <button
+                key={mode}
+                onClick={() => setDeliveryMode(mode)}
+                className={`flex-1 py-4 rounded-2xl transition-all duration-300 font-black text-sm ${deliveryMode === mode
+                    ? 'bg-[#C4121A] text-white shadow-xl shadow-red-200 scale-[1.02]'
+                    : 'text-slate-500 hover:text-slate-700'
+                  }`}
+              >
+                {mode}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Note */}
+        <div className="mb-6">
+          <h3 className="text-[11px] font-black uppercase tracking-widest text-slate-400 mb-4">Nota para el comercio</h3>
+          <textarea
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            placeholder="Introduce tu nota aquí (opcional)..."
+            className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] p-5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-500 transition-all min-h-[120px] resize-none"
+          />
+        </div>
+      </div>
+
+      {/* Footer / Summary */}
+      <div className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-slate-100 animate-in slide-in-from-bottom duration-300 z-10">
+        <div className="max-w-md mx-auto w-full">
+          <div className="flex justify-between items-center mb-6 px-2">
+            <span className="text-slate-400 font-bold">Total a pagar</span>
+            <span className="text-2xl font-black text-slate-900">${subtotal.toFixed(2)}</span>
+          </div>
+          <button
+            onClick={onConfirm}
+            className="w-full bg-[#C4121A] text-white h-16 rounded-[2rem] flex items-center justify-center gap-3 font-black shadow-2xl shadow-red-200 hover:scale-[1.02] active:scale-[0.98] transition-all"
+          >
+            <Rocket size={20} strokeWidth={3} />
+            <span>Confirmar Pedido</span>
+          </button>
         </div>
       </div>
     </div>
@@ -268,19 +362,56 @@ const CartSummary = ({ cart, onCheckout }) => {
 const App = () => {
   const [cart, setCart] = useState([]);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
+  const [deliveryMode, setDeliveryMode] = useState('Delivery');
+  const [orderNote, setOrderNote] = useState('');
 
   const handleAddToCart = (product) => {
-    setCart([...cart, product]);
+    setCart(prevCart => {
+      const existingItemIndex = prevCart.findIndex(
+        item => item.name === product.name && item.size === product.size
+      );
+      if (existingItemIndex !== -1) {
+        return prevCart.map((item, i) =>
+          i === existingItemIndex
+            ? { ...item, quantity: item.quantity + product.quantity }
+            : item
+        );
+      }
+      return [...prevCart, product];
+    });
     setSelectedItem(null);
+  };
+
+  const updateCartQuantity = (index, delta) => {
+    setCart(prevCart => {
+      const newQuantity = prevCart[index].quantity + delta;
+      if (newQuantity <= 0) {
+        return prevCart.filter((_, i) => i !== index);
+      }
+      return prevCart.map((item, i) =>
+        i === index ? { ...item, quantity: newQuantity } : item
+      );
+    });
+  };
+
+  const removeFromCart = (index) => {
+    setCart(prevCart => prevCart.filter((_, i) => i !== index));
   };
 
   const sendOrder = () => {
     const total = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
     let message = "🍕 *Nuevo Pedido - Pizzeria El Paseo* 🍕\n\n";
-
+    message += `📍 *Modo:* ${deliveryMode}\n`;
+    
+    message += `\n*Productos:*\n`;
     cart.forEach((item) => {
       message += `• ${item.quantity}x ${item.name} (${item.size}) - $${(item.unitPrice * item.quantity).toFixed(2)}\n`;
     });
+
+    if (orderNote.trim()) {
+      message += `\n📝 *Nota:* ${orderNote}\n`;
+    }
 
     message += `\n------------------------------\n`;
     message += `*Total General: $${total.toFixed(2)}*`;
@@ -439,7 +570,18 @@ const App = () => {
       />
       <CartSummary
         cart={cart}
-        onCheckout={sendOrder}
+        onCheckout={() => setIsCheckoutOpen(true)}
+      />
+      <CheckoutModal
+        isOpen={isCheckoutOpen}
+        onClose={() => setIsCheckoutOpen(false)}
+        cart={cart}
+        updateQuantity={updateCartQuantity}
+        deliveryMode={deliveryMode}
+        setDeliveryMode={setDeliveryMode}
+        note={orderNote}
+        setNote={setOrderNote}
+        onConfirm={sendOrder}
       />
 
     </div>
