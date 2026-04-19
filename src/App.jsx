@@ -26,7 +26,8 @@ import {
   Fish,
   Leaf,
   CupSoda,
-  Drumstick
+  Drumstick,
+  Beef
 } from 'lucide-react';
 
 
@@ -143,6 +144,48 @@ const PASTAS_PRODUCTS = [
   }
 ];
 
+const HAMBURGUESAS_PRODUCTS = [
+  {
+    name: "Hamburguesa El Paseo",
+    ingredients: "Carne, jamón, queso, huevo, tocineta, ensalada y papas.",
+    image: "https://i.imgur.com/jAl3OXY.png",
+    prices: { UNICO: 9.00 },
+    noExtras: true
+  },
+  {
+    name: "Hamburguesa de Pollo El Paseo",
+    ingredients: "Pollo, jamón, queso, huevo, tocineta, ensalada y papas.",
+    image: "https://i.imgur.com/neUiVLo.jpeg",
+    prices: { UNICO: 9.00 },
+    noExtras: true
+  }
+];
+
+const SUGERENCIAS_PRODUCTS = [
+  {
+    name: "Torre de Calamares",
+    ingredients: "Crujientes aros de calamar servidos con salsa tártara y limón.",
+    image: "https://i.imgur.com/R4E8LUL.jpeg",
+    imagePosition: "center 95%",
+    prices: { UNICO: 20.00 },
+    noExtras: true
+  },
+  {
+    name: "Guacucos al ajillo",
+    ingredients: "Frescos guacucos salteados.",
+    image: "https://i.imgur.com/FVSvhG4.jpeg",
+    prices: { UNICO: 14.00 },
+    noExtras: true
+  },
+  {
+    name: "Ceviche",
+    ingredients: "Pescado fresco marinado en jugo de limón con cebolla morada, cilantro y nuestro toque secreto.",
+    image: "https://i.imgur.com/sExDJSN.jpeg",
+    prices: { UNICO: 14.00 },
+    noExtras: true
+  }
+];
+
 const ENSALADAS_PRODUCTS = [
   {
     name: "Ensalada Capresa",
@@ -159,6 +202,20 @@ const MAR_PRODUCTS = [
     ingredients: "Sardinas frescas preparadas al estilo tradicional.",
     image: "https://i.imgur.com/OzfdThM.jpeg",
     prices: { UNICO: 5.00 },
+    noExtras: true
+  },
+  {
+    name: "Pulpo al gusto",
+    ingredients: "Tierno pulpo preparado a su elección (al ajillo, a la vinagreta o a la plancha).",
+    image: "https://i.imgur.com/1hcaTNH.png",
+    prices: { UNICO: 25.00 },
+    noExtras: true
+  },
+  {
+    name: "Ensalada de Catalana",
+    ingredients: "Exquisita combinación de productos del mar sobre una cama de vegetales frescos.",
+    image: "https://i.imgur.com/u3AU6CB.jpeg",
+    prices: { UNICO: 12.00 },
     noExtras: true
   }
 ];
@@ -269,7 +326,7 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, image
 };
 
 const CategoryCarousel = ({ activeCategory, onCategoryChange, onOpenMenu }) => {
-  const categories = ['Pizzas', 'Pasta', 'Ensaladas', 'Mar', 'Aves', 'Especialidades', 'Bebidas'];
+  const categories = ['Pizzas', 'Pasta', 'Ensaladas', 'Mar', 'Aves', 'Hamburguesas', 'Sugerencias', 'Bebidas'];
 
   return (
     <div className="flex items-center px-6 mb-8 gap-4 overflow-hidden">
@@ -315,7 +372,8 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
     { name: 'Ensaladas', icon: Leaf },
     { name: 'Mar', icon: Fish },
     { name: 'Aves', icon: Drumstick },
-    { name: 'Especialidades', icon: Sparkles },
+    { name: 'Hamburguesas', icon: Beef },
+    { name: 'Sugerencias', icon: Sparkles },
     { name: 'Bebidas', icon: CupSoda },
   ];
 
@@ -974,23 +1032,28 @@ const App = () => {
             ))}
           </div>
 
-            {/* Section 6: Menu Category - Especialidades */}
+          {/* Section: Menu Category - Hamburguesas (New) */}
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Hamburguesas</h2>
+              <Beef size={20} className="text-slate-900" />
+            </div>
+
+            {HAMBURGUESAS_PRODUCTS.map((prod) => (
+              <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
+            ))}
+          </div>
+
+            {/* Section 6: Menu Category - Sugerencias */}
             <div className="px-6 mb-8">
               <div className="flex items-center gap-2 mb-4">
-                <h2 className="text-xl font-black text-slate-900 tracking-tight">Especialidades</h2>
+                <h2 className="text-xl font-black text-slate-900 tracking-tight">Sugerencias</h2>
                 <Sparkles size={20} className="text-slate-900" />
               </div>
 
-              {/* Torre de Calamares Card */}
-              <PizzaCard
-                name="Torre de Calamares"
-                ingredients="Crujientes aros de calamar servidos con salsa tártara y limón."
-                image="https://i.imgur.com/R4E8LUL.jpeg"
-                imagePosition="center 95%"
-                prices={{ UNICO: 20.00 }}
-                onSelect={setSelectedItem}
-                noExtras={true}
-              />
+              {SUGERENCIAS_PRODUCTS.map((prod) => (
+                <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
+              ))}
             </div>
 
             {/* Section: Menu Category - Postres (New) */}
@@ -1005,13 +1068,6 @@ const App = () => {
               ))}
             </div>
 
-            {/* Section 7: Menu Category - Icónicos */}
-          <div className="px-6 pb-4 opacity-50">
-            <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-xl font-black text-slate-900 tracking-tight">Icónicos</h2>
-              <Sparkles size={20} className="text-slate-900" />
-            </div>
-          </div>
         </div>
 
       </div>
