@@ -159,6 +159,13 @@ const PASTAS_PRODUCTS = [
 
 const HAMBURGUESAS_PRODUCTS = [
   {
+    name: "Club House",
+    ingredients: "Jamón, queso, tocineta, huevo, ensalada, pollo y papas.",
+    image: "https://i.imgur.com/DsAKgfb.jpeg",
+    prices: { UNICO: 9.00 },
+    noExtras: true
+  },
+  {
     name: "Hamburguesa El Paseo",
     ingredients: "Carne, jamón, queso, huevo, tocineta, ensalada y papas.",
     image: "https://i.imgur.com/jAl3OXY.png",
@@ -171,13 +178,6 @@ const HAMBURGUESAS_PRODUCTS = [
     image: "https://i.imgur.com/neUiVLo.jpeg",
     prices: { UNICO: 9.00 },
     noExtras: true
-  },
-  {
-    name: "Club House",
-    ingredients: "Jamón, queso, tocineta, huevo, ensalada, pollo y papas.",
-    image: "https://i.imgur.com/DsAKgfb.jpeg",
-    prices: { UNICO: 9.00 },
-    noExtras: true
   }
 ];
 
@@ -187,11 +187,18 @@ const SUGERENCIAS_PRODUCTS = [
     ingredients: "Crujientes aros de calamar servidos con salsa tártara y limón.",
     image: "https://i.imgur.com/R4E8LUL.jpeg",
     imagePosition: "center 95%",
-    prices: { UNICO: 20.00 },
+    prices: { UNICO: 21.00 },
     noExtras: true
   },
   {
-    name: "Guacucos al ajillo",
+    name: "Degustación Marina (2 Per)",
+    ingredients: "Variedad premium de productos del mar preparados con el toque especial de nuestra cocina.",
+    image: "https://i.imgur.com/MZXYDec.jpeg",
+    prices: { UNICO: 33.00 },
+    noExtras: true
+  },
+  {
+    name: "Guacucos al Ajillo",
     ingredients: "Frescos guacucos salteados.",
     image: "https://i.imgur.com/FVSvhG4.jpeg",
     prices: { UNICO: 14.00 },
@@ -212,17 +219,10 @@ const SUGERENCIAS_PRODUCTS = [
     noExtras: true
   },
   {
-    name: "Envoltini de berenjena",
+    name: "Envoltini de Berenjenas",
     ingredients: "Rollitos de berenjena rellenos de mezcla de quesos y bañados en nuestra salsa especial.",
     image: "https://i.imgur.com/9e9ibE8.jpeg",
     prices: { UNICO: 10.00 },
-    noExtras: true
-  },
-  {
-    name: "Degustación marina",
-    ingredients: "Variedad premium de productos del mar preparados con el toque especial de nuestra cocina.",
-    image: "https://i.imgur.com/MZXYDec.jpeg",
-    prices: { UNICO: 33.00 },
     noExtras: true
   }
 ];
@@ -239,20 +239,6 @@ const ENSALADAS_PRODUCTS = [
 
 const MAR_PRODUCTS = [
   {
-    name: "Tapas de Sardina",
-    ingredients: "Sardinas frescas preparadas al estilo tradicional.",
-    image: "https://i.imgur.com/OzfdThM.jpeg",
-    prices: { UNICO: 5.00 },
-    noExtras: true
-  },
-  {
-    name: "Pulpo al gusto",
-    ingredients: "Tierno pulpo preparado a su elección (al ajillo, a la vinagreta o a la plancha).",
-    image: "https://i.imgur.com/1hcaTNH.png",
-    prices: { UNICO: 25.00 },
-    noExtras: true
-  },
-  {
     name: "Ensalada de Catalana",
     ingredients: "Exquisita combinación de productos del mar sobre una cama de vegetales frescos.",
     image: "https://i.imgur.com/u3AU6CB.jpeg",
@@ -260,10 +246,24 @@ const MAR_PRODUCTS = [
     noExtras: true
   },
   {
-    name: "Parrilla de mariscos y pescado",
+    name: "Pulpo al Gusto",
+    ingredients: "Tierno pulpo preparado a su elección (al ajillo, a la vinagreta o a la plancha).",
+    image: "https://i.imgur.com/1hcaTNH.png",
+    prices: { UNICO: 25.00 },
+    noExtras: true
+  },
+  {
+    name: "Parrilla de Mariscos y Pescado (2 Per)",
     ingredients: "Surtido premium de mariscos y pescado fresco a la brasa, servido con acompañantes.",
     image: "https://i.imgur.com/k5N23E3.jpeg",
     prices: { UNICO: 46.00 },
+    noExtras: true
+  },
+  {
+    name: "Tapas de Sardinas",
+    ingredients: "Sardinas frescas preparadas al estilo tradicional.",
+    image: "https://i.imgur.com/OzfdThM.jpeg",
+    prices: { UNICO: 5.00 },
     noExtras: true
   }
 ];
