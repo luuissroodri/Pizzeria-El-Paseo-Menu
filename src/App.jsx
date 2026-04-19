@@ -147,7 +147,48 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect }) => {
   );
 };
 
-const CategoryCarousel = () => {
+const CategoryCarousel = ({ activeCategory, onCategoryChange, onOpenMenu }) => {
+  const categories = ['Pizzas', 'Pasta', 'Mar', 'Aves', 'Especialidades', 'Bebidas'];
+
+  return (
+    <div className="flex items-center px-6 mb-8 gap-4 overflow-hidden">
+      {/* Hamburger Menu Icon */}
+      <button
+        onClick={onOpenMenu}
+        className="p-2 -ml-2 text-slate-900 border-r border-slate-100 pr-4 transition-transform active:scale-90"
+      >
+        <Menu size={24} strokeWidth={2.5} />
+      </button>
+
+      {/* Tabs list */}
+      <div className="flex overflow-x-auto gap-8 hide-scrollbar py-2 items-center flex-1">
+        {categories.map((cat) => {
+          const isActive = activeCategory === cat;
+          return (
+            <button
+              key={cat}
+              onClick={() => onCategoryChange(cat)}
+              className="relative flex flex-col items-center group whitespace-nowrap pt-1"
+            >
+              <span className={`text-[15px] transition-all duration-300 font-bold leading-none ${
+                isActive ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'
+              }`}>
+                {cat}
+              </span>
+              {/* Underline Indicator */}
+              <div className={`mt-2 h-0.5 bg-[#C4121A] rounded-full transition-all duration-300 ${
+                isActive ? 'w-full opacity-100' : 'w-0 opacity-0'
+              }`} />
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
+  if (!isOpen) return null;
   const categories = [
     { name: 'Pizzas', icon: Pizza },
     { name: 'Pasta', icon: Utensils },
@@ -158,21 +199,37 @@ const CategoryCarousel = () => {
   ];
 
   return (
-    <div className="px-6 mb-8">
-      <div className="bg-white border border-red-100 rounded-2xl p-3 shadow-sm">
-        <div className="flex overflow-x-auto gap-3 hide-scrollbar">
+    <div className="fixed inset-0 z-[250] animate-in fade-in duration-200">
+      <div className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute left-0 top-0 bottom-0 w-72 bg-white shadow-2xl animate-in slide-in-from-left duration-300 overflow-hidden flex flex-col">
+        <div className="p-6 border-b border-slate-100 flex items-center justify-between">
+          <h2 className="text-xl font-black text-slate-900">Categorías</h2>
+          <button onClick={onClose} className="p-2 text-slate-400 hover:text-slate-900 transition-colors">
+            <X size={20} strokeWidth={3} />
+          </button>
+        </div>
+        <div className="flex-1 overflow-y-auto p-4 space-y-2">
           {categories.map((cat) => {
             const Icon = cat.icon;
+            const isActive = activeCategory === cat.name;
             return (
               <button
                 key={cat.name}
-                className="flex items-center gap-2 px-5 py-2.5 bg-[#C4121A] rounded-xl shadow-md shadow-red-100 whitespace-nowrap active:scale-95 transition-all"
+                onClick={() => { onSelect(cat.name); onClose(); }}
+                className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all ${
+                  isActive ? 'bg-red-50 text-[#C4121A]' : 'text-slate-600 hover:bg-slate-50'
+                }`}
               >
-                <Icon size={16} className="text-white" strokeWidth={2.5} />
-                <span className="text-[13px] font-medium text-white uppercase tracking-wide">{cat.name}</span>
+                <div className={`${isActive ? 'text-[#C4121A]' : 'text-slate-400'}`}>
+                  <Icon size={20} strokeWidth={2.5} />
+                </div>
+                <span className="font-bold text-base">{cat.name}</span>
               </button>
             );
           })}
+        </div>
+        <div className="p-6 bg-slate-50 border-t border-slate-100">
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest text-center">Pizzeria El Paseo</p>
         </div>
       </div>
     </div>
@@ -419,6 +476,8 @@ const App = () => {
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [deliveryMode, setDeliveryMode] = useState('Delivery');
   const [orderNote, setOrderNote] = useState('');
+  const [activeCategory, setActiveCategory] = useState('Pizzas');
+  const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
   const handleAddToCart = (product) => {
     setCart(prevCart => {
@@ -584,7 +643,11 @@ const App = () => {
           </div>
 
           {/* New Section: Categories Carousel */}
-          <CategoryCarousel />
+          <CategoryCarousel 
+            activeCategory={activeCategory} 
+            onCategoryChange={setActiveCategory}
+            onOpenMenu={() => setIsCategoryMenuOpen(true)}
+          />
 
           {/* Section 5: Menu Category - Pizzas */}
           <div className="px-6 mb-8">
@@ -648,6 +711,12 @@ const App = () => {
         note={orderNote}
         setNote={setOrderNote}
         onConfirm={sendOrder}
+      />
+      <CategoryMenuOverlay
+        isOpen={isCategoryMenuOpen}
+        onClose={() => setIsCategoryMenuOpen(false)}
+        onSelect={setActiveCategory}
+        activeCategory={activeCategory}
       />
 
     </div>
