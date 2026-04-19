@@ -49,6 +49,12 @@ const PIZZAS = [
     prices: { P: 5.50, M: 8.00, G: 11.50 }
   },
   {
+    name: "Marinera",
+    ingredients: "Salsa + Queso + Mariscos",
+    image: "https://i.imgur.com/TrTzbB9.png",
+    prices: { P: 16.00, M: 25.00, G: 34.00 }
+  },
+  {
     name: "Tropical",
     ingredients: "Salsa + Queso + Jamón + Maíz",
     image: "https://i.imgur.com/HSDYnr2.jpeg",
@@ -73,6 +79,12 @@ const PIZZAS = [
     prices: { P: 9.50, M: 12.50, G: 17.50 }
   },
   {
+    name: "4 Estaciones",
+    ingredients: "Salsa + Queso + Jamón + Champiñones + Salchichón",
+    image: "https://i.imgur.com/DaGzMtD.png",
+    prices: { P: 13.00, M: 18.50, G: 24.00 }
+  },
+  {
     name: "Caprichosa",
     ingredients: "Salsa + Queso + Jamón + Salchichón + Tocineta",
     image: "https://i.imgur.com/cJh4ymd.jpeg",
@@ -88,7 +100,13 @@ const PIZZAS = [
     name: "Al Filetto Especial",
     ingredients: "Filetto de Pomodoro + Aceite de Oliva + Jamón Serrano + Albahaca + Queso Parmesano + Borde de Queso",
     image: "https://i.imgur.com/DrTo9EF.jpeg",
-    prices: { M: 24.00, G: 31.00 } // P no aplica
+    prices: { M: 24.00, G: 31.00 }
+  },
+  {
+    name: "Chucho",
+    ingredients: "Queso + Chucho + Plátano",
+    image: "https://i.imgur.com/SwPOweb.png",
+    prices: { P: 8.50, M: 13.50, G: 18.50 }
   }
 ];
 
