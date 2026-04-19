@@ -228,7 +228,6 @@ const CategoryCarousel = ({ activeCategory, onCategoryChange, onOpenMenu }) => {
 };
 
 const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
-  if (!isOpen) return null;
   const categories = [
     { name: 'Pizzas', icon: Pizza },
     { name: 'Pasta', icon: Utensils },
@@ -239,10 +238,14 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
   ];
 
   useEffect(() => {
-    const originalStyle = window.getComputedStyle(document.body).overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = originalStyle; };
-  }, []);
+    if (isOpen) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = originalStyle; };
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 z-[250] animate-in fade-in duration-200">
@@ -287,21 +290,36 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
 /* --- Componentes del Carrito --- */
 
 const ProductModal = ({ item, onClose, onAddToCart }) => {
-  if (!item) return null;
-  const availableSizes = ['P', 'M', 'G'].filter(s => item.prices[s] !== undefined);
-  const [size, setSize] = useState(item.defaultSize || availableSizes[0]);
+  const availableSizes = item ? ['P', 'M', 'G'].filter(s => item.prices[s] !== undefined) : [];
+  const [size, setSize] = useState('M');
   const [quantity, setQuantity] = useState(1);
   const [selectedExtras, setSelectedExtras] = useState([]);
 
+  // Sincronizar tamaño inicial cuando cambia el item
   useEffect(() => {
-    const originalStyle = window.getComputedStyle(document.body).overflow;
-    document.body.style.overflow = 'hidden';
-    return () => { document.body.style.overflow = originalStyle; };
-  }, []);
+    if (item) {
+      const sizes = ['P', 'M', 'G'].filter(s => item.prices[s] !== undefined);
+      setSize(item.defaultSize || sizes[0]);
+      setQuantity(1);
+      setSelectedExtras([]);
+    }
+  }, [item]);
 
   useEffect(() => {
-    setSelectedExtras(prev => prev.filter(extra => EXTRAS_CONFIG[extra][size] !== undefined));
-  }, [size, item.name]);
+    if (item) {
+      const originalStyle = window.getComputedStyle(document.body).overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = originalStyle; };
+    }
+  }, [item]);
+
+  useEffect(() => {
+    if (item) {
+      setSelectedExtras(prev => prev.filter(extra => EXTRAS_CONFIG[extra][size] !== undefined));
+    }
+  }, [size, item?.name]);
+
+  if (!item) return null;
 
   const toggleExtra = (extraName) => {
     setSelectedExtras(prev => 
