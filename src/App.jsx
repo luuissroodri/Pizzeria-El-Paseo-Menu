@@ -310,18 +310,18 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
       </div>
 
       {/* Footer / Summary */}
-      <div className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-slate-100 animate-in slide-in-from-bottom duration-300 z-10">
+      <div className="fixed bottom-0 left-0 right-0 py-4 px-6 bg-white border-t border-slate-100 animate-in slide-in-from-bottom duration-300 z-10">
         <div className="max-w-md mx-auto w-full">
-          <div className="flex justify-between items-center mb-6 px-2">
-            <span className="text-slate-400 font-bold">Total a pagar</span>
-            <span className="text-2xl font-black text-slate-900">${subtotal.toFixed(2)}</span>
+          <div className="flex justify-between items-center mb-3 px-2">
+            <span className="text-slate-400 font-bold text-sm">Total a pagar</span>
+            <span className="text-xl font-black text-slate-900">${subtotal.toFixed(2)}</span>
           </div>
           <button
             onClick={onConfirm}
-            className="w-full bg-[#C4121A] text-white h-16 rounded-[2rem] flex items-center justify-center gap-3 font-black shadow-2xl shadow-red-200 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            className="w-full bg-[#C4121A] text-white h-14 rounded-2xl flex items-center justify-center gap-3 font-black shadow-xl shadow-red-200 hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
-            <Rocket size={20} strokeWidth={3} />
-            <span>Confirmar Pedido</span>
+            <Rocket size={18} strokeWidth={3} />
+            <span className="text-sm">Confirmar Pedido</span>
           </button>
         </div>
       </div>
