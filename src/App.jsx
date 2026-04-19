@@ -159,17 +159,17 @@ const CategoryCarousel = () => {
 
   return (
     <div className="px-6 mb-8">
-      <div className="bg-red-50/20 border border-red-100 rounded-2xl p-3 shadow-sm">
+      <div className="bg-white border border-red-100 rounded-2xl p-3 shadow-sm">
         <div className="flex overflow-x-auto gap-3 hide-scrollbar">
           {categories.map((cat) => {
             const Icon = cat.icon;
             return (
               <button
                 key={cat.name}
-                className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200/50 rounded-xl shadow-sm whitespace-nowrap active:scale-95 transition-all hover:bg-slate-50"
+                className="flex items-center gap-2 px-5 py-2.5 bg-[#C4121A] rounded-xl shadow-md shadow-red-100 whitespace-nowrap active:scale-95 transition-all"
               >
-                <Icon size={16} className="text-[#C4121A]" strokeWidth={2.5} />
-                <span className="text-[13px] font-bold text-slate-900">{cat.name}</span>
+                <Icon size={16} className="text-white" strokeWidth={2.5} />
+                <span className="text-[13px] font-medium text-white uppercase tracking-wide">{cat.name}</span>
               </button>
             );
           })}
