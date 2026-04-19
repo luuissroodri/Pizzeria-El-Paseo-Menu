@@ -244,7 +244,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
       <div className="flex-1 overflow-y-auto px-6 py-6 pb-40 hide-scrollbar">
         {/* Cart Items */}
         <div className="space-y-6 mb-10">
-          <h3 className="text-[11px] font-medium uppercase tracking-widest text-slate-900">Mis Productos</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900">Mis Productos</h3>
           {cart.map((item, index) => (
             <div key={`${item.name}-${item.size}`} className="flex gap-4 items-center animate-in fade-in duration-300">
               <div className="w-16 h-16 bg-slate-100 rounded-2xl overflow-hidden flex-shrink-0">
@@ -280,14 +280,14 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
 
         {/* Delivery Mode */}
         <div className="mb-10">
-          <h3 className="text-[11px] font-medium uppercase tracking-widest text-slate-900 mb-4">Modo de Entrega</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-4">Modo de Entrega</h3>
           <div className="flex bg-slate-100 p-1.5 rounded-[1.5rem] gap-1">
             {['Delivery', 'Pick Up'].map((mode) => (
               <button
                 key={mode}
                 onClick={() => setDeliveryMode(mode)}
                 className={`flex-1 py-4 rounded-2xl transition-all duration-300 font-black text-sm ${deliveryMode === mode
-                    ? 'bg-[#C4121A] text-white shadow-xl shadow-red-200 scale-[1.02]'
+                    ? 'bg-[#C4121A] text-white shadow-lg scale-[1.02]'
                     : 'text-slate-500 hover:text-slate-700'
                   }`}
               >
@@ -299,12 +299,12 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
 
         {/* Note */}
         <div className="mb-6">
-          <h3 className="text-[11px] font-medium uppercase tracking-widest text-slate-900 mb-4">Nota para el comercio</h3>
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-4">Nota para el comercio</h3>
           <textarea
             value={note}
             onChange={(e) => setNote(e.target.value)}
             placeholder="Introduce tu nota aquí (opcional)..."
-            className="w-full bg-slate-50 border border-slate-100 rounded-[1.5rem] p-5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-red-500 transition-all min-h-[120px] resize-none"
+            className="w-full bg-red-50/30 border border-red-100 rounded-[1.5rem] p-5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#C4121A] transition-all min-h-[120px] resize-none"
           />
         </div>
       </div>
