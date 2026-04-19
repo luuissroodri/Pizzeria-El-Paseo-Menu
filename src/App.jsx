@@ -244,7 +244,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-6 pb-40 hide-scrollbar">
+      <div className="flex-1 overflow-y-auto px-6 py-6 pb-10 hide-scrollbar">
         {/* Cart Items */}
         <div className="space-y-6 mb-10">
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900">Mis Productos</h3>
@@ -301,7 +301,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
         </div>
 
         {/* Note */}
-        <div className="mb-6">
+        <div className="mb-10">
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-4">Nota para el comercio</h3>
           <textarea
             value={note}
@@ -310,31 +310,37 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
             className="w-full bg-red-50/30 border border-red-100 rounded-[1.5rem] p-5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#C4121A] transition-all min-h-[120px] resize-none"
           />
         </div>
-      </div>
 
-      {/* Footer / Summary */}
-      <div className="fixed bottom-0 left-0 right-0 py-4 px-6 bg-white border-t border-slate-100 animate-in slide-in-from-bottom duration-300 z-10">
-        <div className="max-w-md mx-auto w-full">
-          <div className="space-y-1 mb-4 px-2">
+        {/* Summary & Confirm Button (Integrated) */}
+        <div className="pt-6 border-t border-slate-100 mb-10">
+          <div className="space-y-1.5 mb-6 px-2">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-slate-400 font-bold">Subtotal Pizzas</span>
+              <span className="text-slate-400 font-bold">Subtotal en Pizzas</span>
               <span className="text-slate-600 font-bold">${subtotalPizzas.toFixed(2)}</span>
             </div>
             <div className="flex justify-between items-center text-sm">
-              <span className="text-slate-400 font-bold">Cajas/Empaques</span>
+              <span className="text-slate-400 font-bold">Cajas y Empaques</span>
               <span className="text-slate-600 font-bold">${totalCajas.toFixed(2)}</span>
             </div>
-            <div className="flex justify-between items-center pt-2 mt-2 border-t border-slate-50">
+            
+            {deliveryMode === 'Delivery' && (
+              <div className="flex justify-between items-center text-sm pt-1">
+                <span className="text-slate-400 font-bold">Costo Delivery</span>
+                <span className="text-[#C4121A] font-black text-[10px] uppercase tracking-tighter">Pendiente (según zona)</span>
+              </div>
+            )}
+
+            <div className="flex justify-between items-center pt-3 mt-3 border-t border-slate-50">
               <span className="text-slate-900 font-bold">Total a pagar</span>
-              <span className="text-xl font-black text-slate-900">${totalFinal.toFixed(2)}</span>
+              <span className="text-2xl font-black text-slate-900">${totalFinal.toFixed(2)}</span>
             </div>
           </div>
           <button
             onClick={onConfirm}
-            className="w-full bg-[#C4121A] text-white h-14 rounded-2xl flex items-center justify-center gap-3 font-black shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
+            className="w-full bg-[#C4121A] text-white h-16 rounded-[2rem] flex items-center justify-center gap-3 font-black shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
           >
-            <Rocket size={18} strokeWidth={3} />
-            <span className="text-sm">Confirmar Pedido</span>
+            <Rocket size={20} strokeWidth={3} />
+            <span className="text-base">Confirmar Pedido vía WhatsApp</span>
           </button>
         </div>
       </div>
