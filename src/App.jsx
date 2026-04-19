@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ArrowLeft,
   Heart,
@@ -109,6 +109,28 @@ const PIZZAS = [
     prices: { P: 8.50, M: 13.50, G: 18.50 }
   }
 ];
+
+const EXTRAS_CONFIG = {
+  "Cebolla": { P: 1.50, M: 2.00, G: 2.50 },
+  "Pimentón": { P: 1.50, M: 2.00, G: 2.50 },
+  "Tomate": { P: 1.50, M: 2.00, G: 2.50 },
+  "Berenjena": { P: 1.50, M: 2.00, G: 2.50 },
+  "Piña": { P: 1.50, M: 2.00, G: 2.50 },
+  "Jamón": { P: 2.00, M: 2.50, G: 3.00 },
+  "Anchoas": { P: 1.50, M: 2.50, G: 3.50 },
+  "Champiñón": { P: 2.00, M: 3.50, G: 4.50 },
+  "Tocineta": { P: 4.50, M: 5.50, G: 6.50 },
+  "Salchichón": { P: 4.50, M: 5.50, G: 6.50 },
+  "Peperoni": { P: 2.00, M: 2.50, G: 3.50 },
+  "Pollo (100 grs.)": { G: 2.50 },
+  "Camarones (100 grs.)": { G: 6.50 },
+  "Maíz": { P: 1.50, M: 2.50, G: 3.50 },
+  "Extra Queso": { P: 2.50, M: 3.50, G: 4.50 },
+  "Jamón Serrano (50 grs.)": { G: 10.50 },
+  "Aceitunas": { P: 2.00, M: 2.50, G: 3.00 },
+  "Borde de Queso": { M: 6.00, G: 8.00 },
+  "Queso Parmesano (10 grs.)": { G: 3.00 }
+};
 
 const PizzaCard = ({ name, ingredients, image, prices, onSelect }) => {
   const availableSizes = ['P', 'M', 'G'].filter(s => prices[s] !== undefined);
@@ -263,32 +285,57 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
   const availableSizes = ['P', 'M', 'G'].filter(s => item.prices[s] !== undefined);
   const [size, setSize] = useState(item.defaultSize || availableSizes[0]);
   const [quantity, setQuantity] = useState(1);
+  const [selectedExtras, setSelectedExtras] = useState([]);
 
-  const price = item.prices[size] * quantity;
+  // Reseteamos extras al cambiar de producto o tamaño si algún extra no está disponible
+  useEffect(() => {
+    setSelectedExtras(prev => prev.filter(extra => EXTRAS_CONFIG[extra][size] !== undefined));
+  }, [size, item.name]);
+
+  const toggleExtra = (extraName) => {
+    setSelectedExtras(prev => 
+      prev.includes(extraName) 
+        ? prev.filter(e => e !== extraName) 
+        : [...prev, extraName]
+    );
+  };
+
+  const basePrice = item.prices[size];
+  const extrasTotal = selectedExtras.reduce((sum, extra) => sum + (EXTRAS_CONFIG[extra][size] || 0), 0);
+  const unitPrice = basePrice + extrasTotal;
+  const totalPrice = unitPrice * quantity;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center p-0 sm:p-4 animate-in fade-in duration-200">
-      <div
-        className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm transition-opacity"
-        onClick={onClose}
-      />
-      <div className="relative bg-white w-full max-w-lg rounded-t-[2.5rem] sm:rounded-[3rem] shadow-2xl overflow-hidden animate-in slide-in-from-bottom duration-300">
+    <div className="fixed inset-0 z-[300] bg-white flex flex-col animate-in fade-in duration-200 overflow-hidden">
+      {/* Header / Image Area */}
+      <div className="relative h-72 w-full flex-shrink-0">
+        <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+        <div className="absolute inset-x-0 top-0 h-32 bg-gradient-to-b from-black/50 to-transparent pointer-events-none" />
+        
         <button
           onClick={onClose}
-          className="absolute top-6 right-6 z-10 bg-white/80 backdrop-blur-md p-2 rounded-full shadow-lg text-slate-900 hover:scale-110 active:scale-90 transition-all border border-slate-100"
+          className="absolute top-6 left-6 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-all z-10"
         >
-          <X size={20} strokeWidth={3} />
+          <ArrowLeft size={20} className="text-slate-900" strokeWidth={3} />
         </button>
-        <div className="h-64 w-full bg-slate-100">
-          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-        </div>
-        <div className="p-8">
+
+        <div className="absolute bottom-0 left-0 right-0 h-12 bg-white rounded-t-[2.5rem]" />
+      </div>
+
+      {/* Content Area */}
+      <div className="flex-1 overflow-y-auto px-6 pb-24 -mt-6">
+        <div className="relative z-10">
           <div className="mb-6">
-            <h2 className="text-2xl font-black text-slate-900 mb-2">{item.name}</h2>
-            <p className="text-slate-500 font-medium leading-relaxed text-sm">{item.ingredients}</p>
+            <h2 className="text-3xl font-black text-slate-900 mb-2">{item.name}</h2>
+            <p className="text-slate-500 font-medium leading-relaxed">{item.ingredients}</p>
           </div>
-          <div className="mb-8">
-            <span className="text-[11px] font-black uppercase tracking-wider text-slate-400 mb-3 block">Seleccionar Tamaño</span>
+
+          {/* Size Selector */}
+          <div className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Seleccionar tamaño</h3>
+              <span className="text-xs font-black text-[#C4121A] bg-red-50 px-2 py-1 rounded-lg">Obligatorio</span>
+            </div>
             <div className="flex bg-slate-100 p-1.5 rounded-2xl w-fit">
               {availableSizes.map((s) => (
                 <button
@@ -304,31 +351,85 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
               ))}
             </div>
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center bg-slate-100 rounded-2xl p-1 gap-1">
-              <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="w-10 h-10 flex items-center justify-center text-slate-900 font-bold hover:bg-white rounded-xl transition-all"
-              >
-                <Minus size={18} strokeWidth={3} />
-              </button>
-              <span className="w-10 text-center font-black text-slate-900">{quantity}</span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="w-10 h-10 flex items-center justify-center text-slate-900 font-bold hover:bg-white rounded-xl transition-all"
-              >
-                <Plus size={18} strokeWidth={3} />
-              </button>
+
+          {/* Extras List */}
+          <div className="mb-10">
+            <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-6">Añadir Adicionales</h3>
+            <div className="space-y-3">
+              {Object.entries(EXTRAS_CONFIG).map(([name, prices]) => {
+                const extraPrice = prices[size];
+                if (extraPrice === undefined) return null; // Ocultar si no está disponible para ese tamaño
+
+                const isSelected = selectedExtras.includes(name);
+
+                return (
+                  <button
+                    key={name}
+                    onClick={() => toggleExtra(name)}
+                    className={`w-full flex items-center justify-between p-4 rounded-2xl border-2 transition-all ${
+                      isSelected 
+                        ? 'border-[#C4121A] bg-red-50/30' 
+                        : 'border-slate-100 bg-white hover:border-slate-200'
+                    }`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all ${
+                        isSelected ? 'bg-[#C4121A] border-[#C4121A]' : 'border-slate-200'
+                      }`}>
+                        {isSelected && <div className="w-2 h-2 bg-white rounded-full" />}
+                      </div>
+                      <span className={`font-bold text-sm ${isSelected ? 'text-slate-900' : 'text-slate-600'}`}>
+                        {name}
+                      </span>
+                    </div>
+                    <span className={`text-sm font-black ${isSelected ? 'text-[#C4121A]' : 'text-slate-400'}`}>
+                      +${extraPrice.toFixed(2)}
+                    </span>
+                  </button>
+                );
+              })}
             </div>
-            <button
-              onClick={() => onAddToCart({ ...item, size, quantity, unitPrice: item.prices[size] })}
-              className="flex-1 bg-[#C4121A] h-14 rounded-2xl flex items-center justify-center gap-3 text-white font-black shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all"
-            >
-              <span>Agregar</span>
-              <span className="bg-white/20 px-3 py-1 rounded-lg text-sm">${price.toFixed(2)}</span>
-            </button>
           </div>
+
         </div>
+      </div>
+
+      {/* Fixed Bottom Action Area */}
+      <div className="p-6 border-t border-slate-100 bg-white/90 backdrop-blur-xl flex items-center gap-4">
+        {/* Cantidad Flotante a la Izquierda */}
+        <div className="flex items-center bg-slate-100 rounded-2xl p-1 gap-1">
+          <button
+            onClick={() => setQuantity(Math.max(1, quantity - 1))}
+            className="w-10 h-10 flex items-center justify-center text-slate-900 font-black hover:bg-white rounded-xl transition-all"
+          >
+            <Minus size={18} strokeWidth={3} />
+          </button>
+          <span className="w-8 text-center font-black text-slate-900 text-sm">{quantity}</span>
+          <button
+            onClick={() => setQuantity(quantity + 1)}
+            className="w-10 h-10 flex items-center justify-center text-slate-900 font-black hover:bg-white rounded-xl transition-all"
+          >
+            <Plus size={18} strokeWidth={3} />
+          </button>
+        </div>
+
+        <button
+          onClick={() => onAddToCart({ 
+            ...item, 
+            size, 
+            quantity, 
+            unitPrice: basePrice, 
+            selectedExtras,
+            extrasTotalPerUnit: extrasTotal
+          })}
+          className="flex-1 bg-[#C4121A] h-14 rounded-2xl flex items-center justify-between px-6 text-white shadow-xl active:scale-95 transition-all"
+        >
+          <span className="text-sm font-black uppercase tracking-wider">Agregar</span>
+          <div className="flex items-center gap-2">
+            <div className="w-px h-6 bg-white/20" />
+            <span className="text-lg font-black">${totalPrice.toFixed(2)}</span>
+          </div>
+        </button>
       </div>
     </div>
   );
@@ -339,11 +440,12 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
 
   const BOX_PRICES = { 'P': 0.25, 'M': 0.80, 'G': 1.00 };
   const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+  const subtotalExtras = cart.reduce((sum, item) => sum + (item.extrasTotalPerUnit * item.quantity), 0);
   const totalCajas = cart.reduce((sum, item) => sum + (BOX_PRICES[item.size] || 0) * item.quantity, 0);
-  const totalFinal = subtotalPizzas + totalCajas;
+  const totalFinal = subtotalPizzas + subtotalExtras + totalCajas;
 
   return (
-    <div className="fixed inset-0 z-[150] bg-white flex flex-col animate-in fade-in duration-200">
+    <div className="fixed inset-0 z-[250] bg-white flex flex-col animate-in fade-in duration-200">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100">
         <button onClick={onClose} className="p-2 -ml-2 text-slate-900 hover:bg-slate-50 rounded-full transition-colors">
@@ -356,42 +458,56 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
       {/* Content */}
       <div className="flex-1 overflow-y-auto px-6 py-6 pb-10 hide-scrollbar">
         {/* Cart Items */}
-        <div className="space-y-6 mb-10">
+        <div className="space-y-8 mb-10">
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900">Mis Productos</h3>
           {cart.map((item, index) => (
-            <div key={`${item.name}-${item.size}`} className="flex gap-4 items-center animate-in fade-in duration-300">
-              <div className="w-16 h-16 bg-slate-100 rounded-2xl overflow-hidden flex-shrink-0">
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <div className="flex justify-between items-start mb-1">
-                  <h4 className="font-bold text-slate-900 truncate pr-2">{item.name} ({item.size})</h4>
-                  <span className="font-black text-slate-900 text-sm whitespace-nowrap">${(item.unitPrice * item.quantity).toFixed(2)}</span>
+            <div key={`${item.name}-${item.size}-${item.selectedExtras?.join(',')}`} className="flex flex-col gap-3 animate-in fade-in duration-300">
+              <div className="flex gap-4 items-center">
+                <div className="w-16 h-16 bg-slate-100 rounded-2xl overflow-hidden flex-shrink-0">
+                  <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-slate-400 font-bold">${item.unitPrice.toFixed(2)} c/u</span>
-                  <div className="flex items-center bg-slate-100 rounded-xl p-0.5 gap-2">
-                    <button
-                      onClick={() => updateQuantity(index, -1)}
-                      className="w-7 h-7 flex items-center justify-center text-slate-900 transition-all hover:bg-white rounded-lg"
-                    >
-                      {item.quantity === 1 ? <Trash2 size={14} className="text-red-500" strokeWidth={3} /> : <Minus size={14} strokeWidth={3} />}
-                    </button>
-                    <span className="w-4 text-center font-black text-xs text-slate-900">{item.quantity}</span>
-                    <button
-                      onClick={() => updateQuantity(index, 1)}
-                      className="w-7 h-7 flex items-center justify-center text-slate-900 transition-all hover:bg-white rounded-lg"
-                    >
-                      <Plus size={14} strokeWidth={3} />
-                    </button>
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-start mb-1">
+                    <h4 className="font-bold text-slate-900 truncate pr-2">{item.name} ({item.size})</h4>
+                    <span className="font-black text-slate-900 text-sm whitespace-nowrap">${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-slate-400 font-bold">${(item.unitPrice + item.extrasTotalPerUnit).toFixed(2)} c/u</span>
+                    <div className="flex items-center bg-slate-100 rounded-xl p-0.5 gap-2">
+                      <button
+                        onClick={() => updateQuantity(index, -1)}
+                        className="w-7 h-7 flex items-center justify-center text-slate-900 transition-all hover:bg-white rounded-lg"
+                      >
+                        {item.quantity === 1 ? <Trash2 size={14} className="text-red-500" strokeWidth={3} /> : <Minus size={14} strokeWidth={3} />}
+                      </button>
+                      <span className="w-4 text-center font-black text-xs text-slate-900">{item.quantity}</span>
+                      <button
+                        onClick={() => updateQuantity(index, 1)}
+                        className="w-7 h-7 flex items-center justify-center text-slate-900 transition-all hover:bg-white rounded-lg"
+                      >
+                        <Plus size={14} strokeWidth={3} />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
+              
+              {/* Desglose de Extras en Checkout */}
+              {item.selectedExtras && item.selectedExtras.length > 0 && (
+                <div className="pl-20 flex flex-wrap gap-2">
+                  {item.selectedExtras.map(extra => (
+                    <span key={extra} className="text-[10px] font-bold text-[#C4121A] bg-red-50 px-2 py-0.5 rounded-full border border-red-100">
+                      + {extra}
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           ))}
         </div>
 
-        {/* Delivery Mode */}
+        {/* ... Rest of components (Delivery, Note, Summary) ... */}
+        {/* Update Summary Breakdown */}
         <div className="mb-10">
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-4">Modo de Entrega</h3>
           <div className="flex bg-slate-100 p-1.5 rounded-[1.5rem] gap-1">
@@ -410,7 +526,6 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
           </div>
         </div>
 
-        {/* Note */}
         <div className="mb-10">
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-4">Nota para el comercio</h3>
           <textarea
@@ -421,13 +536,18 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
           />
         </div>
 
-        {/* Summary & Confirm Button (Integrated) */}
         <div className="pt-6 border-t border-slate-100 mb-10">
           <div className="space-y-1.5 mb-6 px-2">
             <div className="flex justify-between items-center text-sm">
               <span className="text-slate-400 font-bold">Subtotal en Pizzas</span>
               <span className="text-slate-600 font-bold">${subtotalPizzas.toFixed(2)}</span>
             </div>
+            {subtotalExtras > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span className="text-slate-400 font-bold">Total Adicionales</span>
+                <span className="text-slate-600 font-bold">${subtotalExtras.toFixed(2)}</span>
+              </div>
+            )}
             <div className="flex justify-between items-center text-sm">
               <span className="text-slate-400 font-bold">Cajas y Empaques</span>
               <span className="text-slate-600 font-bold">${totalCajas.toFixed(2)}</span>
@@ -500,7 +620,10 @@ const App = () => {
   const handleAddToCart = (product) => {
     setCart(prevCart => {
       const existingItemIndex = prevCart.findIndex(
-        item => item.name === product.name && item.size === product.size
+        item => 
+          item.name === product.name && 
+          item.size === product.size && 
+          JSON.stringify(item.selectedExtras) === JSON.stringify(product.selectedExtras)
       );
       if (existingItemIndex !== -1) {
         return prevCart.map((item, i) =>
@@ -533,16 +656,24 @@ const App = () => {
   const sendOrder = () => {
     const BOX_PRICES = { 'P': 0.25, 'M': 0.80, 'G': 1.00 };
     const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+    const subtotalExtras = cart.reduce((sum, item) => sum + (item.extrasTotalPerUnit * item.quantity), 0);
     const totalCajas = cart.reduce((sum, item) => sum + (BOX_PRICES[item.size] || 0) * item.quantity, 0);
-    const totalFinal = subtotalPizzas + totalCajas;
+    const totalFinal = subtotalPizzas + subtotalExtras + totalCajas;
 
     let message = "🍕 *Nuevo Pedido - Pizzeria El Paseo* 🍕\n\n";
     message += `📍 *Modo:* ${deliveryMode}\n`;
     
     message += `\n*Productos:*\n`;
     cart.forEach((item) => {
-      const itemBoxCost = (BOX_PRICES[item.size] || 0) * item.quantity;
-      message += `• ${item.quantity}x ${item.name} (${item.size}) - $${(item.unitPrice * item.quantity).toFixed(2)}\n`;
+      const sizeFull = item.size === 'P' ? 'Pequeña' : item.size === 'M' ? 'Mediana' : 'Grande';
+      message += `• ${item.quantity}x ${item.name} (${sizeFull}) - $${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}\n`;
+      
+      if (item.selectedExtras && item.selectedExtras.length > 0) {
+        item.selectedExtras.forEach(extra => {
+          const extraPrice = EXTRAS_CONFIG[extra][item.size];
+          message += `  + ${extra} ($${extraPrice.toFixed(2)})\n`;
+        });
+      }
     });
 
     if (totalCajas > 0) {
