@@ -364,7 +364,7 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, image
 
   return (
     <div
-      onClick={() => onSelect({ name, ingredients, image, prices, defaultSize: size })}
+      onClick={() => onSelect({ name, ingredients, image, prices, defaultSize: size, noExtras })}
       className="bg-white border border-slate-100 rounded-3xl p-4 flex gap-4 shadow-sm hover:shadow-md active:scale-[0.98] transition-all cursor-pointer relative overflow-hidden mb-4 last:mb-0"
     >
       <div className="w-28 h-28 relative flex-shrink-0 bg-slate-50 rounded-2xl overflow-hidden p-0">
