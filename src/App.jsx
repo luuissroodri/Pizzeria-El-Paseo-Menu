@@ -24,8 +24,9 @@ import {
   Music2,
   Utensils,
   Fish,
-  Drumstick,
-  CupSoda
+  Leaf,
+  CupSoda,
+  Drumstick
 } from 'lucide-react';
 
 
@@ -132,6 +133,36 @@ const EXTRAS_CONFIG = {
   "Queso Parmesano (10 grs.)": { G: 3.00 }
 };
 
+const PASTAS_PRODUCTS = [
+  {
+    name: "Pasta de camarones",
+    ingredients: "Pasta perfectamente al dente bañada en nuestra cremosa salsa blanca con camarones frescos.",
+    image: "https://i.imgur.com/7VmjM4j.jpeg",
+    prices: { UNICO: 20.00 },
+    noExtras: true
+  }
+];
+
+const ENSALADAS_PRODUCTS = [
+  {
+    name: "Ensalada Capresa",
+    ingredients: "Rodajas de tomate fresco, mozzarella de búfala y albahaca, bañadas en aceite de oliva y pesto.",
+    image: "https://i.imgur.com/UWWTrxe.jpeg",
+    prices: { UNICO: 7.00 },
+    noExtras: true
+  }
+];
+
+const MAR_PRODUCTS = [
+  {
+    name: "Tapas de Sardina",
+    ingredients: "Sardinas frescas preparadas al estilo tradicional.",
+    image: "https://i.imgur.com/OzfdThM.jpeg",
+    prices: { UNICO: 5.00 },
+    noExtras: true
+  }
+];
+
 const POSTRES = [
   {
     name: "Banana Split",
@@ -177,7 +208,7 @@ const POSTRES = [
   }
 ];
 
-const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras }) => {
+const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, imagePosition = "center" }) => {
   const availableSizes = ['P', 'M', 'G', 'UNICO'].filter(s => prices[s] !== undefined);
   const [size, setSize] = useState(availableSizes[0] || 'UNICO');
 
@@ -191,6 +222,7 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras }) => 
           src={image}
           alt={name}
           className="w-full h-full object-cover"
+          style={{ objectPosition: imagePosition }}
         />
       </div>
       <div className="flex flex-col flex-1 justify-between pt-1">
@@ -237,7 +269,7 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras }) => 
 };
 
 const CategoryCarousel = ({ activeCategory, onCategoryChange, onOpenMenu }) => {
-  const categories = ['Pizzas', 'Pasta', 'Mar', 'Aves', 'Especialidades', 'Bebidas'];
+  const categories = ['Pizzas', 'Pasta', 'Ensaladas', 'Mar', 'Aves', 'Especialidades', 'Bebidas'];
 
   return (
     <div className="flex items-center px-6 mb-8 gap-4 overflow-hidden">
@@ -280,6 +312,7 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
   const categories = [
     { name: 'Pizzas', icon: Pizza },
     { name: 'Pasta', icon: Utensils },
+    { name: 'Ensaladas', icon: Leaf },
     { name: 'Mar', icon: Fish },
     { name: 'Aves', icon: Drumstick },
     { name: 'Especialidades', icon: Sparkles },
@@ -397,7 +430,12 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
       <div className="flex-1 overflow-y-auto hide-scrollbar pb-12">
         {/* Imagen Hero - Ahora parte del scroll */}
         <div className="h-[45vh] w-full relative">
-          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+          <img 
+            src={item.image} 
+            alt={item.name} 
+            className="w-full h-full object-cover" 
+            style={{ objectPosition: item.imagePosition || 'center' }}
+          />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
 
@@ -900,6 +938,42 @@ const App = () => {
             ))}
           </div>
 
+          {/* Section: Menu Category - Pastas (New) */}
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Pastas</h2>
+              <Utensils size={20} className="text-slate-900" />
+            </div>
+
+            {PASTAS_PRODUCTS.map((prod) => (
+              <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
+            ))}
+          </div>
+
+          {/* Section: Menu Category - Ensaladas (New) */}
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Ensaladas</h2>
+              <Leaf size={20} className="text-slate-900" />
+            </div>
+
+            {ENSALADAS_PRODUCTS.map((prod) => (
+              <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
+            ))}
+          </div>
+
+          {/* Section: Menu Category - Mar (New) */}
+          <div className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Mar</h2>
+              <Fish size={20} className="text-slate-900" />
+            </div>
+
+            {MAR_PRODUCTS.map((prod) => (
+              <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
+            ))}
+          </div>
+
             {/* Section 6: Menu Category - Especialidades */}
             <div className="px-6 mb-8">
               <div className="flex items-center gap-2 mb-4">
@@ -912,8 +986,10 @@ const App = () => {
                 name="Torre de Calamares"
                 ingredients="Crujientes aros de calamar servidos con salsa tártara y limón."
                 image="https://i.imgur.com/R4E8LUL.jpeg"
-                prices={{ P: 20.00 }}
+                imagePosition="center 95%"
+                prices={{ UNICO: 20.00 }}
                 onSelect={setSelectedItem}
+                noExtras={true}
               />
             </div>
 
