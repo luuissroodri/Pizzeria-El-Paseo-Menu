@@ -343,7 +343,10 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
 
           {/* Selector de Tamaño - Estilo Pill Revertido */}
           <div className="mb-10">
-            <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-4">Seleccionar tamaño</h3>
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Seleccionar tamaño</h3>
+              <span className="text-xs font-black text-[#C4121A] bg-red-50 px-2 py-1 rounded-lg">Obligatorio</span>
+            </div>
             <div className="flex bg-slate-100 p-1.5 rounded-2xl w-fit">
               {availableSizes.map((s) => (
                 <button
@@ -398,44 +401,44 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
               })}
             </div>
           </div>
-        </div>
-      </div>
+          {/* Botones de Acción al Final del Scroll */}
+          <div className="mt-12 mb-10 flex items-center gap-4">
+            {/* Cantidad */}
+            <div className="flex items-center bg-slate-100 rounded-2xl p-1 gap-1">
+              <button
+                onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                className="w-10 h-10 flex items-center justify-center text-slate-900 font-black hover:bg-white rounded-xl transition-all"
+              >
+                <Minus size={18} strokeWidth={3} />
+              </button>
+              <span className="w-8 text-center font-black text-slate-900 text-sm">{quantity}</span>
+              <button
+                onClick={() => setQuantity(quantity + 1)}
+                className="w-10 h-10 flex items-center justify-center text-slate-900 font-black hover:bg-white rounded-xl transition-all"
+              >
+                <Plus size={18} strokeWidth={3} />
+              </button>
+            </div>
 
-      {/* Footer Fijo */}
-      <div className="fixed bottom-0 left-0 right-0 p-6 border-t border-slate-100 bg-white/90 backdrop-blur-xl flex items-center gap-4 z-[305]">
-        <div className="flex items-center bg-slate-100 rounded-2xl p-1 gap-1">
-          <button
-            onClick={() => setQuantity(Math.max(1, quantity - 1))}
-            className="w-10 h-10 flex items-center justify-center text-slate-900 font-black hover:bg-white rounded-xl transition-all"
-          >
-            <Minus size={18} strokeWidth={3} />
-          </button>
-          <span className="w-8 text-center font-black text-slate-900 text-sm">{quantity}</span>
-          <button
-            onClick={() => setQuantity(quantity + 1)}
-            className="w-10 h-10 flex items-center justify-center text-slate-900 font-black hover:bg-white rounded-xl transition-all"
-          >
-            <Plus size={18} strokeWidth={3} />
-          </button>
-        </div>
-
-        <button
-          onClick={() => onAddToCart({ 
-            ...item, 
-            size, 
-            quantity, 
-            unitPrice: basePrice, 
-            selectedExtras,
-            extrasTotalPerUnit: extrasTotal
-          })}
-          className="flex-1 bg-[#C4121A] h-14 rounded-xl flex items-center justify-between px-6 text-white shadow-xl active:scale-95 transition-all"
-        >
-          <span className="text-sm font-black uppercase tracking-wider">Agregar</span>
-          <div className="flex items-center gap-2">
-            <div className="w-px h-6 bg-white/20" />
-            <span className="text-lg font-black">${totalPrice.toFixed(2)}</span>
+            <button
+              onClick={() => onAddToCart({ 
+                ...item, 
+                size, 
+                quantity, 
+                unitPrice: basePrice, 
+                selectedExtras,
+                extrasTotalPerUnit: extrasTotal
+              })}
+              className="flex-1 bg-[#C4121A] h-14 rounded-xl flex items-center justify-between px-6 text-white shadow-xl active:scale-95 transition-all"
+            >
+              <span className="text-sm font-black uppercase tracking-wider">Agregar</span>
+              <div className="flex items-center gap-2">
+                <div className="w-px h-6 bg-white/20" />
+                <span className="text-lg font-black">${totalPrice.toFixed(2)}</span>
+              </div>
+            </button>
           </div>
-        </button>
+        </div>
       </div>
     </div>
   );
