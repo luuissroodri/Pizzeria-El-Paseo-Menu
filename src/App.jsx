@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {
   ArrowLeft,
-  Search,
   Heart,
   Clock,
   MapPin,
@@ -22,7 +21,11 @@ import {
   Circle,
   Instagram,
   MessageCircle,
-  Music2
+  Music2,
+  Utensils,
+  Fish,
+  Drumstick,
+  CupSoda
 } from 'lucide-react';
 
 
@@ -138,6 +141,38 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect }) => {
               <Plus size={20} strokeWidth={3} />
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CategoryCarousel = () => {
+  const categories = [
+    { name: 'Pizzas', icon: Pizza },
+    { name: 'Pasta', icon: Utensils },
+    { name: 'Mar', icon: Fish },
+    { name: 'Aves', icon: Drumstick },
+    { name: 'Especialidades', icon: Sparkles },
+    { name: 'Bebidas', icon: CupSoda },
+  ];
+
+  return (
+    <div className="px-6 mb-8">
+      <div className="bg-red-50/20 border border-red-100 rounded-2xl p-3 shadow-sm">
+        <div className="flex overflow-x-auto gap-3 hide-scrollbar">
+          {categories.map((cat) => {
+            const Icon = cat.icon;
+            return (
+              <button
+                key={cat.name}
+                className="flex items-center gap-2 px-4 py-2 bg-white border border-slate-200/50 rounded-xl shadow-sm whitespace-nowrap active:scale-95 transition-all hover:bg-slate-50"
+              >
+                <Icon size={16} className="text-[#C4121A]" strokeWidth={2.5} />
+                <span className="text-[13px] font-bold text-slate-900">{cat.name}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
@@ -547,6 +582,9 @@ const App = () => {
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-black/10 rounded-full -ml-12 -mb-12 pointer-events-none" />
             </div>
           </div>
+
+          {/* New Section: Categories Carousel */}
+          <CategoryCarousel />
 
           {/* Section 5: Menu Category - Pizzas */}
           <div className="px-6 mb-8">
