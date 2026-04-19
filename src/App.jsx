@@ -881,10 +881,12 @@ const App = () => {
         onClose={() => setSelectedItem(null)}
         onAddToCart={handleAddToCart}
       />
-      <CartSummary
-        cart={cart}
-        onCheckout={() => setIsCheckoutOpen(true)}
-      />
+      {!selectedItem && !isCheckoutOpen && !isCategoryMenuOpen && (
+        <CartSummary
+          cart={cart}
+          onCheckout={() => setIsCheckoutOpen(true)}
+        />
+      )}
       <CheckoutModal
         isOpen={isCheckoutOpen}
         onClose={() => setIsCheckoutOpen(false)}
