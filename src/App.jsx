@@ -237,6 +237,51 @@ const ENSALADAS_PRODUCTS = [
   }
 ];
 
+const BEBIDAS_PRODUCTS = [
+  {
+    name: "Refresco en Botella",
+    ingredients: "Variedad de refrescos nacionales en presentación de botella.",
+    image: "https://i.imgur.com/qyyL98u.jpeg",
+    prices: { UNICO: 1.25 },
+    noExtras: true
+  },
+  {
+    name: "Malta Botella",
+    ingredients: "Refrescante malta nacional fría.",
+    image: "https://i.imgur.com/34Ih5hL.jpeg",
+    prices: { UNICO: 1.25 },
+    noExtras: true
+  },
+  {
+    name: "Limonada Frappe",
+    ingredients: "Limonada recién exprimida con el punto justo de frappé.",
+    image: "https://i.imgur.com/UTi4i08.jpeg",
+    prices: { UNICO: 3.25 },
+    noExtras: true
+  },
+  {
+    name: "Batido de Lechoza",
+    ingredients: "Fresca y cremosa lechoza batida al momento.",
+    image: "https://i.imgur.com/LTJlg54.jpeg",
+    prices: { UNICO: 2.75 },
+    noExtras: true
+  },
+  {
+    name: "Batido de Fresa",
+    ingredients: "Fresas naturales seleccionadas, batidas al momento.",
+    image: "https://i.imgur.com/fPyo3dh.jpeg",
+    prices: { UNICO: 3.75 },
+    noExtras: true
+  },
+  {
+    name: "Batido de Parchita",
+    ingredients: "Parchita natural seleccionada y batida al momento.",
+    image: "https://i.imgur.com/PJcAynE.jpeg",
+    prices: { UNICO: 3.75 },
+    noExtras: true
+  }
+];
+
 const MAR_PRODUCTS = [
   {
     name: "Ensalada de Catalana",
@@ -447,6 +492,7 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
         </div>
         <div className="flex-1 overflow-y-auto p-4 space-y-2">
           {categories.map((cat) => {
+            const phoneNumber = "584248925818";
             const Icon = cat.icon;
             const isActive = activeCategory === cat.name;
             return (
@@ -922,7 +968,7 @@ const App = () => {
     message += `*Total General: $${totalFinal.toFixed(2)}*`;
 
     const encodedMessage = encodeURIComponent(message);
-    window.open(`https://wa.me/584248812988?text=${encodedMessage}`, '_blank');
+    window.open(`https://wa.me/584248925818?text=${encodedMessage}`, '_blank');
   };
 
   return (
@@ -1028,12 +1074,18 @@ const App = () => {
           {/* New Section: Categories Carousel */}
           <CategoryCarousel 
             activeCategory={activeCategory} 
-            onCategoryChange={setActiveCategory}
+            onCategoryChange={(category) => {
+              setActiveCategory(category);
+              const element = document.getElementById(`section-${category}`);
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
+            }}
             onOpenMenu={() => setIsCategoryMenuOpen(true)}
           />
 
           {/* Section 5: Menu Category - Pizzas */}
-          <div className="px-6 mb-8">
+          <div id="section-Pizzas" className="px-6 mb-8 mt-4">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Pizzas</h2>
               <Pizza size={20} className="text-slate-900" />
@@ -1045,7 +1097,7 @@ const App = () => {
           </div>
 
           {/* Section: Menu Category - Pastas */}
-          <div className="px-6 mb-8">
+          <div id="section-Pasta" className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Pastas</h2>
               <Utensils size={20} className="text-slate-900" />
@@ -1056,7 +1108,7 @@ const App = () => {
           </div>
 
           {/* Section: Menu Category - Mar */}
-          <div className="px-6 mb-8">
+          <div id="section-Mar" className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Mar</h2>
               <Fish size={20} className="text-slate-900" />
@@ -1067,7 +1119,7 @@ const App = () => {
           </div>
 
           {/* Section 6: Menu Category - Sugerencias */}
-          <div className="px-6 mb-8">
+          <div id="section-Sugerencias" className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Sugerencias</h2>
               <Sparkles size={20} className="text-slate-900" />
@@ -1078,7 +1130,7 @@ const App = () => {
           </div>
 
           {/* Section: Menu Category - Ensaladas */}
-          <div className="px-6 mb-8">
+          <div id="section-Ensaladas" className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Ensaladas</h2>
               <Leaf size={20} className="text-slate-900" />
@@ -1089,7 +1141,7 @@ const App = () => {
           </div>
 
           {/* Section: Menu Category - Hamburguesas */}
-          <div className="px-6 mb-8">
+          <div id="section-Hamburguesas" className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Hamburguesas</h2>
               <Beef size={20} className="text-slate-900" />
@@ -1100,13 +1152,25 @@ const App = () => {
           </div>
 
           {/* Section: Menu Category - Postres */}
-          <div className="px-6 mb-8">
+          <div id="section-Postres" className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Postres</h2>
               <CupSoda size={20} className="text-slate-900" />
             </div>
             {POSTRES.map((postre) => (
               <PizzaCard key={postre.name} {...postre} onSelect={setSelectedItem} />
+            ))}
+          </div>
+
+          {/* Section: Menu Category - Bebidas (New) */}
+          <div id="section-Bebidas" className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Bebidas</h2>
+              <Rocket size={20} className="text-slate-900" />
+            </div>
+
+            {BEBIDAS_PRODUCTS.map((prod) => (
+              <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
             ))}
           </div>
 
@@ -1139,7 +1203,16 @@ const App = () => {
       <CategoryMenuOverlay
         isOpen={isCategoryMenuOpen}
         onClose={() => setIsCategoryMenuOpen(false)}
-        onSelect={setActiveCategory}
+        onSelect={(category) => {
+          setIsCategoryMenuOpen(false);
+          setActiveCategory(category);
+          setTimeout(() => {
+            const element = document.getElementById(`section-${category}`);
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 300);
+        }}
         activeCategory={activeCategory}
       />
 
