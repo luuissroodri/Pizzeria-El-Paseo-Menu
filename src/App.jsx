@@ -734,7 +734,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-y-auto px-6 py-6 pb-10 hide-scrollbar">
+      <div className="flex-1 overflow-y-auto px-6 py-6 pb-6 hide-scrollbar">
         {/* Cart Items */}
         <div className="space-y-8 mb-10">
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900">Mis Productos</h3>
@@ -816,10 +816,10 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
           />
         </div>
 
-        <div className="pt-6 border-t border-slate-100 mb-10">
+        <div className="pt-6 border-t border-slate-100 mb-4">
           <div className="space-y-1.5 mb-6 px-2">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-slate-400 font-bold">Subtotal en Pizzas</span>
+              <span className="text-slate-400 font-bold">Subtotal en Platos</span>
               <span className="text-slate-600 font-bold">${subtotalPizzas.toFixed(2)}</span>
             </div>
             {subtotalExtras > 0 && (
