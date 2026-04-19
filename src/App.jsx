@@ -227,7 +227,10 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
 const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, setDeliveryMode, note, setNote, onConfirm }) => {
   if (!isOpen) return null;
 
-  const subtotal = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+  const BOX_PRICES = { 'P': 0.25, 'M': 0.80, 'G': 1.00 };
+  const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+  const totalCajas = cart.reduce((sum, item) => sum + (BOX_PRICES[item.size] || 0) * item.quantity, 0);
+  const totalFinal = subtotalPizzas + totalCajas;
 
   return (
     <div className="fixed inset-0 z-[150] bg-white flex flex-col animate-in fade-in duration-200">
@@ -312,9 +315,19 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
       {/* Footer / Summary */}
       <div className="fixed bottom-0 left-0 right-0 py-4 px-6 bg-white border-t border-slate-100 animate-in slide-in-from-bottom duration-300 z-10">
         <div className="max-w-md mx-auto w-full">
-          <div className="flex justify-between items-center mb-3 px-2">
-            <span className="text-slate-400 font-bold text-sm">Total a pagar</span>
-            <span className="text-xl font-black text-slate-900">${subtotal.toFixed(2)}</span>
+          <div className="space-y-1 mb-4 px-2">
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-slate-400 font-bold">Subtotal Pizzas</span>
+              <span className="text-slate-600 font-bold">${subtotalPizzas.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between items-center text-sm">
+              <span className="text-slate-400 font-bold">Cajas/Empaques</span>
+              <span className="text-slate-600 font-bold">${totalCajas.toFixed(2)}</span>
+            </div>
+            <div className="flex justify-between items-center pt-2 mt-2 border-t border-slate-50">
+              <span className="text-slate-900 font-bold">Total a pagar</span>
+              <span className="text-xl font-black text-slate-900">${totalFinal.toFixed(2)}</span>
+            </div>
           </div>
           <button
             onClick={onConfirm}
@@ -400,21 +413,30 @@ const App = () => {
   };
 
   const sendOrder = () => {
-    const total = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+    const BOX_PRICES = { 'P': 0.25, 'M': 0.80, 'G': 1.00 };
+    const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
+    const totalCajas = cart.reduce((sum, item) => sum + (BOX_PRICES[item.size] || 0) * item.quantity, 0);
+    const totalFinal = subtotalPizzas + totalCajas;
+
     let message = "🍕 *Nuevo Pedido - Pizzeria El Paseo* 🍕\n\n";
     message += `📍 *Modo:* ${deliveryMode}\n`;
     
     message += `\n*Productos:*\n`;
     cart.forEach((item) => {
+      const itemBoxCost = (BOX_PRICES[item.size] || 0) * item.quantity;
       message += `• ${item.quantity}x ${item.name} (${item.size}) - $${(item.unitPrice * item.quantity).toFixed(2)}\n`;
     });
+
+    if (totalCajas > 0) {
+      message += `\n📦 *Empaques/Cajas:* $${totalCajas.toFixed(2)}\n`;
+    }
 
     if (orderNote.trim()) {
       message += `\n📝 *Nota:* ${orderNote}\n`;
     }
 
     message += `\n------------------------------\n`;
-    message += `*Total General: $${total.toFixed(2)}*`;
+    message += `*Total General: $${totalFinal.toFixed(2)}*`;
 
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/584248812988?text=${encodedMessage}`, '_blank');
