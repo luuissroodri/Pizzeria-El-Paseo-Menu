@@ -26,6 +26,7 @@ import {
   Fish,
   Leaf,
   CupSoda,
+  Dessert,
   Drumstick,
   Beef
 } from 'lucide-react';
@@ -411,8 +412,8 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, image
                   key={s}
                   onClick={() => setSize(s)}
                   className={`px-3 py-1 text-[10px] rounded-md transition-all duration-200 ${size === s
-                      ? 'bg-[#C4121A] shadow-sm text-white font-black'
-                      : 'text-slate-400 font-bold hover:text-slate-600'
+                    ? 'bg-[#C4121A] shadow-sm text-white font-black'
+                    : 'text-slate-400 font-bold hover:text-slate-600'
                     }`}
                 >
                   {s}
@@ -462,15 +463,13 @@ const CategoryCarousel = ({ activeCategory, onCategoryChange, onOpenMenu }) => {
               onClick={() => onCategoryChange(cat)}
               className="relative flex flex-col items-center group whitespace-nowrap pt-1"
             >
-              <span className={`text-[15px] transition-all duration-300 font-bold leading-none ${
-                isActive ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'
-              }`}>
+              <span className={`text-[15px] transition-all duration-300 font-bold leading-none ${isActive ? 'text-slate-900' : 'text-slate-400 hover:text-slate-600'
+                }`}>
                 {cat}
               </span>
               {/* Underline Indicator */}
-              <div className={`mt-2 h-0.5 bg-[#C4121A] rounded-full transition-all duration-300 ${
-                isActive ? 'w-full opacity-100' : 'w-0 opacity-0'
-              }`} />
+              <div className={`mt-2 h-0.5 bg-[#C4121A] rounded-full transition-all duration-300 ${isActive ? 'w-full opacity-100' : 'w-0 opacity-0'
+                }`} />
             </button>
           );
         })}
@@ -487,8 +486,8 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
     { name: 'Sugerencias', icon: Sparkles },
     { name: 'Ensaladas', icon: Leaf },
     { name: 'Hamburguesas', icon: Beef },
-    { name: 'Postres', icon: CupSoda },
-    { name: 'Bebidas', icon: Rocket },
+    { name: 'Postres', icon: Dessert },
+    { name: 'Bebidas', icon: CupSoda },
   ];
 
   useEffect(() => {
@@ -520,9 +519,8 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
               <button
                 key={cat.name}
                 onClick={() => { onSelect(cat.name); onClose(); }}
-                className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all ${
-                  isActive ? 'bg-red-50 text-[#C4121A]' : 'text-slate-600 hover:bg-slate-50'
-                }`}
+                className={`w-full flex items-center gap-4 px-4 py-4 rounded-2xl transition-all ${isActive ? 'bg-red-50 text-[#C4121A]' : 'text-slate-600 hover:bg-slate-50'
+                  }`}
               >
                 <div className={`${isActive ? 'text-[#C4121A]' : 'text-slate-400'}`}>
                   <Icon size={20} strokeWidth={2.5} />
@@ -577,9 +575,9 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
   if (!item) return null;
 
   const toggleExtra = (extraName) => {
-    setSelectedExtras(prev => 
-      prev.includes(extraName) 
-        ? prev.filter(e => e !== extraName) 
+    setSelectedExtras(prev =>
+      prev.includes(extraName)
+        ? prev.filter(e => e !== extraName)
         : [...prev, extraName]
     );
   };
@@ -603,10 +601,10 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
       <div className="flex-1 overflow-y-auto hide-scrollbar pb-12">
         {/* Imagen Hero - Ahora parte del scroll */}
         <div className="h-[45vh] w-full relative">
-          <img 
-            src={item.image} 
-            alt={item.name} 
-            className="w-full h-full object-cover" 
+          <img
+            src={item.image}
+            alt={item.name}
+            className="w-full h-full object-cover"
             style={{ objectPosition: item.imagePosition || 'center' }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
@@ -632,8 +630,8 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
                     key={s}
                     onClick={() => setSize(s)}
                     className={`px-8 py-3 text-sm rounded-xl transition-all duration-300 ${size === s
-                        ? 'bg-[#C4121A] shadow-lg text-white font-black scale-[1.02]'
-                        : 'text-slate-500 font-bold hover:text-slate-700'
+                      ? 'bg-[#C4121A] shadow-lg text-white font-black scale-[1.02]'
+                      : 'text-slate-500 font-bold hover:text-slate-700'
                       }`}
                   >
                     {s}
@@ -658,16 +656,14 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
                     <button
                       key={name}
                       onClick={() => toggleExtra(name)}
-                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${
-                        isSelected 
-                          ? 'border-[#C4121A] bg-red-50/30' 
+                      className={`w-full flex items-center justify-between p-4 rounded-xl border-2 transition-all ${isSelected
+                          ? 'border-[#C4121A] bg-red-50/30'
                           : 'border-slate-100 bg-white hover:border-slate-200'
-                      }`}
+                        }`}
                     >
                       <div className="flex items-center gap-3">
-                        <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${
-                          isSelected ? 'bg-[#C4121A] border-[#C4121A]' : 'border-slate-200'
-                        }`}>
+                        <div className={`w-6 h-6 rounded-lg border-2 flex items-center justify-center transition-all ${isSelected ? 'bg-[#C4121A] border-[#C4121A]' : 'border-slate-200'
+                          }`}>
                           {isSelected && <Plus size={14} className="text-white" strokeWidth={4} />}
                         </div>
                         <span className={`font-bold text-sm ${isSelected ? 'text-slate-900' : 'text-slate-600'}`}>
@@ -703,11 +699,11 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
             </div>
 
             <button
-              onClick={() => onAddToCart({ 
-                ...item, 
-                size, 
-                quantity, 
-                unitPrice: basePrice, 
+              onClick={() => onAddToCart({
+                ...item,
+                size,
+                quantity,
+                unitPrice: basePrice,
                 selectedExtras,
                 extrasTotalPerUnit: extrasTotal
               })}
@@ -792,7 +788,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
                   </div>
                 </div>
               </div>
-              
+
               {/* Desglose de Extras en Checkout */}
               {item.selectedExtras && item.selectedExtras.length > 0 && (
                 <div className="pl-20 flex flex-wrap gap-2">
@@ -817,8 +813,8 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
                 key={mode}
                 onClick={() => setDeliveryMode(mode)}
                 className={`flex-1 py-4 rounded-2xl transition-all duration-300 font-black text-sm ${deliveryMode === mode
-                    ? 'bg-[#C4121A] text-white shadow-lg scale-[1.02]'
-                    : 'text-slate-500 hover:text-slate-700'
+                  ? 'bg-[#C4121A] text-white shadow-lg scale-[1.02]'
+                  : 'text-slate-500 hover:text-slate-700'
                   }`}
               >
                 {mode}
@@ -853,7 +849,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
               <span className="text-slate-400 font-bold">Cajas y Empaques</span>
               <span className="text-slate-600 font-bold">${totalCajas.toFixed(2)}</span>
             </div>
-            
+
             {deliveryMode === 'Delivery' && (
               <div className="flex justify-between items-center text-sm pt-1">
                 <span className="text-slate-400 font-bold">Costo Delivery</span>
@@ -921,9 +917,9 @@ const App = () => {
   const handleAddToCart = (product) => {
     setCart(prevCart => {
       const existingItemIndex = prevCart.findIndex(
-        item => 
-          item.name === product.name && 
-          item.size === product.size && 
+        item =>
+          item.name === product.name &&
+          item.size === product.size &&
           JSON.stringify(item.selectedExtras) === JSON.stringify(product.selectedExtras)
       );
       if (existingItemIndex !== -1) {
@@ -963,12 +959,12 @@ const App = () => {
 
     let message = "🍕 *Nuevo Pedido - Pizzeria El Paseo* 🍕\n\n";
     message += `📍 *Modo:* ${deliveryMode}\n`;
-    
+
     message += `\n*Productos:*\n`;
     cart.forEach((item) => {
       let itemLine = `• ${item.quantity}x ${item.name}${item.size !== 'UNICO' ? ` (${item.size})` : ''} - $${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}`;
       message += itemLine + '\n';
-      
+
       if (item.selectedExtras && item.selectedExtras.length > 0) {
         item.selectedExtras.forEach(extra => {
           const extraPrice = EXTRAS_CONFIG[extra][item.size];
@@ -1093,8 +1089,8 @@ const App = () => {
           </div>
 
           {/* New Section: Categories Carousel */}
-          <CategoryCarousel 
-            activeCategory={activeCategory} 
+          <CategoryCarousel
+            activeCategory={activeCategory}
             onCategoryChange={(category) => {
               setActiveCategory(category);
               const element = document.getElementById(`section-${category}`);
@@ -1176,7 +1172,7 @@ const App = () => {
           <div id="section-Postres" className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Postres</h2>
-              <CupSoda size={20} className="text-slate-900" />
+              <Dessert size={20} className="text-slate-900" />
             </div>
             {POSTRES.map((postre) => (
               <PizzaCard key={postre.name} {...postre} onSelect={setSelectedItem} />
@@ -1187,7 +1183,7 @@ const App = () => {
           <div id="section-Bebidas" className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
               <h2 className="text-xl font-black text-slate-900 tracking-tight">Bebidas</h2>
-              <Rocket size={20} className="text-slate-900" />
+              <CupSoda size={20} className="text-slate-900" />
             </div>
 
             {BEBIDAS_PRODUCTS.map((prod) => (
