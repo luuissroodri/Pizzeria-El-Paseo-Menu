@@ -239,6 +239,27 @@ const ENSALADAS_PRODUCTS = [
 
 const BEBIDAS_PRODUCTS = [
   {
+    name: "Refresco 1 L",
+    ingredients: "Solo para delivery o pickup",
+    image: "https://i.imgur.com/k0CnTfo.jpeg",
+    prices: { UNICO: 1.50 },
+    noExtras: true
+  },
+  {
+    name: "Refresco 1.5 L",
+    ingredients: "Solo para delivery o pickup",
+    image: "https://i.imgur.com/ilV4XK8.jpeg",
+    prices: { UNICO: 2.00 },
+    noExtras: true
+  },
+  {
+    name: "Refresco 2 L",
+    ingredients: "Solo para delivery o pickup",
+    image: "https://i.imgur.com/4QMDrho.jpeg",
+    prices: { UNICO: 2.50 },
+    noExtras: true
+  },
+  {
     name: "Refresco en Botella",
     ingredients: "Variedad de refrescos nacionales en presentación de botella.",
     image: "https://i.imgur.com/qyyL98u.jpeg",
