@@ -716,7 +716,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
 
   if (!isOpen) return null;
 
-  const BOX_PRICES = { 'P': 0.25, 'M': 0.80, 'G': 1.00 };
+  const BOX_PRICES = { 'P': 0.75, 'M': 0.80, 'G': 1.00 };
   const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
   const subtotalExtras = cart.reduce((sum, item) => sum + (item.extrasTotalPerUnit * item.quantity), 0);
   const totalCajas = cart.reduce((sum, item) => sum + (BOX_PRICES[item.size] || 0) * item.quantity, 0);
