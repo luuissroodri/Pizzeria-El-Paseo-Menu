@@ -904,8 +904,7 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
                   </button>
                 </div>
                 <div 
-                  onClick={(!deliveryAddress && !isLocating) ? handleGetLocation : undefined}
-                  className={`bg-white border-2 border-slate-100 rounded-2xl p-4 flex gap-3 items-center shadow-sm relative transition-all ${!deliveryAddress ? 'cursor-pointer hover:border-red-100 hover:bg-red-50/20 active:scale-[0.98]' : ''}`}
+                  className={`bg-white border-2 border-slate-100 rounded-2xl p-4 flex gap-3 shadow-sm relative transition-all focus-within:border-red-100 focus-within:ring-2 focus-within:ring-red-50`}
                 >
                   <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center ${deliveryAddress ? 'bg-red-50 text-[#C4121A]' : 'bg-slate-50 text-slate-400'}`}>
                     {isLocating ? (
@@ -914,14 +913,15 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
                       <MapPin size={20} strokeWidth={2.5} />
                     )}
                   </div>
-                  <div className="flex-1 min-w-0 pr-6">
-                    <p className={`text-[13px] font-bold leading-tight line-clamp-3 ${deliveryAddress ? 'text-slate-900' : 'text-slate-400'}`}>
-                      {isLocating ? "Obteniendo coordenadas..." : (deliveryAddress || "Toca aquí para permitir acceso al GPS y localizar tu dirección")}
-                    </p>
+                  <div className="flex-1 min-w-0 pr-2">
+                    <textarea
+                      value={deliveryAddress}
+                      onChange={(e) => setDeliveryAddress(e.target.value)}
+                      placeholder={isLocating ? "Obteniendo coordenadas..." : "Escribe tu dirección exacta o usa el botón superior para detectarla..."}
+                      className="w-full bg-transparent text-[13px] font-bold leading-tight text-slate-900 placeholder:text-slate-400 focus:outline-none resize-none min-h-[60px]"
+                      disabled={isLocating}
+                    />
                   </div>
-                  {deliveryAddress && !isLocating && (
-                    <div className="absolute right-4 w-4 h-4 rounded-full border-4 border-[#C4121A]" />
-                  )}
                 </div>
               </div>
             ) : (
@@ -1069,7 +1069,14 @@ const App = () => {
         setIsLocating(false);
       },
       (error) => {
-        alert("Error al obtener ubicación. Por favor, asegúrate de haber dado permisos de GPS.");
+        const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+        const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        
+        if (error.code === 1 && isIOS && isSafari) {
+          alert("Safari en iPhone tiene bloqueos estrictos de ubicación.\n\nPor favor, haz clic dentro del recuadro y escribe tu dirección manualmente.");
+        } else {
+          alert("No pudimos obtener tu ubicación automáticamente.\n\nPor favor, haz clic dentro del recuadro y escribe tu dirección manualmente.");
+        }
         setIsLocating(false);
       },
       { enableHighAccuracy: true }
@@ -1113,8 +1120,8 @@ const App = () => {
   };
 
   const sendOrder = () => {
-    if (deliveryMode === 'Delivery' && !deliveryCoords) {
-      alert("⚠️ Bloqueo de seguridad:\n\nPor favor, otorga los permisos de ubicación o haz clic en 'Obtener automática' antes de enviar tu pedido por Delivery.");
+    if (deliveryMode === 'Delivery' && !deliveryAddress.trim()) {
+      alert("⚠️ Bloqueo de seguridad:\n\nPor favor, escribe tu dirección en el recuadro o haz clic en 'Obtener automática' antes de enviar tu pedido por Delivery.");
       return;
     }
 
