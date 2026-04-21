@@ -18,6 +18,7 @@ import {
   Battery,
   Menu,
   ChevronLeft,
+  ChevronDown,
   Circle,
   Instagram,
   MessageCircle,
@@ -547,6 +548,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
   const [size, setSize] = useState('M');
   const [quantity, setQuantity] = useState(1);
   const [selectedExtras, setSelectedExtras] = useState([]);
+  const [showExtras, setShowExtras] = useState(false);
 
   // Sincronizar tamaño inicial cuando cambia el item
   useEffect(() => {
@@ -555,6 +557,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
       setSize(item.defaultSize || sizes[0]);
       setQuantity(1);
       setSelectedExtras([]);
+      setShowExtras(false);
     }
   }, [item]);
 
@@ -644,8 +647,21 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
           {/* Adicionales - Solo si el item permite extras */}
           {!item.noExtras && (
             <div className="mb-10">
-              <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-6">Añadir Adicionales</h3>
-              <div className="space-y-3">
+              <button 
+                onClick={() => setShowExtras(!showExtras)}
+                className="w-full flex items-center justify-between mb-6 p-4 rounded-xl border-2 border-dashed border-[#C4121A]/60 bg-red-50 hover:bg-red-100/50 active:scale-[0.98] transition-all group"
+              >
+                <div className="flex flex-col items-start gap-1">
+                  <h3 className="text-sm font-black uppercase tracking-wider text-[#C4121A]">Añadir Sabores Adicionales</h3>
+                  <span className="text-[11px] text-[#C4121A]/70 font-bold">{selectedExtras.length > 0 ? `${selectedExtras.length} extras seleccionados` : 'Haz clic aquí para ver opciones (opcional)'}</span>
+                </div>
+                <div className={`w-8 h-8 rounded-full bg-white shadow-sm flex items-center justify-center transition-transform duration-300 group-hover:shadow-md ${showExtras ? 'rotate-180' : ''}`}>
+                  <div className={!showExtras ? 'animate-bounce mt-1' : ''}>
+                    <ChevronDown size={18} className="text-[#C4121A]" strokeWidth={3} />
+                  </div>
+                </div>
+              </button>
+              <div className={`space-y-3 transition-all duration-300 overflow-hidden ${showExtras ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0 m-0'}`}>
                 {Object.entries(EXTRAS_CONFIG).map(([name, prices]) => {
                   const extraPrice = prices[size];
                   if (extraPrice === undefined) return null;
@@ -888,11 +904,19 @@ const CartSummary = ({ cart, onCheckout }) => {
         className="max-w-md mx-auto w-full bg-slate-900 text-white h-16 rounded-[2rem] px-8 flex items-center justify-between shadow-2xl hover:scale-[1.02] active:scale-[0.98] transition-all border border-white/10"
       >
         <div className="flex items-center gap-4">
-          <div className="bg-[#C4121A] w-10 h-10 rounded-full flex items-center justify-center shadow-lg">
+          <div 
+            className="bg-[#C4121A] w-10 h-10 rounded-full flex items-center justify-center shadow-lg animate-bounce"
+            style={{ animationIterationCount: 2.5 }}
+          >
             <ShoppingCart size={18} className="text-white" strokeWidth={3} />
           </div>
-          <div className="flex flex-col items-start">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1">Ver pedido</span>
+          <div className="flex flex-col items-start mt-1">
+            <span 
+              className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1.5 animate-pulse"
+              style={{ animationIterationCount: 2 }}
+            >
+              Pulsa para ver carrito
+            </span>
             <span className="text-[13px] font-black leading-none">{totalItems} {totalItems === 1 ? 'artículo' : 'artículos'}</span>
           </div>
         </div>
