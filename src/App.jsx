@@ -1142,7 +1142,9 @@ const App = () => {
     
     if (deliveryMode === 'Delivery') {
       message += `📍 *Dirección de Entrega:*\n_${deliveryAddress}_\n\n`;
-      message += `🗺️ *Link GPS:*\nhttps://maps.google.com/?q=${deliveryCoords.lat},${deliveryCoords.lng}\n\n`;
+      if (deliveryCoords) {
+        message += `🗺️ *Link GPS:*\nhttps://maps.google.com/?q=${deliveryCoords.lat},${deliveryCoords.lng}\n\n`;
+      }
     }
 
     message += `🛒 *PRODUCTOS:*\n`;
