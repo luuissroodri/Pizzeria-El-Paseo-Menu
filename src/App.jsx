@@ -603,12 +603,12 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
       {/* Área de Scroll Unificada */}
       <div className="flex-1 overflow-y-auto hide-scrollbar pb-12">
         {/* Imagen Hero - Ahora parte del scroll */}
-        <div className={`w-full relative bg-slate-100 transition-all duration-300 ${item.noExtras ? 'h-[45vh]' : 'h-[35vh]'}`}>
+        <div className={`w-full relative transition-all duration-300 ${item.noExtras ? 'bg-slate-100 h-[45vh]' : 'bg-slate-100 h-[40vh]'}`}>
           <img
             src={item.image}
             alt={item.name}
             className="w-full h-full object-cover"
-            style={{ objectPosition: item.imagePosition || (item.noExtras ? 'center' : 'center 80%') }}
+            style={{ objectPosition: item.imagePosition || (item.noExtras ? 'center' : 'center 75%') }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
         </div>
