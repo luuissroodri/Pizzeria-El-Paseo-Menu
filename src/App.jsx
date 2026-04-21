@@ -29,7 +29,9 @@ import {
   CupSoda,
   Dessert,
   Drumstick,
-  Beef
+  Beef,
+  Bike,
+  Store
 } from 'lucide-react';
 
 
@@ -122,8 +124,7 @@ const PIZZAS = [
     name: "Calzone",
     ingredients: "Salsa + Queso + Jamón + Champiñón (Masa de pizza doblada)",
     image: "https://i.imgur.com/o6MlbfA.jpeg",
-    prices: { UNICO: 8.50 },
-    noExtras: true
+    prices: { P: 8.50 }
   }
 ];
 
@@ -428,7 +429,7 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, image
           <div className="flex items-center justify-between">
             <div className="flex items-baseline gap-1">
               <span className="text-slate-900 font-black text-lg">
-                ${(prices[size] || prices['UNICO']).toFixed(2)}
+                ${(prices[size] || prices['UNICO'] || Object.values(prices)[0] || 0).toFixed(2)}
               </span>
             </div>
             <div className="bg-[#C4121A] w-9 h-9 rounded-xl flex items-center justify-center text-white shadow-lg">
@@ -739,6 +740,14 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
 };
 
 const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, setDeliveryMode, note, setNote, onConfirm }) => {
+  const [isNoteOpen, setIsNoteOpen] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setIsNoteOpen(Boolean(note));
+    }
+  }, [isOpen, note]);
+
   useEffect(() => {
     if (isOpen) {
       const originalStyle = window.getComputedStyle(document.body).overflow;
@@ -819,34 +828,75 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
           ))}
         </div>
 
-        {/* ... Rest of components (Delivery, Note, Summary) ... */}
-        {/* Update Summary Breakdown */}
+        {/* Nota para el comercio (Desplegable) */}
         <div className="mb-10">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-4">Modo de Entrega</h3>
-          <div className="flex bg-slate-100 p-1.5 rounded-[1.5rem] gap-1">
-            {['Delivery', 'Pick Up'].map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setDeliveryMode(mode)}
-                className={`flex-1 py-4 rounded-2xl transition-all duration-300 font-black text-sm ${deliveryMode === mode
-                  ? 'bg-[#C4121A] text-white shadow-lg scale-[1.02]'
-                  : 'text-slate-500 hover:text-slate-700'
-                  }`}
-              >
-                {mode}
-              </button>
-            ))}
-          </div>
+          {!isNoteOpen ? (
+            <button
+              onClick={() => setIsNoteOpen(true)}
+              className="w-full text-center text-[#C4121A] text-[13px] font-bold underline underline-offset-4 hover:opacity-80 transition-opacity"
+            >
+              Agregar nota para el comercio
+            </button>
+          ) : (
+            <div className="animate-in fade-in slide-in-from-top-2 duration-300">
+              <div className="flex items-center justify-between mb-3">
+                <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900">Nota para el comercio</h3>
+                <button
+                  onClick={() => {
+                    setNote('');
+                    setIsNoteOpen(false);
+                  }}
+                  className="text-red-500 bg-red-50 w-8 h-8 flex items-center justify-center rounded-xl hover:bg-red-100 transition-colors"
+                >
+                  <Trash2 size={16} strokeWidth={2.5} />
+                </button>
+              </div>
+              <textarea
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                autoFocus
+                placeholder="Ej. Sin cebolla, extra crujiente..."
+                className="w-full bg-red-50/30 border border-red-100 rounded-[1.5rem] p-5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#C4121A] transition-all min-h-[120px] resize-none"
+              />
+            </div>
+          )}
         </div>
 
         <div className="mb-10">
-          <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-4">Nota para el comercio</h3>
-          <textarea
-            value={note}
-            onChange={(e) => setNote(e.target.value)}
-            placeholder="Introduce tu nota aquí (opcional)..."
-            className="w-full bg-red-50/30 border border-red-100 rounded-[1.5rem] p-5 text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-red-100 focus:border-[#C4121A] transition-all min-h-[120px] resize-none"
-          />
+          <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-4">Modo de Entrega</h3>
+          <div className="flex bg-slate-100 p-1.5 rounded-2xl gap-1 border border-slate-200/60 shadow-inner">
+            <button
+              onClick={() => setDeliveryMode('Delivery')}
+              className={`flex-1 flex items-center gap-2.5 p-3 rounded-xl transition-all duration-300 ${deliveryMode === 'Delivery'
+                  ? 'bg-[#C4121A] shadow-md ring-1 ring-red-900/10'
+                  : 'bg-transparent opacity-80 hover:bg-slate-200/50 hover:opacity-100'
+                }`}
+            >
+              <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center transition-colors ${deliveryMode === 'Delivery' ? 'bg-white/20 text-white shadow-sm' : 'bg-slate-200/80 text-slate-500'}`}>
+                <Bike size={18} strokeWidth={2.5} />
+              </div>
+              <div className="flex flex-col items-start text-left min-w-0">
+                <span className={`font-black text-[15px] leading-none transition-colors truncate w-full ${deliveryMode === 'Delivery' ? 'text-white' : 'text-slate-600'}`}>Delivery</span>
+                <span className={`text-[11px] font-bold mt-1 truncate w-full transition-colors ${deliveryMode === 'Delivery' ? 'text-red-100' : 'text-slate-400'}`}>En casa</span>
+              </div>
+            </button>
+            
+            <button
+              onClick={() => setDeliveryMode('Pick Up')}
+              className={`flex-1 flex items-center gap-2.5 p-3 rounded-xl transition-all duration-300 ${deliveryMode === 'Pick Up'
+                  ? 'bg-[#C4121A] shadow-md ring-1 ring-red-900/10'
+                  : 'bg-transparent opacity-80 hover:bg-slate-200/50 hover:opacity-100'
+                }`}
+            >
+              <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center transition-colors ${deliveryMode === 'Pick Up' ? 'bg-white/20 text-white shadow-sm' : 'bg-slate-200/80 text-slate-500'}`}>
+                <Store size={18} strokeWidth={2.5} />
+              </div>
+              <div className="flex flex-col items-start text-left min-w-0">
+                <span className={`font-black text-[15px] leading-none transition-colors truncate w-full ${deliveryMode === 'Pick Up' ? 'text-white' : 'text-slate-600'}`}>Pick Up</span>
+                <span className={`text-[11px] font-bold mt-1 truncate w-full transition-colors ${deliveryMode === 'Pick Up' ? 'text-red-100' : 'text-slate-400'}`}>En local</span>
+              </div>
+            </button>
+          </div>
         </div>
 
         <div className="pt-6 border-t border-slate-100 mb-4">
@@ -910,7 +960,7 @@ const CartSummary = ({ cart, onCheckout }) => {
           >
             <ShoppingCart size={18} className="text-white" strokeWidth={3} />
           </div>
-          <div className="flex flex-col items-start mt-1">
+          <div className="flex flex-col items-start mt-1 text-left">
             <span 
               className="text-[10px] font-bold text-slate-400 uppercase tracking-widest leading-none mb-1.5 animate-pulse"
               style={{ animationIterationCount: 2 }}
