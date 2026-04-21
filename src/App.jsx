@@ -915,10 +915,11 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
                   </div>
                   <div className="flex-1 min-w-0 pr-2">
                     <textarea
+                      id="delivery-address-input"
                       value={deliveryAddress}
                       onChange={(e) => setDeliveryAddress(e.target.value)}
                       placeholder={isLocating ? "Obteniendo coordenadas..." : "Escribe tu dirección exacta o usa el botón superior para detectarla..."}
-                      className="w-full bg-transparent text-[13px] font-bold leading-tight text-slate-900 placeholder:text-slate-400 focus:outline-none resize-none min-h-[60px]"
+                      className="w-full bg-transparent text-[16px] font-bold leading-tight text-slate-900 placeholder:text-slate-400 focus:outline-none resize-none min-h-[60px]"
                       disabled={isLocating}
                     />
                   </div>
@@ -1073,11 +1074,15 @@ const App = () => {
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         
         if (error.code === 1 && isIOS && isSafari) {
-          alert("Safari en iPhone tiene bloqueos estrictos de ubicación.\n\nPor favor, haz clic dentro del recuadro y escribe tu dirección manualmente.");
+          alert("Safari en iPhone tiene bloqueos estrictos de ubicación.\n\nPor favor, escribe tu dirección manualmente.");
         } else {
-          alert("No pudimos obtener tu ubicación automáticamente.\n\nPor favor, haz clic dentro del recuadro y escribe tu dirección manualmente.");
+          alert("No pudimos obtener tu ubicación automáticamente.\n\nPor favor, escribe tu dirección manualmente.");
         }
         setIsLocating(false);
+        setTimeout(() => {
+          const addressInput = document.getElementById('delivery-address-input');
+          if (addressInput) addressInput.focus();
+        }, 100);
       },
       { enableHighAccuracy: true }
     );
@@ -1388,7 +1393,9 @@ const App = () => {
           onCheckout={() => {
             setIsCheckoutOpen(true);
             if (deliveryMode === 'Delivery' && !deliveryCoords) {
-              handleGetLocation();
+              setTimeout(() => {
+                handleGetLocation();
+              }, 2000);
             }
           }}
         />
