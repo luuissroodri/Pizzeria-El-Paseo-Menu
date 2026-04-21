@@ -1156,9 +1156,8 @@ const App = () => {
       message += `\n📝 *Nota al Comercio:*\n_${orderNote.trim()}_\n`;
     }
 
-    message += `\n➖➖➖➖➖➖➖➖➖➖\n`;
-    message += `💵 *TOTAL A PAGAR:*\n$${totalFinal.toFixed(2)}\n`;
-    message += `➖➖➖➖➖➖➖➖➖➖\n`;
+    message += `\n------------------------------\n`;
+    message += `*TOTAL A PAGAR: $${totalFinal.toFixed(2)}*`;
 
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/584248925818?text=${encodedMessage}`, '_blank');
