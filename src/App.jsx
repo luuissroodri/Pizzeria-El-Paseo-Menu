@@ -1113,6 +1113,11 @@ const App = () => {
   };
 
   const sendOrder = () => {
+    if (deliveryMode === 'Delivery' && !deliveryCoords) {
+      alert("⚠️ Bloqueo de seguridad:\n\nPor favor, otorga los permisos de ubicación o haz clic en 'Obtener automática' antes de enviar tu pedido por Delivery.");
+      return;
+    }
+
     const BOX_PRICES = { 'P': 0.25, 'M': 0.80, 'G': 1.00 };
     const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
     const subtotalExtras = cart.reduce((sum, item) => sum + (item.extrasTotalPerUnit * item.quantity), 0);
@@ -1121,40 +1126,38 @@ const App = () => {
 
     let message = "🚨 *NUEVO PEDIDO* 🚨\n\n";
     
-    message += `🛵 *Modalidad:* ${deliveryMode}\n\n`;
+    message += `🛵 *Modalidad:*\n${deliveryMode}\n\n`;
     
     if (deliveryMode === 'Delivery') {
-      message += `📍 *Dirección de Entrega:*\n_${deliveryAddress || 'No especificada'}_\n\n`;
-      if (deliveryCoords) {
-        message += `🗺️ *Ubicación GPS:*\nhttps://maps.google.com/?q=${deliveryCoords.lat},${deliveryCoords.lng}\n\n`;
-      }
+      message += `📍 *Dirección de Entrega:*\n_${deliveryAddress}_\n\n`;
+      message += `🗺️ *Link GPS:*\nhttps://maps.google.com/?q=${deliveryCoords.lat},${deliveryCoords.lng}\n\n`;
     }
 
-    message += `🛒 *DETALLE DE PRODUCTOS:*\n\n`;
+    message += `🛒 *PRODUCTOS:*\n`;
     
     cart.forEach((item) => {
-      let itemLine = `🍕 *${item.quantity}x ${item.name}* ${item.size !== 'UNICO' ? `(Tamaño: ${item.size})` : ''}\n`;
+      let itemLine = `\n🍕 *${item.quantity}x ${item.name}* ${item.size !== 'UNICO' ? `(${item.size})` : ''}\n`;
       
       if (item.selectedExtras && item.selectedExtras.length > 0) {
         item.selectedExtras.forEach(extra => {
           const extraPrice = EXTRAS_CONFIG[extra][item.size];
-          itemLine += `      ➕ ${extra} ($${extraPrice.toFixed(2)})\n`;
+          itemLine += `➕ ${extra} ($${extraPrice.toFixed(2)})\n`;
         });
       }
-      itemLine += `      💰 Subtotal: $${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}\n\n`;
+      itemLine += `💰 Subtotal: $${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}\n`;
       message += itemLine;
     });
 
     if (totalCajas > 0) {
-      message += `📦 *Cajas y Empaques:* $${totalCajas.toFixed(2)}\n\n`;
+      message += `\n📦 *Empaques/Cajas:*\n$${totalCajas.toFixed(2)}\n`;
     }
 
     if (orderNote.trim()) {
-      message += `📝 *NOTA DEL CLIENTE:*\n_${orderNote.trim()}_\n\n`;
+      message += `\n📝 *Nota al Comercio:*\n_${orderNote.trim()}_\n`;
     }
 
-    message += `➖➖➖➖➖➖➖➖➖➖\n`;
-    message += `💵 *TOTAL A PAGAR: $${totalFinal.toFixed(2)}*\n`;
+    message += `\n➖➖➖➖➖➖➖➖➖➖\n`;
+    message += `💵 *TOTAL A PAGAR:*\n$${totalFinal.toFixed(2)}\n`;
     message += `➖➖➖➖➖➖➖➖➖➖\n`;
 
     const encodedMessage = encodeURIComponent(message);
