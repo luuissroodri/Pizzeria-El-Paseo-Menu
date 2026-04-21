@@ -603,7 +603,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
       {/* Área de Scroll Unificada */}
       <div className="flex-1 overflow-y-auto hide-scrollbar pb-12">
         {/* Imagen Hero - Ahora parte del scroll */}
-        <div className="h-[45vh] w-full relative">
+        <div className="h-[30vh] w-full relative">
           <img
             src={item.image}
             alt={item.name}
@@ -614,15 +614,15 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
         </div>
 
         {/* Contenido */}
-        <div className="px-6 pt-8">
-          <div className="mb-8">
-            <h2 className="text-3xl font-black text-slate-900 mb-3 tracking-tight">{item.name}</h2>
-            <p className="text-slate-500 font-medium leading-relaxed text-lg">{item.ingredients}</p>
+        <div className="px-6 pt-6">
+          <div className="mb-5">
+            <h2 className="text-3xl font-black text-slate-900 mb-2 tracking-tight">{item.name}</h2>
+            <p className="text-slate-500 font-medium leading-relaxed text-base">{item.ingredients}</p>
           </div>
 
           {/* Selector de Tamaño - Solo si hay disponibles (P, M, G) */}
           {availableSizes.length > 0 && !item.noExtras && (
-            <div className="mb-10">
+            <div className="mb-6">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-400">Seleccionar tamaño</h3>
                 <span className="text-xs font-black text-[#C4121A] bg-red-50 px-2 py-1 rounded-lg">Obligatorio</span>
@@ -646,10 +646,10 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
 
           {/* Adicionales - Solo si el item permite extras */}
           {!item.noExtras && (
-            <div className="mb-10">
+            <div className="mb-4">
               <button 
                 onClick={() => setShowExtras(!showExtras)}
-                className="w-full flex items-center justify-between mb-6 p-4 rounded-xl border-2 border-dashed border-[#C4121A]/60 bg-red-50 hover:bg-red-100/50 active:scale-[0.98] transition-all group"
+                className="w-full flex items-center justify-between mb-4 p-4 rounded-xl border-2 border-dashed border-[#C4121A]/60 bg-red-50 hover:bg-red-100/50 active:scale-[0.98] transition-all group"
               >
                 <div className="flex flex-col items-start gap-1">
                   <h3 className="text-sm font-black uppercase tracking-wider text-[#C4121A]">Añadir Sabores Adicionales</h3>
@@ -696,7 +696,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
             </div>
           )}
           {/* Botones de Acción al Final del Scroll */}
-          <div className="mt-8 pt-8 border-t border-slate-200 flex items-center gap-4">
+          <div className="mt-4 pt-4 border-t border-slate-200 flex items-center gap-4">
             {/* Cantidad */}
             <div className="flex items-center bg-slate-100 rounded-2xl p-1 gap-1">
               <button
