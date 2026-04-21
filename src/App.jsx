@@ -741,7 +741,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
   );
 };
 
-const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, setDeliveryMode, deliveryAddress, handleGetLocation, isLocating, note, setNote, onConfirm }) => {
+const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, setDeliveryMode, deliveryAddress, setDeliveryAddress, handleGetLocation, isLocating, note, setNote, onConfirm }) => {
   const [isNoteOpen, setIsNoteOpen] = useState(false);
 
   useEffect(() => {
@@ -1408,6 +1408,7 @@ const App = () => {
         deliveryMode={deliveryMode}
         setDeliveryMode={setDeliveryMode}
         deliveryAddress={deliveryAddress}
+        setDeliveryAddress={setDeliveryAddress}
         handleGetLocation={handleGetLocation}
         isLocating={isLocating}
         note={orderNote}
