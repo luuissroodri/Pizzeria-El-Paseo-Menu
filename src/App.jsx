@@ -1119,38 +1119,43 @@ const App = () => {
     const totalCajas = cart.reduce((sum, item) => sum + (BOX_PRICES[item.size] || 0) * item.quantity, 0);
     const totalFinal = subtotalPizzas + subtotalExtras + totalCajas;
 
-    let message = "🍕 *Nuevo Pedido - Pizzeria El Paseo* 🍕\n\n";
-    message += `📍 *Modo:* ${deliveryMode}\n`;
+    let message = "🚨 *NUEVO PEDIDO* 🚨\n\n";
+    
+    message += `🛵 *Modalidad:* ${deliveryMode}\n\n`;
+    
     if (deliveryMode === 'Delivery') {
+      message += `📍 *Dirección de Entrega:*\n_${deliveryAddress || 'No especificada'}_\n\n`;
       if (deliveryCoords) {
-        message += `📍 *Ubicación GPS:* https://maps.google.com/?q=${deliveryCoords.lat},${deliveryCoords.lng}\n`;
+        message += `🗺️ *Ubicación GPS:*\nhttps://maps.google.com/?q=${deliveryCoords.lat},${deliveryCoords.lng}\n\n`;
       }
-      message += `🏠 *Dirección Referencial:* ${deliveryAddress || 'No especificada'}\n`;
     }
 
-    message += `\n*Productos:*\n`;
+    message += `🛒 *DETALLE DE PRODUCTOS:*\n\n`;
+    
     cart.forEach((item) => {
-      let itemLine = `• ${item.quantity}x ${item.name}${item.size !== 'UNICO' ? ` (${item.size})` : ''} - $${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}`;
-      message += itemLine + '\n';
-
+      let itemLine = `🍕 *${item.quantity}x ${item.name}* ${item.size !== 'UNICO' ? `(Tamaño: ${item.size})` : ''}\n`;
+      
       if (item.selectedExtras && item.selectedExtras.length > 0) {
         item.selectedExtras.forEach(extra => {
           const extraPrice = EXTRAS_CONFIG[extra][item.size];
-          message += `  + ${extra} ($${extraPrice.toFixed(2)})\n`;
+          itemLine += `      ➕ ${extra} ($${extraPrice.toFixed(2)})\n`;
         });
       }
+      itemLine += `      💰 Subtotal: $${((item.unitPrice + item.extrasTotalPerUnit) * item.quantity).toFixed(2)}\n\n`;
+      message += itemLine;
     });
 
     if (totalCajas > 0) {
-      message += `\n📦 *Empaques/Cajas:* $${totalCajas.toFixed(2)}\n`;
+      message += `📦 *Cajas y Empaques:* $${totalCajas.toFixed(2)}\n\n`;
     }
 
     if (orderNote.trim()) {
-      message += `\n📝 *Nota:* ${orderNote}\n`;
+      message += `📝 *NOTA DEL CLIENTE:*\n_${orderNote.trim()}_\n\n`;
     }
 
-    message += `\n------------------------------\n`;
-    message += `*Total General: $${totalFinal.toFixed(2)}*`;
+    message += `➖➖➖➖➖➖➖➖➖➖\n`;
+    message += `💵 *TOTAL A PAGAR: $${totalFinal.toFixed(2)}*\n`;
+    message += `➖➖➖➖➖➖➖➖➖➖\n`;
 
     const encodedMessage = encodeURIComponent(message);
     window.open(`https://wa.me/584248925818?text=${encodedMessage}`, '_blank');
@@ -1371,7 +1376,12 @@ const App = () => {
       {!selectedItem && !isCheckoutOpen && !isCategoryMenuOpen && (
         <CartSummary
           cart={cart}
-          onCheckout={() => setIsCheckoutOpen(true)}
+          onCheckout={() => {
+            setIsCheckoutOpen(true);
+            if (deliveryMode === 'Delivery' && !deliveryCoords) {
+              handleGetLocation();
+            }
+          }}
         />
       )}
       <CheckoutModal
