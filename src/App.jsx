@@ -31,7 +31,9 @@ import {
   Drumstick,
   Beef,
   Bike,
-  Store
+  Store,
+  Loader2,
+  LocateFixed
 } from 'lucide-react';
 
 
@@ -739,7 +741,7 @@ const ProductModal = ({ item, onClose, onAddToCart }) => {
   );
 };
 
-const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, setDeliveryMode, note, setNote, onConfirm }) => {
+const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, setDeliveryMode, deliveryAddress, handleGetLocation, isLocating, note, setNote, onConfirm }) => {
   const [isNoteOpen, setIsNoteOpen] = useState(false);
 
   useEffect(() => {
@@ -864,38 +866,87 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
 
         <div className="mb-10">
           <h3 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-4">Modo de Entrega</h3>
-          <div className="flex bg-slate-100 p-1.5 rounded-2xl gap-1 border border-slate-200/60 shadow-inner">
+          
+          {/* Selector estilo Toggle */}
+          <div className="flex bg-slate-100 p-1.5 rounded-2xl mb-6 shadow-inner border border-slate-200/60">
             <button
               onClick={() => setDeliveryMode('Delivery')}
-              className={`flex-1 flex items-center gap-2.5 p-3 rounded-xl transition-all duration-300 ${deliveryMode === 'Delivery'
-                  ? 'bg-[#C4121A] shadow-md ring-1 ring-red-900/10'
-                  : 'bg-transparent opacity-80 hover:bg-slate-200/50 hover:opacity-100'
+              className={`flex-1 py-3 text-[14px] font-black rounded-xl transition-all duration-300 w-1/2 ${deliveryMode === 'Delivery'
+                  ? 'bg-[#C4121A] text-white shadow-sm ring-1 ring-red-900/10'
+                  : 'text-slate-500 bg-transparent hover:text-slate-700 hover:bg-slate-200/50'
                 }`}
             >
-              <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center transition-colors ${deliveryMode === 'Delivery' ? 'bg-white/20 text-white shadow-sm' : 'bg-slate-200/80 text-slate-500'}`}>
-                <Bike size={18} strokeWidth={2.5} />
-              </div>
-              <div className="flex flex-col items-start text-left min-w-0">
-                <span className={`font-black text-[15px] leading-none transition-colors truncate w-full ${deliveryMode === 'Delivery' ? 'text-white' : 'text-slate-600'}`}>Delivery</span>
-                <span className={`text-[11px] font-bold mt-1 truncate w-full transition-colors ${deliveryMode === 'Delivery' ? 'text-red-100' : 'text-slate-400'}`}>En casa</span>
-              </div>
+              Delivery
             </button>
-            
             <button
               onClick={() => setDeliveryMode('Pick Up')}
-              className={`flex-1 flex items-center gap-2.5 p-3 rounded-xl transition-all duration-300 ${deliveryMode === 'Pick Up'
-                  ? 'bg-[#C4121A] shadow-md ring-1 ring-red-900/10'
-                  : 'bg-transparent opacity-80 hover:bg-slate-200/50 hover:opacity-100'
+              className={`flex-1 py-3 text-[14px] font-black rounded-xl transition-all duration-300 w-1/2 ${deliveryMode === 'Pick Up'
+                  ? 'bg-[#C4121A] text-white shadow-sm ring-1 ring-red-900/10'
+                  : 'text-slate-500 bg-transparent hover:text-slate-700 hover:bg-slate-200/50'
                 }`}
             >
-              <div className={`w-10 h-10 shrink-0 rounded-lg flex items-center justify-center transition-colors ${deliveryMode === 'Pick Up' ? 'bg-white/20 text-white shadow-sm' : 'bg-slate-200/80 text-slate-500'}`}>
-                <Store size={18} strokeWidth={2.5} />
-              </div>
-              <div className="flex flex-col items-start text-left min-w-0">
-                <span className={`font-black text-[15px] leading-none transition-colors truncate w-full ${deliveryMode === 'Pick Up' ? 'text-white' : 'text-slate-600'}`}>Pick Up</span>
-                <span className={`text-[11px] font-bold mt-1 truncate w-full transition-colors ${deliveryMode === 'Pick Up' ? 'text-red-100' : 'text-slate-400'}`}>En local</span>
-              </div>
+              Pick Up
             </button>
+          </div>
+
+          {/* Lógica de Direcciones */}
+          <div className="animate-in fade-in duration-300">
+            {deliveryMode === 'Delivery' ? (
+              <div>
+                <div className="flex justify-between items-center mb-3">
+                  <h4 className="text-[11px] font-bold uppercase tracking-widest text-slate-900">Dirección de entrega</h4>
+                  <button 
+                    onClick={handleGetLocation}
+                    className="flex items-center gap-1 text-[#C4121A] text-[11px] font-bold uppercase tracking-widest hover:opacity-80 transition-opacity"
+                  >
+                    {isLocating ? <Loader2 size={12} className="animate-spin" /> : <LocateFixed size={12} />}
+                    {deliveryAddress ? "Cambiar ubicación" : "Obtener automática"}
+                  </button>
+                </div>
+                <div 
+                  onClick={(!deliveryAddress && !isLocating) ? handleGetLocation : undefined}
+                  className={`bg-white border-2 border-slate-100 rounded-2xl p-4 flex gap-3 items-center shadow-sm relative transition-all ${!deliveryAddress ? 'cursor-pointer hover:border-red-100 hover:bg-red-50/20 active:scale-[0.98]' : ''}`}
+                >
+                  <div className={`w-10 h-10 shrink-0 rounded-full flex items-center justify-center ${deliveryAddress ? 'bg-red-50 text-[#C4121A]' : 'bg-slate-50 text-slate-400'}`}>
+                    {isLocating ? (
+                      <Loader2 size={20} strokeWidth={2.5} className="animate-spin text-[#C4121A]" />
+                    ) : (
+                      <MapPin size={20} strokeWidth={2.5} />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0 pr-6">
+                    <p className={`text-[13px] font-bold leading-tight line-clamp-3 ${deliveryAddress ? 'text-slate-900' : 'text-slate-400'}`}>
+                      {isLocating ? "Obteniendo coordenadas..." : (deliveryAddress || "Toca aquí para permitir acceso al GPS y localizar tu dirección")}
+                    </p>
+                  </div>
+                  {deliveryAddress && !isLocating && (
+                    <div className="absolute right-4 w-4 h-4 rounded-full border-4 border-[#C4121A]" />
+                  )}
+                </div>
+              </div>
+            ) : (
+              <div>
+                <h4 className="text-[11px] font-bold uppercase tracking-widest text-slate-900 mb-3">Dirección de la tienda</h4>
+                <div className="bg-white border-2 border-slate-100 rounded-2xl p-4 flex gap-3 items-center shadow-sm">
+                  <div className="w-10 h-10 shrink-0 bg-red-50 text-[#C4121A] rounded-full flex items-center justify-center">
+                    <Store size={20} strokeWidth={2.5} />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-slate-900 text-[13px] font-bold leading-tight">
+                      Calle Los Uveros con Av. Bolívar, C.C. La Vela
+                    </p>
+                    <a
+                      href="https://maps.app.goo.gl/KfmPeGhoPQJ8XStF7"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[#C4121A] text-[11px] font-bold underline underline-offset-2 mt-1 flex items-center gap-1 hover:opacity-80 transition-opacity"
+                    >
+                      <MapPin size={12} /> Abrir en el mapa de Google
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
@@ -984,9 +1035,46 @@ const App = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isCheckoutOpen, setIsCheckoutOpen] = useState(false);
   const [deliveryMode, setDeliveryMode] = useState('Delivery');
+  const [deliveryAddress, setDeliveryAddress] = useState('');
+  const [deliveryCoords, setDeliveryCoords] = useState(null);
+  const [isLocating, setIsLocating] = useState(false);
   const [orderNote, setOrderNote] = useState('');
   const [activeCategory, setActiveCategory] = useState('Pizzas');
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
+
+  const handleGetLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Tu navegador no soporta geolocalización.");
+      return;
+    }
+    
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        setDeliveryCoords({ lat: latitude, lng: longitude });
+        
+        try {
+          // OpenStreetMap API for free reverse geocoding
+          const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+          const data = await response.json();
+          if (data && data.display_name) {
+            setDeliveryAddress(data.display_name);
+          } else {
+            setDeliveryAddress(`Ubicación guardada - Coordenadas: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
+          }
+        } catch (error) {
+          setDeliveryAddress(`Ubicación guardada - Coordenadas: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
+        }
+        setIsLocating(false);
+      },
+      (error) => {
+        alert("Error al obtener ubicación. Por favor, asegúrate de haber dado permisos de GPS.");
+        setIsLocating(false);
+      },
+      { enableHighAccuracy: true }
+    );
+  };
 
   const handleAddToCart = (product) => {
     setCart(prevCart => {
@@ -1033,6 +1121,12 @@ const App = () => {
 
     let message = "🍕 *Nuevo Pedido - Pizzeria El Paseo* 🍕\n\n";
     message += `📍 *Modo:* ${deliveryMode}\n`;
+    if (deliveryMode === 'Delivery') {
+      if (deliveryCoords) {
+        message += `📍 *Ubicación GPS:* https://maps.google.com/?q=${deliveryCoords.lat},${deliveryCoords.lng}\n`;
+      }
+      message += `🏠 *Dirección Referencial:* ${deliveryAddress || 'No especificada'}\n`;
+    }
 
     message += `\n*Productos:*\n`;
     cart.forEach((item) => {
@@ -1287,6 +1381,9 @@ const App = () => {
         updateQuantity={updateCartQuantity}
         deliveryMode={deliveryMode}
         setDeliveryMode={setDeliveryMode}
+        deliveryAddress={deliveryAddress}
+        handleGetLocation={handleGetLocation}
+        isLocating={isLocating}
         note={orderNote}
         setNote={setOrderNote}
         onConfirm={sendOrder}
