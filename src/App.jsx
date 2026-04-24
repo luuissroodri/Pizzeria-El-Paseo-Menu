@@ -161,14 +161,14 @@ const PASTAS_PRODUCTS = [
     prices: { UNICO: 20.00 },
     noExtras: true
   },
-  { name: "4 Quesos", ingredients: "-", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true },
-  { name: "Saragena", ingredients: "-", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true },
-  { name: "Marinera", ingredients: "-", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
-  { name: "Carbonara", ingredients: "-", image: logoFallback, prices: { UNICO: 14.00 }, noExtras: true },
-  { name: "Al Pesto", ingredients: "-", image: logoFallback, prices: { UNICO: 11.00 }, noExtras: true },
-  { name: "Bologna", ingredients: "-", image: logoFallback, prices: { UNICO: 14.00 }, noExtras: true },
-  { name: "Napoli", ingredients: "-", image: logoFallback, prices: { UNICO: 12.00 }, noExtras: true },
-  { name: "Al Vongole", ingredients: "-", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true }
+  { name: "4 Quesos", ingredients: "Mezcla cremosa de queso parmesano, mozzarella, gorgonzola y provolone.", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true },
+  { name: "Saragena", ingredients: "Salsa a base de crema, champiñones, jamón y un toque de parmesano.", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true },
+  { name: "Marinera", ingredients: "Salsa de tomate casera con mix de mariscos frescos (calamares, camarones y mejillones).", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
+  { name: "Carbonara", ingredients: "Salsa blanca, tocineta crujiente, huevo y queso parmesano rallado.", image: logoFallback, prices: { UNICO: 14.00 }, noExtras: true },
+  { name: "Al Pesto", ingredients: "Salsa a base de albahaca fresca, piñones, ajo, aceite de oliva y queso.", image: logoFallback, prices: { UNICO: 11.00 }, noExtras: true },
+  { name: "Bologna", ingredients: "Salsa de tomate con carne de res molida sazonada y finas hierbas.", image: logoFallback, prices: { UNICO: 14.00 }, noExtras: true },
+  { name: "Napoli", ingredients: "Salsa de tomate clásica con albahaca y especias italianas.", image: logoFallback, prices: { UNICO: 12.00 }, noExtras: true },
+  { name: "Al Vongole", ingredients: "Almejas frescas salteadas con ajo, vino blanco y perejil.", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true }
 ];
 
 const HAMBURGUESAS_PRODUCTS = [
@@ -193,10 +193,10 @@ const HAMBURGUESAS_PRODUCTS = [
     prices: { UNICO: 9.00 },
     noExtras: true
   },
-  { name: "Hamburguesa Sencilla", ingredients: "-", image: logoFallback, prices: { UNICO: 6.00 }, noExtras: true },
-  { name: "Hamburguesa de Pollo Sencilla", ingredients: "-", image: logoFallback, prices: { UNICO: 6.00 }, noExtras: true },
-  { name: "Ración de Papas Fritas", ingredients: "-", image: logoFallback, prices: { UNICO: 4.00 }, noExtras: true },
-  { name: "Ración de Pan con Ajo", ingredients: "-", image: logoFallback, prices: { UNICO: 2.00 }, noExtras: true }
+  { name: "Hamburguesa Sencilla", ingredients: "Carne de res, jamón, queso, tocineta, huevo, ensalada fresca y papas fritas.", image: logoFallback, prices: { UNICO: 6.00 }, noExtras: true },
+  { name: "Hamburguesa de Pollo Sencilla", ingredients: "Filete de pollo, jamón, queso, tocineta, huevo, ensalada fresca y papas fritas.", image: logoFallback, prices: { UNICO: 6.00 }, noExtras: true },
+  { name: "Ración de Papas Fritas", ingredients: "Papas cortadas en bastones, fritas y sazonadas con sal.", image: logoFallback, prices: { UNICO: 4.00 }, noExtras: true },
+  { name: "Ración de Pan con Ajo", ingredients: "Rebanadas de pan tostado con mantequilla de ajo y perejil.", image: logoFallback, prices: { UNICO: 2.00 }, noExtras: true }
 ];
 
 const SUGERENCIAS_PRODUCTS = [
@@ -243,7 +243,7 @@ const SUGERENCIAS_PRODUCTS = [
     prices: { UNICO: 10.00 },
     noExtras: true
   },
-  { name: "Coquetas de Pescado", ingredients: "-", image: logoFallback, prices: { UNICO: 8.00 }, noExtras: true }
+  { name: "Croquetas de Pescado", ingredients: "Masa suave de pescado blanco empanizada y frita.", image: logoFallback, prices: { UNICO: 8.00 }, noExtras: true }
 ];
 
 const ENSALADAS_PRODUCTS = [
@@ -254,7 +254,7 @@ const ENSALADAS_PRODUCTS = [
     prices: { UNICO: 7.00 },
     noExtras: true
   },
-  { name: "Mixta", ingredients: "-", image: logoFallback, prices: { UNICO: 5.50 }, noExtras: true }
+  { name: "Mixta", ingredients: "Lechuga fresca, tomate, cebolla, zanahoria rallada y aderezo de la casa.", image: logoFallback, prices: { UNICO: 5.50 }, noExtras: true }
 ];
 
 const BEBIDAS_PRODUCTS = [
@@ -396,21 +396,21 @@ const MAR_PRODUCTS = [
     prices: { UNICO: 5.00 },
     noExtras: true
   },
-  { name: "Langostinos al Gusto", ingredients: "-", image: logoFallback, prices: { UNICO: 28.00 }, noExtras: true },
-  { name: "Filet de Pescado a la Plancha", ingredients: "-", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true },
-  { name: "Filet de Pescado a la Marinera", ingredients: "-", image: logoFallback, prices: { UNICO: 22.00 }, noExtras: true },
-  { name: "Calamares a la Plancha", ingredients: "-", image: logoFallback, prices: { UNICO: 21.00 }, noExtras: true },
-  { name: "Calamares Rebosados", ingredients: "-", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
-  { name: "Camarones al Gusto", ingredients: "-", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
-  { name: "Ensalada de Mariscos", ingredients: "-", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
-  { name: "Tapas Mixtas", ingredients: "-", image: logoFallback, prices: { UNICO: 9.00 }, noExtras: true }
+  { name: "Langostinos al Gusto", ingredients: "Langostinos frescos preparados a la plancha, al ajillo o a la termidor.", image: logoFallback, prices: { UNICO: 28.00 }, noExtras: true },
+  { name: "Filet de Pescado a la Plancha", ingredients: "Filete de pescado blanco fresco cocido a la plancha con limón y especias.", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true },
+  { name: "Filet de Pescado a la Marinera", ingredients: "Filete de pescado bañado en salsa marinera con mariscos surtidos.", image: logoFallback, prices: { UNICO: 22.00 }, noExtras: true },
+  { name: "Calamares a la Plancha", ingredients: "Anillos de calamar frescos salteados a la plancha con ajo y perejil.", image: logoFallback, prices: { UNICO: 21.00 }, noExtras: true },
+  { name: "Calamares Rebosados", ingredients: "Aros de calamar pasados por harina y fritos hasta quedar crujientes.", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
+  { name: "Camarones al Gusto", ingredients: "Camarones frescos preparados al ajillo, a la crema o a la plancha.", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
+  { name: "Ensalada de Mariscos", ingredients: "Mix de mariscos cocidos con cebolla, pimentón, cilantro y vinagreta.", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
+  { name: "Tapas Mixtas", ingredients: "Surtido de aperitivos del mar según disponibilidad del día.", image: logoFallback, prices: { UNICO: 9.00 }, noExtras: true }
 ];
 
 const AVES_PRODUCTS = [
-  { name: "Filet de Pollo a la Plancha", ingredients: "-", image: logoFallback, prices: { UNICO: 11.00 }, noExtras: true },
-  { name: "Filet de Pollo Saragena", ingredients: "-", image: logoFallback, prices: { UNICO: 13.00 }, noExtras: true },
-  { name: "Filet de Pollo Relleno", ingredients: "-", image: logoFallback, prices: { UNICO: 16.00 }, noExtras: true },
-  { name: "Filet de Pollo Parmesana", ingredients: "-", image: logoFallback, prices: { UNICO: 13.00 }, noExtras: true }
+  { name: "Filet de Pollo a la Plancha", ingredients: "Pechuga de pollo sazonada y cocida a la plancha.", image: logoFallback, prices: { UNICO: 11.00 }, noExtras: true },
+  { name: "Filet de Pollo Saragena", ingredients: "Pechuga de pollo bañada en salsa cremosa de champiñones y jamón.", image: logoFallback, prices: { UNICO: 13.00 }, noExtras: true },
+  { name: "Filet de Pollo Relleno", ingredients: "Pechuga de pollo rellena de jamón y queso, servida con salsa de la casa.", image: logoFallback, prices: { UNICO: 16.00 }, noExtras: true },
+  { name: "Filet de Pollo Parmesana", ingredients: "Pollo empanizado cubierto con salsa de tomate y queso fundido.", image: logoFallback, prices: { UNICO: 13.00 }, noExtras: true }
 ];
 
 const POSTRES = [
@@ -462,7 +462,7 @@ const POSTRES = [
     noExtras: true,
     packagingFee: 0.50
   },
-  { name: "Peach Melba", ingredients: "-", image: logoFallback, prices: { UNICO: 8.50 }, noExtras: true, isHelado: true }
+  { name: "Peach Melba", ingredients: "Melocotones en almíbar, helado de vainilla y sirope de frambuesa.", image: logoFallback, prices: { UNICO: 8.50 }, noExtras: true, isHelado: true }
 ];
 
 const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, imagePosition = "center" }) => {
