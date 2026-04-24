@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import logoFallback from './assets/IMG_0633.PNG';
 import {
   ArrowLeft,
   Heart,
@@ -159,7 +160,15 @@ const PASTAS_PRODUCTS = [
     image: "https://i.imgur.com/7VmjM4j.jpeg",
     prices: { UNICO: 20.00 },
     noExtras: true
-  }
+  },
+  { name: "4 Quesos", ingredients: "-", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true },
+  { name: "Saragena", ingredients: "-", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true },
+  { name: "Marinera", ingredients: "-", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
+  { name: "Carbonara", ingredients: "-", image: logoFallback, prices: { UNICO: 14.00 }, noExtras: true },
+  { name: "Al Pesto", ingredients: "-", image: logoFallback, prices: { UNICO: 11.00 }, noExtras: true },
+  { name: "Bologna", ingredients: "-", image: logoFallback, prices: { UNICO: 14.00 }, noExtras: true },
+  { name: "Napoli", ingredients: "-", image: logoFallback, prices: { UNICO: 12.00 }, noExtras: true },
+  { name: "Al Vongole", ingredients: "-", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true }
 ];
 
 const HAMBURGUESAS_PRODUCTS = [
@@ -183,7 +192,11 @@ const HAMBURGUESAS_PRODUCTS = [
     image: "https://i.imgur.com/neUiVLo.jpeg",
     prices: { UNICO: 9.00 },
     noExtras: true
-  }
+  },
+  { name: "Hamburguesa Sencilla", ingredients: "-", image: logoFallback, prices: { UNICO: 6.00 }, noExtras: true },
+  { name: "Hamburguesa de Pollo Sencilla", ingredients: "-", image: logoFallback, prices: { UNICO: 6.00 }, noExtras: true },
+  { name: "Ración de Papas Fritas", ingredients: "-", image: logoFallback, prices: { UNICO: 4.00 }, noExtras: true },
+  { name: "Ración de Pan con Ajo", ingredients: "-", image: logoFallback, prices: { UNICO: 2.00 }, noExtras: true }
 ];
 
 const SUGERENCIAS_PRODUCTS = [
@@ -229,7 +242,8 @@ const SUGERENCIAS_PRODUCTS = [
     image: "https://i.imgur.com/9e9ibE8.jpeg",
     prices: { UNICO: 10.00 },
     noExtras: true
-  }
+  },
+  { name: "Coquetas de Pescado", ingredients: "-", image: logoFallback, prices: { UNICO: 8.00 }, noExtras: true }
 ];
 
 const ENSALADAS_PRODUCTS = [
@@ -239,7 +253,8 @@ const ENSALADAS_PRODUCTS = [
     image: "https://i.imgur.com/UWWTrxe.jpeg",
     prices: { UNICO: 7.00 },
     noExtras: true
-  }
+  },
+  { name: "Mixta", ingredients: "-", image: logoFallback, prices: { UNICO: 5.50 }, noExtras: true }
 ];
 
 const BEBIDAS_PRODUCTS = [
@@ -248,64 +263,108 @@ const BEBIDAS_PRODUCTS = [
     ingredients: "Solo para delivery o pickup",
     image: "https://i.imgur.com/k0CnTfo.jpeg",
     prices: { UNICO: 1.50 },
-    noExtras: true
+    noExtras: true,
+    isBebida: true
   },
   {
     name: "Refresco 1.5 L",
     ingredients: "Solo para delivery o pickup",
     image: "https://i.imgur.com/ilV4XK8.jpeg",
     prices: { UNICO: 2.00 },
-    noExtras: true
+    noExtras: true,
+    isBebida: true
   },
   {
     name: "Refresco 2 L",
     ingredients: "Solo para delivery o pickup",
     image: "https://i.imgur.com/4QMDrho.jpeg",
     prices: { UNICO: 2.50 },
-    noExtras: true
+    noExtras: true,
+    isBebida: true
   },
   {
     name: "Refresco en Botella",
     ingredients: "Variedad de refrescos nacionales en presentación de botella.",
     image: "https://i.imgur.com/qyyL98u.jpeg",
     prices: { UNICO: 1.25 },
-    noExtras: true
+    noExtras: true,
+    isBebida: true
   },
   {
     name: "Malta Botella",
     ingredients: "Refrescante malta nacional fría.",
     image: "https://i.imgur.com/34Ih5hL.jpeg",
     prices: { UNICO: 1.25 },
-    noExtras: true
+    noExtras: true,
+    isBebida: true
   },
   {
     name: "Limonada Frappe",
     ingredients: "Limonada recién exprimida con el punto justo de frappé.",
     image: "https://i.imgur.com/UTi4i08.jpeg",
     prices: { UNICO: 3.25 },
-    noExtras: true
+    noExtras: true,
+    isBebida: true
   },
   {
     name: "Batido de Lechoza",
     ingredients: "Fresca y cremosa lechoza batida al momento.",
     image: "https://i.imgur.com/LTJlg54.jpeg",
     prices: { UNICO: 2.75 },
-    noExtras: true
+    noExtras: true,
+    isBebida: true
   },
   {
     name: "Batido de Fresa",
     ingredients: "Fresas naturales seleccionadas, batidas al momento.",
     image: "https://i.imgur.com/fPyo3dh.jpeg",
     prices: { UNICO: 3.75 },
-    noExtras: true
+    noExtras: true,
+    isBebida: true
   },
   {
     name: "Batido de Parchita",
     ingredients: "Parchita natural seleccionada y batida al momento.",
     image: "https://i.imgur.com/PJcAynE.jpeg",
     prices: { UNICO: 3.75 },
-    noExtras: true
-  }
+    noExtras: true,
+    isBebida: true
+  },
+  { name: "Jarra de Jugo (5 vasos) Parchita y Fresa", ingredients: "-", image: logoFallback, prices: { UNICO: 16.50 }, noExtras: true, isBebida: true },
+  { name: "Jugo de Naranja", ingredients: "-", image: logoFallback, prices: { UNICO: 3.25 }, noExtras: true, isBebida: true },
+  { name: "Nestea", ingredients: "-", image: logoFallback, prices: { UNICO: 2.50 }, noExtras: true, isBebida: true },
+  { name: "Jarra de Nestea", ingredients: "-", image: logoFallback, prices: { UNICO: 12.00 }, noExtras: true, isBebida: true },
+  { name: "Batido de Melón", ingredients: "-", image: logoFallback, prices: { UNICO: 2.75 }, noExtras: true, isBebida: true },
+  { name: "Batido de Piña", ingredients: "-", image: logoFallback, prices: { UNICO: 3.75 }, noExtras: true, isBebida: true },
+  { name: "Merengada de Helado", ingredients: "-", image: logoFallback, prices: { UNICO: 7.25 }, noExtras: true, isBebida: true },
+  { name: "Merengada de Melón o Lechoza", ingredients: "-", image: logoFallback, prices: { UNICO: 4.00 }, noExtras: true, isBebida: true },
+  { name: "Toddy", ingredients: "-", image: logoFallback, prices: { UNICO: 5.00 }, noExtras: true, isBebida: true },
+  { name: "Merengada de Fresa, Parchita, Piña", ingredients: "-", image: logoFallback, prices: { UNICO: 4.75 }, noExtras: true, isBebida: true },
+  { name: "Toddy Caliente", ingredients: "-", image: logoFallback, prices: { UNICO: 3.75 }, noExtras: true, isBebida: true },
+  { name: "Café Grande", ingredients: "-", image: logoFallback, prices: { UNICO: 2.25 }, noExtras: true, isBebida: true },
+  { name: "Café Pequeño", ingredients: "-", image: logoFallback, prices: { UNICO: 1.75 }, noExtras: true, isBebida: true },
+  { name: "Café Cappucchino", ingredients: "-", image: logoFallback, prices: { UNICO: 3.50 }, noExtras: true, isBebida: true },
+  { name: "Mojito o Kaipiña", ingredients: "-", image: logoFallback, prices: { UNICO: 3.00 }, noExtras: true, isBebida: true },
+  { name: "Coctel Preparado", ingredients: "-", image: logoFallback, prices: { UNICO: 5.75 }, noExtras: true, isBebida: true },
+  { name: "Fruit Punch", ingredients: "-", image: logoFallback, prices: { UNICO: 3.25 }, noExtras: true, isBebida: true },
+  { name: "Ron Punch", ingredients: "-", image: logoFallback, prices: { UNICO: 4.00 }, noExtras: true, isBebida: true },
+  { name: "Piña Colada", ingredients: "-", image: logoFallback, prices: { UNICO: 5.00 }, noExtras: true, isBebida: true },
+  { name: "Cuba Libre Preparada", ingredients: "-", image: logoFallback, prices: { UNICO: 3.75 }, noExtras: true, isBebida: true },
+  { name: "Copa de Sangría Caroreña", ingredients: "-", image: logoFallback, prices: { UNICO: 2.50 }, noExtras: true, isBebida: true },
+  { name: "Ron Seco", ingredients: "-", image: logoFallback, prices: { UNICO: 2.00 }, noExtras: true, isBebida: true },
+  { name: "Licores Nacionales Secos", ingredients: "-", image: logoFallback, prices: { UNICO: 3.00 }, noExtras: true, isBebida: true },
+  { name: "Licores Importados Secos", ingredients: "-", image: logoFallback, prices: { UNICO: 5.25 }, noExtras: true, isBebida: true },
+  { name: "Jarra de Sangría Caroreña", ingredients: "-", image: logoFallback, prices: { UNICO: 6.75 }, noExtras: true, isBebida: true },
+  { name: "Copa de Vino", ingredients: "-", image: logoFallback, prices: { UNICO: 2.75 }, noExtras: true, isBebida: true },
+  { name: "Tinto de Verano", ingredients: "-", image: logoFallback, prices: { UNICO: 3.25 }, noExtras: true, isBebida: true },
+  { name: "Base para Sangría", ingredients: "-", image: logoFallback, prices: { UNICO: 4.75 }, noExtras: true, isBebida: true },
+  { name: "Whisky 12 Años", ingredients: "-", image: logoFallback, prices: { UNICO: 4.50 }, noExtras: true, isBebida: true },
+  { name: "Whisky 8 Años", ingredients: "-", image: logoFallback, prices: { UNICO: 3.00 }, noExtras: true, isBebida: true },
+  { name: "Botella de Whisky 12 Años", ingredients: "-", image: logoFallback, prices: { UNICO: 45.00 }, noExtras: true, isBebida: true },
+  { name: "Botella de Whisky 8 Años", ingredients: "-", image: logoFallback, prices: { UNICO: 30.00 }, noExtras: true, isBebida: true },
+  { name: "Cerveza Polar", ingredients: "-", image: logoFallback, prices: { UNICO: 1.25 }, noExtras: true, isBebida: true },
+  { name: "Tercio Polar", ingredients: "-", image: logoFallback, prices: { UNICO: 1.75 }, noExtras: true, isBebida: true },
+  { name: "Solera Retornable", ingredients: "-", image: logoFallback, prices: { UNICO: 1.50 }, noExtras: true, isBebida: true }
 ];
 
 const MAR_PRODUCTS = [
@@ -336,7 +395,22 @@ const MAR_PRODUCTS = [
     image: "https://i.imgur.com/OzfdThM.jpeg",
     prices: { UNICO: 5.00 },
     noExtras: true
-  }
+  },
+  { name: "Langostinos al Gusto", ingredients: "-", image: logoFallback, prices: { UNICO: 28.00 }, noExtras: true },
+  { name: "Filet de Pescado a la Plancha", ingredients: "-", image: logoFallback, prices: { UNICO: 15.00 }, noExtras: true },
+  { name: "Filet de Pescado a la Marinera", ingredients: "-", image: logoFallback, prices: { UNICO: 22.00 }, noExtras: true },
+  { name: "Calamares a la Plancha", ingredients: "-", image: logoFallback, prices: { UNICO: 21.00 }, noExtras: true },
+  { name: "Calamares Rebosados", ingredients: "-", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
+  { name: "Camarones al Gusto", ingredients: "-", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
+  { name: "Ensalada de Mariscos", ingredients: "-", image: logoFallback, prices: { UNICO: 23.00 }, noExtras: true },
+  { name: "Tapas Mixtas", ingredients: "-", image: logoFallback, prices: { UNICO: 9.00 }, noExtras: true }
+];
+
+const AVES_PRODUCTS = [
+  { name: "Filet de Pollo a la Plancha", ingredients: "-", image: logoFallback, prices: { UNICO: 11.00 }, noExtras: true },
+  { name: "Filet de Pollo Saragena", ingredients: "-", image: logoFallback, prices: { UNICO: 13.00 }, noExtras: true },
+  { name: "Filet de Pollo Relleno", ingredients: "-", image: logoFallback, prices: { UNICO: 16.00 }, noExtras: true },
+  { name: "Filet de Pollo Parmesana", ingredients: "-", image: logoFallback, prices: { UNICO: 13.00 }, noExtras: true }
 ];
 
 const POSTRES = [
@@ -345,43 +419,50 @@ const POSTRES = [
     ingredients: "Delicioso postre con tres sabores de helado, banana, sirope y topping.",
     image: "https://i.imgur.com/jHSNUmO.jpeg",
     prices: { UNICO: 8.50 },
-    noExtras: true
+    noExtras: true,
+    isHelado: true
   },
   {
     name: "Sunday",
     ingredients: "Cremosa copa de helado con topping de chocolate o caramelo.",
     image: "https://i.imgur.com/6PgWNsW.jpeg",
     prices: { UNICO: 7.50 },
-    noExtras: true
+    noExtras: true,
+    isHelado: true
   },
   {
     name: "Tinita",
     ingredients: "Copa de helado individual, ideal para un antojo rápido.",
     image: "https://i.imgur.com/hdPwiQX.jpeg",
     prices: { UNICO: 4.50 },
-    noExtras: true
+    noExtras: true,
+    isHelado: true
   },
   {
     name: "Porción de Torta",
     ingredients: "Variedad de tortas caseras servidas en ricas porciones.",
     image: "https://i.imgur.com/Lt90BhJ.jpeg",
     prices: { UNICO: 5.50 },
-    noExtras: true
+    noExtras: true,
+    packagingFee: 0.50
   },
   {
     name: "Quesillo",
     ingredients: "El clásico postre casero venezolano con textura cremosa y caramelo.",
     image: "https://i.imgur.com/bjft7Em.jpeg",
     prices: { UNICO: 4.50 },
-    noExtras: true
+    noExtras: true,
+    packagingFee: 0.50
   },
   {
     name: "Tiramisú",
     ingredients: "Exquisito postre italiano con capas de bizcocho café y crema mascarpone.",
     image: "https://i.imgur.com/b9MF1mD.jpeg",
     prices: { UNICO: 7.00 },
-    noExtras: true
-  }
+    noExtras: true,
+    packagingFee: 0.50
+  },
+  { name: "Peach Melba", ingredients: "-", image: logoFallback, prices: { UNICO: 8.50 }, noExtras: true, isHelado: true }
 ];
 
 const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, imagePosition = "center" }) => {
@@ -445,7 +526,7 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, image
 };
 
 const CategoryCarousel = ({ activeCategory, onCategoryChange, onOpenMenu }) => {
-  const categories = ['Pizzas', 'Pasta', 'Pescados y Mariscos', 'Sugerencias', 'Ensaladas', 'Hamburguesas', 'Postres', 'Bebidas'];
+  const categories = ['Pizzas', 'Pasta', 'Pescados y Mariscos', 'Aves', 'Sugerencias', 'Ensaladas', 'Hamburguesas', 'Postres', 'Bebidas'];
 
   return (
     <div className="flex items-center px-6 mb-8 gap-4 overflow-hidden">
@@ -487,6 +568,7 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
     { name: 'Pizzas', icon: Pizza },
     { name: 'Pasta', icon: Utensils },
     { name: 'Pescados y Mariscos', icon: Fish },
+    { name: 'Aves', icon: Drumstick },
     { name: 'Sugerencias', icon: Sparkles },
     { name: 'Ensaladas', icon: Leaf },
     { name: 'Hamburguesas', icon: Beef },
@@ -761,13 +843,6 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
   if (!isOpen) return null;
 
   const BOX_PRICES = { 'P': 0.75, 'M': 0.80, 'G': 1.00 };
-  const DESSERTS_050 = ['Porción de Torta', 'Quesillo', 'Tiramisú'];
-  const HELADOS = ['Banana Split', 'Sunday', 'Tinita'];
-  const BEBIDAS = [
-    "Refresco 1 L", "Refresco 1.5 L", "Refresco 2 L", 
-    "Refresco en Botella", "Malta Botella", "Limonada Frappe", 
-    "Batido de Lechoza", "Batido de Fresa", "Batido de Parchita"
-  ];
   
   const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
   const subtotalExtras = cart.reduce((sum, item) => sum + (item.extrasTotalPerUnit * item.quantity), 0);
@@ -775,9 +850,9 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
     let boxPrice = BOX_PRICES[item.size] || 0;
     
     if (item.size === 'UNICO') {
-      if (DESSERTS_050.includes(item.name)) {
-        boxPrice = 0.50;
-      } else if (HELADOS.includes(item.name) || BEBIDAS.includes(item.name)) {
+      if (item.packagingFee !== undefined) {
+        boxPrice = item.packagingFee;
+      } else if (item.isHelado || item.isBebida) {
         boxPrice = 0;
       } else {
         boxPrice = 0.75; // Platos individuales
@@ -1167,13 +1242,6 @@ const App = () => {
     }
 
     const BOX_PRICES = { 'P': 0.75, 'M': 0.80, 'G': 1.00 };
-    const DESSERTS_050 = ['Porción de Torta', 'Quesillo', 'Tiramisú'];
-    const HELADOS = ['Banana Split', 'Sunday', 'Tinita'];
-    const BEBIDAS = [
-      "Refresco 1 L", "Refresco 1.5 L", "Refresco 2 L", 
-      "Refresco en Botella", "Malta Botella", "Limonada Frappe", 
-      "Batido de Lechoza", "Batido de Fresa", "Batido de Parchita"
-    ];
 
     const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
     const subtotalExtras = cart.reduce((sum, item) => sum + (item.extrasTotalPerUnit * item.quantity), 0);
@@ -1181,9 +1249,9 @@ const App = () => {
       let boxPrice = BOX_PRICES[item.size] || 0;
       
       if (item.size === 'UNICO') {
-        if (DESSERTS_050.includes(item.name)) {
-          boxPrice = 0.50;
-        } else if (HELADOS.includes(item.name) || BEBIDAS.includes(item.name)) {
+        if (item.packagingFee !== undefined) {
+          boxPrice = item.packagingFee;
+        } else if (item.isHelado || item.isBebida) {
           boxPrice = 0;
         } else {
           boxPrice = 0.75; // Platos individuales
@@ -1378,6 +1446,17 @@ const App = () => {
               <Fish size={20} className="text-slate-900" />
             </div>
             {MAR_PRODUCTS.map((prod) => (
+              <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
+            ))}
+          </div>
+
+          {/* Section: Menu Category - Aves */}
+          <div id="section-Aves" className="px-6 mb-8">
+            <div className="flex items-center gap-2 mb-4">
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Aves</h2>
+              <Drumstick size={20} className="text-slate-900" />
+            </div>
+            {AVES_PRODUCTS.map((prod) => (
               <PizzaCard key={prod.name} {...prod} onSelect={setSelectedItem} />
             ))}
           </div>
