@@ -445,7 +445,7 @@ const PizzaCard = ({ name, ingredients, image, prices, onSelect, noExtras, image
 };
 
 const CategoryCarousel = ({ activeCategory, onCategoryChange, onOpenMenu }) => {
-  const categories = ['Pizzas', 'Pasta', 'Mar', 'Sugerencias', 'Ensaladas', 'Hamburguesas', 'Postres', 'Bebidas'];
+  const categories = ['Pizzas', 'Pasta', 'Pescados y Mariscos', 'Sugerencias', 'Ensaladas', 'Hamburguesas', 'Postres', 'Bebidas'];
 
   return (
     <div className="flex items-center px-6 mb-8 gap-4 overflow-hidden">
@@ -486,7 +486,7 @@ const CategoryMenuOverlay = ({ isOpen, onClose, onSelect, activeCategory }) => {
   const categories = [
     { name: 'Pizzas', icon: Pizza },
     { name: 'Pasta', icon: Utensils },
-    { name: 'Mar', icon: Fish },
+    { name: 'Pescados y Mariscos', icon: Fish },
     { name: 'Sugerencias', icon: Sparkles },
     { name: 'Ensaladas', icon: Leaf },
     { name: 'Hamburguesas', icon: Beef },
@@ -761,9 +761,31 @@ const CheckoutModal = ({ isOpen, onClose, cart, updateQuantity, deliveryMode, se
   if (!isOpen) return null;
 
   const BOX_PRICES = { 'P': 0.75, 'M': 0.80, 'G': 1.00 };
+  const DESSERTS_050 = ['Porción de Torta', 'Quesillo', 'Tiramisú'];
+  const HELADOS = ['Banana Split', 'Sunday', 'Tinita'];
+  const BEBIDAS = [
+    "Refresco 1 L", "Refresco 1.5 L", "Refresco 2 L", 
+    "Refresco en Botella", "Malta Botella", "Limonada Frappe", 
+    "Batido de Lechoza", "Batido de Fresa", "Batido de Parchita"
+  ];
+  
   const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
   const subtotalExtras = cart.reduce((sum, item) => sum + (item.extrasTotalPerUnit * item.quantity), 0);
-  const totalCajas = cart.reduce((sum, item) => sum + (BOX_PRICES[item.size] || 0) * item.quantity, 0);
+  const totalCajas = cart.reduce((sum, item) => {
+    let boxPrice = BOX_PRICES[item.size] || 0;
+    
+    if (item.size === 'UNICO') {
+      if (DESSERTS_050.includes(item.name)) {
+        boxPrice = 0.50;
+      } else if (HELADOS.includes(item.name) || BEBIDAS.includes(item.name)) {
+        boxPrice = 0;
+      } else {
+        boxPrice = 0.75; // Platos individuales
+      }
+    }
+    
+    return sum + (boxPrice * item.quantity);
+  }, 0);
   const totalFinal = subtotalPizzas + subtotalExtras + totalCajas;
 
   return (
@@ -1130,10 +1152,32 @@ const App = () => {
       return;
     }
 
-    const BOX_PRICES = { 'P': 0.25, 'M': 0.80, 'G': 1.00 };
+    const BOX_PRICES = { 'P': 0.75, 'M': 0.80, 'G': 1.00 };
+    const DESSERTS_050 = ['Porción de Torta', 'Quesillo', 'Tiramisú'];
+    const HELADOS = ['Banana Split', 'Sunday', 'Tinita'];
+    const BEBIDAS = [
+      "Refresco 1 L", "Refresco 1.5 L", "Refresco 2 L", 
+      "Refresco en Botella", "Malta Botella", "Limonada Frappe", 
+      "Batido de Lechoza", "Batido de Fresa", "Batido de Parchita"
+    ];
+
     const subtotalPizzas = cart.reduce((sum, item) => sum + (item.unitPrice * item.quantity), 0);
     const subtotalExtras = cart.reduce((sum, item) => sum + (item.extrasTotalPerUnit * item.quantity), 0);
-    const totalCajas = cart.reduce((sum, item) => sum + (BOX_PRICES[item.size] || 0) * item.quantity, 0);
+    const totalCajas = cart.reduce((sum, item) => {
+      let boxPrice = BOX_PRICES[item.size] || 0;
+      
+      if (item.size === 'UNICO') {
+        if (DESSERTS_050.includes(item.name)) {
+          boxPrice = 0.50;
+        } else if (HELADOS.includes(item.name) || BEBIDAS.includes(item.name)) {
+          boxPrice = 0;
+        } else {
+          boxPrice = 0.75; // Platos individuales
+        }
+      }
+      
+      return sum + (boxPrice * item.quantity);
+    }, 0);
     const totalFinal = subtotalPizzas + subtotalExtras + totalCajas;
 
     let message = "🚨 *NUEVO PEDIDO* 🚨\n\n";
@@ -1313,10 +1357,10 @@ const App = () => {
             ))}
           </div>
 
-          {/* Section: Menu Category - Mar */}
-          <div id="section-Mar" className="px-6 mb-8">
+          {/* Section: Menu Category - Pescados y Mariscos */}
+          <div id="section-Pescados y Mariscos" className="px-6 mb-8">
             <div className="flex items-center gap-2 mb-4">
-              <h2 className="text-xl font-black text-slate-900 tracking-tight">Mar</h2>
+              <h2 className="text-xl font-black text-slate-900 tracking-tight">Pescados y Mariscos</h2>
               <Fish size={20} className="text-slate-900" />
             </div>
             {MAR_PRODUCTS.map((prod) => (
