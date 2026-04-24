@@ -1065,7 +1065,7 @@ const App = () => {
   const [activeCategory, setActiveCategory] = useState('Pizzas');
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
 
-  const handleGetLocation = () => {
+  const handleGetLocation = (callback) => {
     if (!navigator.geolocation) {
       alert("Tu navegador no soporta geolocalización.");
       return;
@@ -1078,7 +1078,6 @@ const App = () => {
         setDeliveryCoords({ lat: latitude, lng: longitude });
         
         try {
-          // OpenStreetMap API for free reverse geocoding
           const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
           const data = await response.json();
           if (data && data.display_name) {
@@ -1090,15 +1089,18 @@ const App = () => {
           setDeliveryAddress(`Ubicación guardada - Coordenadas: ${latitude.toFixed(5)}, ${longitude.toFixed(5)}`);
         }
         setIsLocating(false);
+        if (callback && typeof callback === 'function') callback();
       },
       (error) => {
         const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         
         if (error.code === 1 && isIOS && isSafari) {
-          alert("Safari en iPhone tiene bloqueos estrictos de ubicación.\n\nPor favor, escribe tu dirección manualmente.");
+          alert("Safari en iPhone requiere que autorices la ubicación.\n\nSi ya la negaste, por favor escribe tu dirección manualmente.");
+        } else if (error.code === 1) {
+          alert("Has denegado el permiso de ubicación. Por favor, escríbela manualmente.");
         } else {
-          alert("No pudimos obtener tu ubicación automáticamente.\n\nPor favor, escribe tu dirección manualmente.");
+          alert("No pudimos obtener tu ubicación automáticamente.");
         }
         setIsLocating(false);
         setTimeout(() => {
@@ -1106,7 +1108,7 @@ const App = () => {
           if (addressInput) addressInput.focus();
         }, 100);
       },
-      { enableHighAccuracy: true }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   };
 
@@ -1148,8 +1150,20 @@ const App = () => {
 
   const sendOrder = () => {
     if (deliveryMode === 'Delivery' && !deliveryAddress.trim()) {
-      alert("⚠️ Bloqueo de seguridad:\n\nPor favor, escribe tu dirección en el recuadro o haz clic en 'Obtener automática' antes de enviar tu pedido por Delivery.");
+      alert("⚠️ Dirección faltante:\n\nPor favor, escribe tu dirección o usa el botón de ubicación.");
       return;
+    }
+
+    if (deliveryMode === 'Delivery' && !deliveryCoords) {
+      const wantsGPS = window.confirm("¿Deseas activar tu ubicación GPS para que el repartidor llegue con más precisión? (Recomendado)");
+      if (wantsGPS) {
+        handleGetLocation(() => {
+          // No llamamos a sendOrder recursivamente para evitar loops, 
+          // el usuario verá su dirección actualizada y confirmará de nuevo.
+          alert("📍 Ubicación obtenida. Por favor, pulsa 'Confirmar' una vez más para enviar el pedido.");
+        });
+        return;
+      }
     }
 
     const BOX_PRICES = { 'P': 0.75, 'M': 0.80, 'G': 1.00 };
@@ -1438,10 +1452,10 @@ const App = () => {
           cart={cart}
           onCheckout={() => {
             setIsCheckoutOpen(true);
+            // En Safari, handleGetLocation DEBE ser llamado directamente por un click.
+            // Si es delivery y no tiene coords, lo intentamos una vez de inmediato.
             if (deliveryMode === 'Delivery' && !deliveryCoords) {
-              setTimeout(() => {
-                handleGetLocation();
-              }, 2000);
+              handleGetLocation();
             }
           }}
         />
